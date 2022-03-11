@@ -63,19 +63,20 @@
             "generator": "Ninja",
             "binaryDir": "${sourceDir}/out/build/${presetName}",
             "installDir": "${sourceDir}/out/install/${presetName}",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug"
-            },
+          "cacheVariables": {
+            "CMAKE_BUILD_TYPE": "Debug",
+            "CMAKE_TOOLCHAIN_FILE": "/home/smarqito/.vcpkg/vcpkg/scripts/buildsystems/vcpkg.cmake"
+          },
             "condition": {
                 "type": "equals",
                 "lhs": "${hostSystemName}",
                 "rhs": "Linux"
             },
-            "vendor": {
-                "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
-                    "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}"
-                }
+          "vendor": {
+            "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
+              "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}"
             }
+          }
         },
         {
             "name": "macos-debug",

@@ -1,21 +1,21 @@
-﻿// CGDraw.cpp : Defines the entry point for the application.
-//
+﻿#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
-#include "CGDraw.h"
+#endif
 
+#define _USE_MATH_DEFINES
 #include <math.h>
-#include <map>
+#include <iostream>
+#include <tuple>
 
-using namespace std;
-
-GLfloat ex = 5, ez = 5;
-GLfloat height = 1;
-GLfloat angle = 0;
-GLfloat tx = 0, ty = 0, tz = 0;
-GLfloat rx = 0, ry = 1, rz = 0;
-GLenum face = GL_FRONT;
-GLenum mode = GL_LINE;
-float step = 0.5;
+float alpha = 0;
+float beta = 0;
+float alpha2 = 0;
+float beta2 = 0;
+float radius = 10;
+float radius2 = 0;
+float step = 0.1;
 
 void changeSize(int w, int h) {
 
@@ -42,155 +42,235 @@ void changeSize(int w, int h) {
 	glMatrixMode(GL_MODELVIEW);
 }
 
-void renderAxis(void) {
-	glBegin(GL_LINES);
-	// X axis in red
-	glColor3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(-100.0f, 0.0f, 0.0f);
-	glVertex3f(100.0f, 0.0f, 0.0f);
-	// Y Axis in Green
-	glColor3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(0.0f, -100.0f, 0.0f);
-	glVertex3f(0.0f, 100.0f, 0.0f);
-	// Z Axis in Blue
-	glColor3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, -100.0f);
-	glVertex3f(0.0f, 0.0f, 100.0f);
+
+void drawCylinder(float radius, float height, int slices) {
+	float step = (2 * M_PI) / slices;
+	float alpha = 0;
+	float beta = 0;
+	// put code to draw cylinder in here
+	glBegin(GL_TRIANGLES);
+	int x = 0, y = 1, z = 0;
+	for (int i = 0; i < slices; i++)
+	{
+		glColor3f(0, 0, 1);
+		glVertex3d(x, y, z);
+		glVertex3d(x + radius * cos(beta) * sin(alpha), y + radius * sin(beta), z + radius * cos(beta) * cos(alpha));
+		glVertex3d(x + radius * cos(beta) * sin(alpha - step), y + radius * sin(beta), z + radius * cos(beta) * cos(alpha - step));
+		// ss
+		glColor3f(1, 0, 0);
+		glVertex3d(x + radius * cos(beta) * sin(alpha), y + radius * sin(beta), z + radius * cos(beta) * cos(alpha));
+		glVertex3d(x + radius * cos(beta) * sin(alpha + step), y + radius * sin(beta), z + radius * cos(beta) * cos(alpha + step));
+		glVertex3d(x + radius * cos(beta) * sin(alpha), y + height + radius * sin(beta), z + radius * cos(beta) * cos(alpha));
+		alpha -= step;
+
+	}
+	y += height;
+	for (int i = 0; i < slices; i++)
+	{
+		glColor3f(0.5, 0.5, 1);
+		glVertex3d(x, y, z);
+		glVertex3d(x + radius * cos(beta) * sin(alpha), y + radius * sin(beta), z + radius * cos(beta) * cos(alpha));
+		glVertex3d(x + radius * cos(beta) * sin(alpha + step), y + radius * sin(beta), z + radius * cos(beta) * cos(alpha + step));
+		// triangulo
+		glColor3f(0, 1, 0);
+		glVertex3d(x + radius * cos(beta) * sin(alpha), y - height + radius * sin(beta), z + radius * cos(beta) * cos(alpha));
+		glVertex3d(x + radius * cos(beta) * sin(alpha), y + radius * sin(beta), z + radius * cos(beta) * cos(alpha));
+		glVertex3d(x + radius * cos(beta) * sin(alpha - step), y + radius * sin(beta), z + radius * cos(beta) * cos(alpha - step));
+		alpha += step;
+	}
+	glEnd();
+}
+struct cartz {
+	double x, y, z;
+};
+
+cartz polartocart(double r, double alpha, double beta) {
+	cartz c;
+	c.x = r * cos(beta) * sin(alpha);
+	c.y = r * sin(beta);
+	c.z = r * cos(beta) * cos(alpha);
+	return c;
+}
+
+double polarx(double r, double alpha, double beta) {
+	return r * cos(beta) * sin(alpha);
+}
+
+double polary(double r, double alpha, double beta) {
+	return r * sin(beta);
+}
+
+double polarz(double r, double alpha, double beta) {
+	return r * cos(beta) * cos(alpha);
+}
+
+void drawCone(float radius, float height, int slices, int stacks) {
+	double step = (2 * M_PI) / slices;
+	double alpha = 0;
+	double beta = atan(height / radius);
+	double l = radius / cos(beta);
+	double rstep = l / stacks;
+	// put code to draw cylinder in here
+	glBegin(GL_TRIANGLES);
+	int x = 0, y = height, z = 0;
+	double r = 0;
+	beta = -beta;
+	for (int i = 0; i < stacks; i++)
+	{
+		alpha = 0;
+		for (int i = 0; i < slices; i++)
+		{
+			cartz a = polartocart(r, alpha, beta);
+			cartz b = polartocart(r + rstep, alpha, beta);
+			cartz c = polartocart(r, alpha + step, beta);
+			cartz d = polartocart(r + rstep, alpha + step, beta);
+			glVertex3d(a.x, a.y + y, a.z); //a
+			glVertex3d(b.x, b.y + y, b.z); //b
+			glVertex3d(c.x, c.y + y, c.z); //c
+
+			glVertex3d(b.x, b.y + y, b.z); //b
+			glVertex3d(d.x, d.y + y, d.z); //d
+			glVertex3d(c.x, c.y + y, c.z); //c
+
+
+			alpha += step;
+		}
+		r += rstep;
+	}
+	y = 0;
+	beta = 0;
+	for (int i = 0; i < slices; i++)
+	{
+		glColor3f(0, 0, 1);
+		glVertex3d(x, y, z);
+		glVertex3d(x + radius * cos(beta) * sin(alpha), y + radius * sin(beta), z + radius * cos(beta) * cos(alpha));
+		glVertex3d(x + radius * cos(beta) * sin(alpha - step), y + radius * sin(beta), z + radius * cos(beta) * cos(alpha - step));
+		alpha += step;
+
+	}
+
 	glEnd();
 
+}
+
+void drawSphere(double radius, int slices, int stacks) {
+	double sst = M_PI / stacks;
+	double ssl = 2 * M_PI / slices;
+	double beta = -M_PI / 2;
+	double alpha = 0;
+	glBegin(GL_TRIANGLES);
+	for (int i = 0; i < stacks; i++)
+	{
+		for (int i = 0; i < slices; i++)
+		{
+			cartz a = polartocart(radius, alpha, beta);
+			cartz b = polartocart(radius, alpha, beta + sst);
+			cartz c = polartocart(radius, alpha + ssl, beta + sst);
+			cartz d = polartocart(radius, alpha + ssl, beta);
+			glVertex3d(a.x, a.y, a.z); //a
+			glVertex3d(b.x, b.y, b.z); //b
+			glVertex3d(c.x, c.y, c.z); //c
+
+			glVertex3d(a.x, a.y, a.z); //a
+			glVertex3d(c.x, c.y, c.z); //c
+			glVertex3d(d.x, d.y, d.z); //d
+			alpha += ssl;
+		}
+		beta += sst;
+		alpha = 0;
+	}
+	glEnd();
 }
 
 void renderScene(void) {
 
 	// clear buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	glPolygonMode(face, mode);
-
+	glPolygonMode(GL_FRONT, GL_LINE);
 	// set the camera
 	glLoadIdentity();
-	gluLookAt(ex, 2.0, ez,
-		0.0, 0.0, 0.0,
+	float px = radius * cos(beta) * sin(alpha);
+	float py = radius * sin(beta);
+	float pz = radius * cos(beta) * cos(alpha);
+	float dx = radius2 * cos(beta2) * sin(alpha2);
+	float dy = radius2 * sin(beta2);
+	float dz = radius2 * cos(beta2) * cos(alpha2);
+
+	gluLookAt(px, py, pz,
+		px + dx, py + dy, pz + dz,
 		0.0f, 1.0f, 0.0f);
 
-	renderAxis();
-	// put the geometric transformations here
-	glTranslatef(tx, ty, tz);
-	glRotatef(angle, rx, ry, rz);
-	// put drawing instructions here
-
-
-	glBegin(GL_TRIANGLES);
-	// A
-	glColor3f(1.5f, 1.0f, 2.0f);
-	glVertex3f(-1.0f, 0.0f, 1.0f);
-	glVertex3f(1.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, height, 0.0f);
-	// B
-	glColor3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(1.0f, 0.0f, 1.0f);
-	glVertex3f(1.0f, 0.0f, -1.0f);
-	glVertex3f(0.0f, height, 0.0f);
-	// C
-	glColor3f(2.0f, -1.0f, 5.0f);
-	glVertex3f(1.0f, 0.0f, -1.0f);
-	glVertex3f(-1.0f, 0.0f, -1.0f);
-	glVertex3f(0.0f, height, 0.0f);
-	// D
-	glColor3f(0.0f, 0.0f, 2.0f);
-	glVertex3f(-1.0f, 0.0f, -1.0f);
-	glVertex3f(-1.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, height, 0.0f);
-	// base 1
-	glVertex3f(-1.0f, 0.0f, 1.0f);
-	glVertex3f(-1.0f, 0.0f, -1.0f);
-	glVertex3f(1.0f, 0.0f, 1.0f);
-	// base 2
-	glVertex3f(-1.0f, 0.0f, -1.0f);
-	glVertex3f(1.0f, 0.0f, -1.0f);
-	glVertex3f(1.0f, 0.0f, 1.0f);
-	glEnd();
+	drawSphere(1, 10, 10);
 
 	// End of frame
 	glutSwapBuffers();
 }
 
-void handle_space(void) {
-	angle += 1;
-}
 
-// write function to process keyboard events
-void handle_keys(unsigned char key, int x, int y) {
-	std::map<char, void(*)()> mapa = {
-		{' ', handle_space}
-	};
-	switch (key)
+void processKeys(unsigned char c, int xx, int yy) {
+
+	switch (c)
 	{
-	case ' ':
-		mapa[' ']();
-		break;
+	default:
 	case 'w':
-		tz -= step;
-		break;
-	case 'a':
-		tx -= step;
+		beta += step;
 		break;
 	case 's':
-		tz += step;
+		beta -= step;
+		break;
+	case 'a':
+		alpha -= step;
 		break;
 	case 'd':
-		tx += step;
-		break;
-	case ',':
-		height -= step;
-		break;
-	case '.':
-		height += step;
-		break;
-	case '1':
-		mode = GL_FILL;
-		break;
-	case '2':
-		mode = GL_LINE;
-		break;
-	case '3':
-		mode = GL_POINT;
-		break;
-	case 'z':
-		rz += 1;
-		angle = 0;
-		break;
-	case 'Z':
-		rz -= 1;
-		angle = 0;
-		break;
-	case 'x':
-		rx += 1;
-		angle = 0;
-		break;
-	case 'X':
-		rx -= 1;
-		angle = 0;
-		break;
-	case 'y':
-		ry += 1;
-		angle = 0;
-		break;
-	case 'Y':
-		ry -= 1;
-		angle = 0;
-		break;
-	case 'k':
-		ez -= step;
+		alpha += step;
 		break;
 	case 'j':
-		ez += step;
+		radius += 1;
 		break;
-	case 'l':
-		ex += step;
+	case 'k':
+		radius -= 1;
 		break;
-	case 'h':
-		ex -= step;
+	}
+	glutPostRedisplay();
+}
+
+
+void processSpecialKeys(int key, int xx, int yy) {
+
+	switch (key)
+	{
+	case GLUT_KEY_UP:
+		radius2 += step;
+		break;
+	case GLUT_KEY_DOWN:
+		radius2 -= step;
+		break;
+	default:
+		break;
+	}
+
+	glutPostRedisplay();
+}
+
+bool mouseDown = false;
+int mx, my;
+void processMouseKeys(int button, int state, int x, int y) {
+	//float diffx, diffy;
+	switch (button)
+	{
+	case GLUT_DOWN:
+		if (mouseDown) {
+		}
+		else {
+			mouseDown = true;
+			mx = x;
+			my = y;
+		}
+		break;
+	case GLUT_UP:
+		mouseDown = false;
+		my = y;
+		mx = x;
 		break;
 	default:
 		break;
@@ -198,9 +278,16 @@ void handle_keys(unsigned char key, int x, int y) {
 	glutPostRedisplay();
 }
 
-
-
-
+void handleMouseMotion(int x, int y) {
+	float diffx, diffy;
+	diffx = mx - x;
+	diffy = my - y;
+	mx = x;
+	my = y;
+	alpha2 += (diffx / (800));
+	beta2 -= (diffy / (800));
+	glutPostRedisplay();
+}
 
 int main(int argc, char** argv) {
 
@@ -215,10 +302,11 @@ int main(int argc, char** argv) {
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);
 
-
-	// put here the registration of the keyboard callbacks
-	glutKeyboardFunc(handle_keys);
-
+	// Callback registration for keyboard processing
+	glutKeyboardFunc(processKeys);
+	glutSpecialFunc(processSpecialKeys);
+	glutMouseFunc(processMouseKeys);
+	glutMotionFunc(handleMouseMotion);
 
 	//  OpenGL settings
 	glEnable(GL_DEPTH_TEST);

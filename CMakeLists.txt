@@ -1,18 +1,20 @@
 ﻿cmake_minimum_required(VERSION 3.5)
-# CMakeList.txt : CMake project for CGDraw, include source and define
-# project specific logic here.
-#
 
-project ("CGDraw")
+# Project Name
+PROJECT(class3)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_executable (CGDraw "CGDraw.cpp" "CGDraw.h")
+add_executable(${PROJECT_NAME} CGDraw.cpp)
+add_executable(generator generator/writer.cpp)
 
 find_package(OpenGL REQUIRED)
+find_package(tinyxml2 REQUIRED)
 include_directories(${OpenGL_INCLUDE_DIRS})
 link_directories(${OpenGL_LIBRARY_DIRS})
 add_definitions(${OpenGL_DEFINITIONS})
+
+target_link_libraries(generator tinyxml2::tinyxml2)
 
 if(NOT OPENGL_FOUND)
     message(ERROR " OPENGL not found!")
@@ -46,9 +48,17 @@ else (WIN32) #Linux and Mac
 	link_directories(${GLUT_LIBRARY_DIRS})
 	add_definitions(${GLUT_DEFINITIONS})
 	
-	target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
+	target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} tinyxml2::tinyxml2)
 	if(NOT GLUT_FOUND)
 	   message(ERROR ": GLUT not found!")
 	endif(NOT GLUT_FOUND)
 	
 endif(WIN32)
+
+
+
+
+
+
+
+
