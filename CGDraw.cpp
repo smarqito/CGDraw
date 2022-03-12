@@ -8,6 +8,11 @@
 #include <math.h>
 #include <iostream>
 #include <tuple>
+#include <tinyxml2.h>
+
+#include <iostream>
+
+using namespace tinyxml2;
 
 float alpha = 0;
 float beta = 0;
@@ -16,6 +21,25 @@ float beta2 = 0;
 float radius = 10;
 float radius2 = 0;
 float step = 0.1;
+
+float xPosition;
+float yPosition;
+float zPosition;
+
+float xLookAt;
+float yLookAt;
+float zLookAt;
+
+float xUp;
+float yUp;
+float zUp;
+
+float fov;
+float near;
+float far;
+
+
+
 
 void changeSize(int w, int h) {
 
@@ -289,6 +313,41 @@ void handleMouseMotion(int x, int y) {
 	glutPostRedisplay();
 }
 
+void readXML() {
+	const char* path = "/mnt/c/Users/Miguel/Desktop/prog/CG/test_1_1.xml";
+	XMLDocument doc;
+	doc.LoadFile(path);
+	XMLElement* pRootElement = doc.RootElement();
+	XMLElement* pCamara = pRootElement -> FirstChildElement("camera");
+	if (pCamara != NULL) {
+		XMLElement* pPosition = pCamara->FirstChildElement("position");
+		xPosition = pPosition->FindAttribute("x")->FloatValue();
+		yPosition = pPosition->FindAttribute("y")->FloatValue();
+		zPosition = pPosition->FindAttribute("z")->FloatValue();
+		XMLElement* pLookAt = pCamara->FirstChildElement("lookAt");
+		xLookAt = pLookAt->FindAttribute("x")->FloatValue();
+		yLookAt = pLookAt->FindAttribute("y")->FloatValue();
+		zLookAt = pLookAt->FindAttribute("z")->FloatValue();
+		XMLElement* pUp = pCamara->FirstChildElement("up");
+		xUp = pUp->FindAttribute("x")->FloatValue();
+		yUp = pUp->FindAttribute("y")->FloatValue();
+		zUp = pUp->FindAttribute("z")->FloatValue();
+		XMLElement* pProjection = pCamara->FirstChildElement("projection");
+		fov = pProjection->FindAttribute("fov")->FloatValue();
+		near = pProjection->FindAttribute("near")->FloatValue();
+		far = pProjection->FindAttribute("far")->FloatValue();
+	}
+	XMLElement* pGroup = pRootElement->FirstChildElement("group");
+	if (pGroup != NULL) {
+		XMLElement* pModels = pGroup->FirstChildElement("models");
+		XMLElement* pModel = pModels->FirstChildElement("model");
+		for (; pModel != NULL; pModel = pModel->NextSiblingElement()) {
+			const char* file = pModel->FindAttribute("file")->Value();
+			//função para ler o ficheiro
+		}
+	}
+}
+
 int main(int argc, char** argv) {
 
 	// init GLUT and the window
@@ -297,6 +356,7 @@ int main(int argc, char** argv) {
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(800, 800);
 	glutCreateWindow("CG@DI-UM");
+	readXML();
 
 	// Required callback registry 
 	glutDisplayFunc(renderScene);
