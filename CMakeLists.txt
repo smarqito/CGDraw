@@ -1,12 +1,12 @@
 ﻿cmake_minimum_required(VERSION 3.5)
 
 # Project Name
-PROJECT(class3)
+PROJECT(CGDraw)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 add_executable(${PROJECT_NAME} CGDraw.cpp)
-add_executable(generator generator/writer.cpp)
+add_executable(generator generator/writer.cpp "generator/shapes.cpp")
 
 find_package(OpenGL REQUIRED)
 find_package(tinyxml2 REQUIRED)

@@ -1,4 +1,5 @@
 #include "writer.h"
+#include "shapes.h"
 
 // ---------------------------- Funções Auxiliares -------------------------------------
 /*
@@ -21,14 +22,12 @@ void write_xml(const char* filepath, GLenum type, t_points* all_points) {
 	XMLDocument xml;
 	int size = all_points->size;
 
-	XMLNode* pRoot = xml.NewElement("Geometry");
+	XMLElement* pRoot = xml.NewElement("model");
 	xml.InsertFirstChild(pRoot);
 
-	XMLElement* model = xml.NewElement("model");
-	model->SetAttribute("type", type);
-	model->SetAttribute("size", size);
+	pRoot->SetAttribute("type", type);
+	pRoot->SetAttribute("size", size);
 
-	pRoot->InsertEndChild(model);
 
 	for (int i = 0; i < size; i++)
 	{
@@ -44,6 +43,7 @@ int main(int argc, const char** argv) {
 	
 	if (argc < 5 || argc > 6) {
 		cout << "Args: ./generator _GEO-FORM_ _PARAMS_ _FILEPATH_";
+		return 1;
 	}
 
 	t_points* points;
@@ -106,5 +106,5 @@ int main(int argc, const char** argv) {
 		cout << "Geometric Figures: sphere | cone | box | plane";
 	}
 
-	return 1;
+	return 0;
 }

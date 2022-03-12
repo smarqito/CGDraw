@@ -10,6 +10,7 @@
 #include <tuple>
 #include <tinyxml2.h>
 #include <string>
+#include "generator/shapes.h"
 
 using namespace std;
 using namespace tinyxml2;
@@ -38,11 +39,6 @@ float far;
 
 //Points
 GLenum type;
-struct t_points {
-	tuple<float, float, float>* points;
-	int size;
-	int pos;
-};
 
 t_points* points = (t_points*)malloc(sizeof(struct t_points));
 
@@ -256,9 +252,8 @@ void read3D(const char* path) {
 	XMLDocument doc;
 	doc.LoadFile(path);
 	XMLElement* pRootElement = doc.RootElement();
-	XMLElement* pModel = pRootElement->FirstChildElement("model");
-	type = pModel->FindAttribute("type")->IntValue();
-	int size = pModel->FindAttribute("size")->IntValue();
+	type = pRootElement->FindAttribute("type")->IntValue();
+	int size = pRootElement->FindAttribute("size")->IntValue();
 	points->points = (tuple<float, float, float>*) malloc(sizeof(tuple<float, float, float>) * size);
 	points->pos = 0;
 	points->size = size;
@@ -382,7 +377,7 @@ void handleMouseMotion(int x, int y) {
 }
 
 void readXML() {
-	const char* path = "/mnt/c/Users/Miguel/Desktop/prog/CG/test_1_2.xml";
+	const char* path = "/home/smarqito/test_files_phase_1/test_1_2.xml";
 	XMLDocument doc;
 	doc.LoadFile(path);
 	XMLElement* pRootElement = doc.RootElement();
@@ -412,7 +407,7 @@ void readXML() {
 		for (; pModel != NULL; pModel = pModel->NextSiblingElement()) {
 			char fullPath[100];
 			const char* file = pModel->FindAttribute("file")->Value();
-			const char* path = "/mnt/c/Users/Miguel/Desktop/prog/CG/";
+			const char* path = "/home/smarqito";
 			strcpy(fullPath, path);
 			strcat(fullPath, file);
 			read3D(fullPath);

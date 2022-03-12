@@ -57,59 +57,6 @@ t_points* create_plane(float length, int divisions) {
 	return plane_points;
 }
 
-t_points* create_cone(float radius, float height, int slices, int stacks) {
-	t_points* cone_points = (t_points*)malloc(sizeof(struct t_points));
-
-	cone_points->size = 6 * slices * stacks + 3 * slices;
-	int size = cone_points->size;
-
-	cone_points->points = (tuple<float, float, float>*) malloc(sizeof(tuple<float, float, float>) * size);
-
-	double step = (2 * M_PI) / slices;
-	double alpha = 0;
-	double beta = atan(height / radius);
-	double l = radius / cos(beta);
-	double rstep = l / stacks;
-
-	int x = 0, y = height, z = 0;
-	double r = 0;
-	beta = -beta;
-	for (int i = 0; i < stacks; i++)
-	{
-		alpha = 0;
-		for (int i = 0; i < slices; i++)
-		{
-			tuple<float, float, float> a = polartocart(r, alpha, beta);
-			tuple<float, float, float> b = polartocart(r + rstep, alpha, beta);
-			tuple<float, float, float> c = polartocart(r, alpha + step, beta);
-			tuple<float, float, float> d = polartocart(r + rstep, alpha + step, beta);
-
-			add_point(tuple<float, float, float>(get<0>(a), get<1>(a) + y, get<2>(a)), cone_points); //a
-			add_point(tuple<float, float, float>(get<0>(b), get<1>(b) + y, get<2>(b)), cone_points); //b
-			add_point(tuple<float, float, float>(get<0>(c), get<1>(c) + y, get<2>(c)), cone_points); //c
-
-			add_point(tuple<float, float, float>(get<0>(b), get<1>(b) + y, get<2>(b)), cone_points); //b
-			add_point(tuple<float, float, float>(get<0>(d), get<1>(d) + y, get<2>(d)), cone_points); //d
-			add_point(tuple<float, float, float>(get<0>(c), get<1>(c) + y, get<2>(c)), cone_points); //c
-
-			alpha += step;
-		}
-		r += rstep;
-	}
-	y = 0;
-	beta = 0;
-	for (int i = 0; i < slices; i++)
-	{
-		add_point(tuple<float, float, float>(x, y, z), cone_points);
-		add_point(tuple<float, float, float>(x + radius * cos(beta) * sin(alpha), y + radius * sin(beta), z + radius * cos(beta) * cos(alpha)), cone_points);
-		add_point(tuple<float, float, float>(x + radius * cos(beta) * sin(alpha - step), y + radius * sin(beta), z + radius * cos(beta) * cos(alpha - step)), cone_points);
-
-		alpha += step;
-	}
-
-	return cone_points;
-}
-
 
 t_points* create_box(float units, int divisions) {
 	t_points* box_points = (t_points*)malloc(sizeof(struct t_points));
