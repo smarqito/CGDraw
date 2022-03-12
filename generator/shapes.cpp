@@ -1,11 +1,6 @@
-#include <tuple>
-#include <math.h>
 #include "shapes.h"
 
-using namespace std;
-
 // ---------------------------- Funções Auxiliares -------------------------------------
-
 /*
 * Criar um ponto a partir de coordenadas polares
 */
@@ -27,7 +22,6 @@ void add_point(tuple<float, float, float> point, t_points* all_points) {
 
 	all_points->points[pos] = point;
 }
-
 // ------------------------------------------------------------------------------------
 
 t_points* create_plane(float length, int divisions) {

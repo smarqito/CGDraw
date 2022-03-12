@@ -1,5 +1,8 @@
 #ifndef SHAPES_DRAW
+#include <tuple>
+#include <math.h>
 
+using namespace std;
 /*
 * Estrutura de dados dos pontos para construir uma figura geométrica
 * Os pontos são tuplos -> coordenadas cartesianas x y z
