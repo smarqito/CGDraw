@@ -9,9 +9,9 @@
 #include <iostream>
 #include <tuple>
 #include <tinyxml2.h>
+#include <string>
 
-#include <iostream>
-
+using namespace std;
 using namespace tinyxml2;
 
 float alpha = 0;
@@ -22,21 +22,37 @@ float radius = 10;
 float radius2 = 0;
 float step = 0.1;
 
+//Camara position
 float xPosition;
 float yPosition;
 float zPosition;
-
 float xLookAt;
 float yLookAt;
 float zLookAt;
-
 float xUp;
 float yUp;
 float zUp;
-
 float fov;
 float near;
 float far;
+
+//Points
+GLenum type;
+struct t_points {
+	tuple<float, float, float>* points;
+	int size;
+	int pos;
+};
+
+t_points* points = (t_points*)malloc(sizeof(struct t_points));
+
+void add_point(tuple<float, float, float> point, t_points* all_points) {
+
+	int pos = all_points->pos++;
+
+	all_points->points[pos] = point;
+}
+
 
 
 
@@ -60,7 +76,7 @@ void changeSize(int w, int h) {
 	glViewport(0, 0, w, h);
 
 	// Set perspective
-	gluPerspective(45.0f, ratio, 1.0f, 1000.0f);
+	gluPerspective(fov, ratio, near, far);
 
 	// return to the model view matrix mode
 	glMatrixMode(GL_MODELVIEW);
@@ -206,6 +222,58 @@ void drawSphere(double radius, int slices, int stacks) {
 	glEnd();
 }
 
+void drawAxis() {
+	glBegin(GL_LINES);
+	// X axis in red
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(
+		-100.0f, 0.0f, 0.0f);
+	glVertex3f(100.0f, 0.0f, 0.0f);
+	// Y Axis in Green
+	glColor3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(0.0f,
+		-100.0f, 0.0f);
+	glVertex3f(0.0f, 100.0f, 0.0f);
+	// Z Axis in Blue
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(0.0f, 0.0f,
+		-100.0f);
+	glVertex3f(0.0f, 0.0f, 100.0f);
+	glEnd();
+}
+
+void draw() {
+	glBegin(GL_TRIANGLES);
+	tuple<float, float, float> t;
+	for (int i = 0; i < points->size; i++) {
+		 t = points->points[i];
+		 glVertex3d(get<0>(t), get<1>(t), get<2>(t));
+	}
+	glEnd();
+}
+
+void read3D(const char* path) {
+	XMLDocument doc;
+	doc.LoadFile(path);
+	XMLElement* pRootElement = doc.RootElement();
+	XMLElement* pModel = pRootElement->FirstChildElement("model");
+	type = pModel->FindAttribute("type")->IntValue();
+	int size = pModel->FindAttribute("size")->IntValue();
+	points->points = (tuple<float, float, float>*) malloc(sizeof(tuple<float, float, float>) * size);
+	points->pos = 0;
+	points->size = size;
+	XMLElement* pPoint = pRootElement->FirstChildElement("point");
+	for (int i = 0; pPoint != NULL; i++) {
+		float x = pPoint->FindAttribute("x")->FloatValue();
+		float y = pPoint->FindAttribute("y")->FloatValue();
+		float z = pPoint->FindAttribute("z")->FloatValue();
+		add_point(tuple<float, float, float>(x, y, z), points);
+		pPoint = pPoint->NextSiblingElement();
+	}
+}
+
+
+
 void renderScene(void) {
 
 	// clear buffers
@@ -220,11 +288,11 @@ void renderScene(void) {
 	float dy = radius2 * sin(beta2);
 	float dz = radius2 * cos(beta2) * cos(alpha2);
 
-	gluLookAt(px, py, pz,
-		px + dx, py + dy, pz + dz,
-		0.0f, 1.0f, 0.0f);
-
-	drawSphere(1, 10, 10);
+	gluLookAt(xPosition, yPosition, zPosition,
+		xLookAt, yLookAt, zLookAt,
+		xUp, yUp, zUp);
+	
+	draw();
 
 	// End of frame
 	glutSwapBuffers();
@@ -314,7 +382,7 @@ void handleMouseMotion(int x, int y) {
 }
 
 void readXML() {
-	const char* path = "/mnt/c/Users/Miguel/Desktop/prog/CG/test_1_1.xml";
+	const char* path = "/mnt/c/Users/Miguel/Desktop/prog/CG/test_1_2.xml";
 	XMLDocument doc;
 	doc.LoadFile(path);
 	XMLElement* pRootElement = doc.RootElement();
@@ -342,11 +410,17 @@ void readXML() {
 		XMLElement* pModels = pGroup->FirstChildElement("models");
 		XMLElement* pModel = pModels->FirstChildElement("model");
 		for (; pModel != NULL; pModel = pModel->NextSiblingElement()) {
+			char fullPath[100];
 			const char* file = pModel->FindAttribute("file")->Value();
-			//função para ler o ficheiro
+			const char* path = "/mnt/c/Users/Miguel/Desktop/prog/CG/";
+			strcpy(fullPath, path);
+			strcat(fullPath, file);
+			read3D(fullPath);
 		}
 	}
 }
+
+
 
 int main(int argc, char** argv) {
 
@@ -356,6 +430,7 @@ int main(int argc, char** argv) {
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(800, 800);
 	glutCreateWindow("CG@DI-UM");
+
 	readXML();
 
 	// Required callback registry 
