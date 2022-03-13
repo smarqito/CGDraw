@@ -4,18 +4,20 @@
 
 using namespace std;
 
-class Models
-{
-	list<Model> models;
+class Models {
+
+private:
+	std::vector<Model> models;
+	XMLElement* xml_elem;
 
 public:
+	Models(XMLElement* xml_elem);
 
-	list<Model> getModels() {
-		return models;
-	}
+	void _init();
 
-	void addModel(GLenum type, int size, const char* filename) {
-		Model m = Model(type, size, filename);
-		models.push_back(m);
-	}
+	Model get_model();
+
+	Model get_model(int i);
+
+	void _draw();
 };

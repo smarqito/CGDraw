@@ -1,11 +1,15 @@
 #pragma once
 
-class Groups
-{
-	list<Group> groups;
+class Groups {
+
+private:
+	std::vector<Group> _groups;
+	XMLElement* xml_elem;
 
 public:
-	list<Group> getGroup() {
-		return groups;
-	};
+	Groups(XMLNode* xml_node);
+
+	void _init();
+
+	void _draw();
 };

@@ -2,12 +2,18 @@
 #include "Models.h"
 
 
-class Group
-{
-	Models model;
+class Group {
+
+private:
+	Models _model;
+	XMLElement* xml_elem;
 
 public:
-	Models getModel() {
-		return model;
-	}
+	Group(XMLElement* xml_elem);
+
+	void _init();
+
+	void _draw();
+
+	void add_models();
 };

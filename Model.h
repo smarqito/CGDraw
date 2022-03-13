@@ -4,31 +4,29 @@
 #include <string.h>
 #include "cartesian/cartesian.h"
 
-class Model
-{
+class Model {
+
+private:
+	std::vector<t_points> points;
 	GLenum type;
-	t_points points;
-	char* filename;
+	XMLElement xml_elem;
+	texture texture;
+	color color;
+
 public:
-	Model(GLenum type, int size, const char* filename) {
-		this->type = type;
-		this->filename = strdup(filename);
-		points = t_points(size);
-	}
+	Model(GLenum type, int size, XMLElement* xml_elem);
 
-	GLenum getType() {
-		return type;
-	}
+	void _init();
 
-	bool addPoint(double x, double y, double z) {
-		return points.add_point(x, y, z);
-	}
+	GLenum getType();
 
-	point getNextPoint() {
-		return points.get_point();
-	}
+	string getFilename();
 
-	int size() {
-		return points.size();
-	}
+	int size();
+
+	bool add_point(double x, double y, double z);
+
+	point get_next_point();
+
+	void _draw();
 };

@@ -8,39 +8,25 @@
 
 using namespace std;
 
-class World
-{
-	//Camara settings --
+class World {
+
+private:
 	Camera camera;
-	// lights settings
-	Lights lights;
-	// group --
-	/// transform
-	/// models }}}
-	//// model }}}
-	///// file * points }}}
-	///// texture
-	///// color
-	////// diffuse | ambient | specular | emissive | shininess
 	Groups groups;
+	Lights lights;
+	string path;
+
 public:
-	World();
+	World(string xmlpath);
 
-	void setCamera(float xPosition, float yPosition, float zPosition, float xLookAt, float yLookAt, float zLookAt, float xUp, float yUp, float zUp, float fov, float near, float far) {
-		this->camera = Camera(xPosition, yPosition, zPosition, xLookAt, yLookAt, zLookAt, xUp, yUp, zUp, fov, near, far);
-	}
-	Camera getCamera() {
-		return camera;
-	}
-	Groups getGroups() {
-		return groups;
-	}
+	void _init();
 
-	// lights
+	void set_camera_pos(point pos);
 
-	//groups
-	void addGroup(); // transform | models | transforms + models
+	void set_camera_lookat(point lookat);
 
-	bool addModel(GLenum type, int size, char* path);
+	void set_camera_up(point up);
 
+	void set_camera_persp(perspective perp);
 };
+
