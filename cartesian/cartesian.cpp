@@ -1,4 +1,6 @@
-﻿/*
+﻿#include "cartesian.h"
+#include "cartesian.h"
+/*
 * Author: Group
 * UC : Computacao Grafica
 */
@@ -13,11 +15,25 @@
 //	points = (point*)malloc(sizeof(point) * size);
 //}
 
+
+
+t_points::t_points(int size) {
+	_pos = 0;
+	_total = 0;
+	_points = new point[size];
+	_size = size;
+}
+
+int t_points::size()
+{
+	return _size;
+}
+
 bool t_points::add_point(double x, double y, double z) {
-	if (total == size()) {
+	if (_total == size()) {
 		return false;
 	}
-	point *p = (& points[total++]);
+	point *p = (& _points[_total++]);
 	p->x = x;
 	p->y = y;
 	p->z = z;
@@ -29,12 +45,12 @@ bool t_points::add_point(point p) {
 }
 
 point t_points::get_point() {
-	return get_point(this->pos++);
+	return get_point(this->_pos++);
 }
 
 point t_points::get_point(int pos) {
-	if (pos < total) {
-		return points[pos];
+	if (pos < _total) {
+		return _points[pos];
 	}
 	throw 0x1;
 }
