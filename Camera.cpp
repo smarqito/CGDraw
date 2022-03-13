@@ -15,21 +15,21 @@ Camera::Camera(point pos, point lookat, point up, perspective perspective) {
 
 void Camera::_init() {
 	XMLElement* pPosition = _xmlElement->FirstChildElement("position");
-	_position.x = pPosition->FindAttribute("x")->FloatValue();
-	_position.y = pPosition->FindAttribute("y")->FloatValue();
-	_position.z = pPosition->FindAttribute("z")->FloatValue();
+	_position.x = pPosition->FindAttribute("x")->DoubleValue();
+	_position.y = pPosition->FindAttribute("y")->DoubleValue();
+	_position.z = pPosition->FindAttribute("z")->DoubleValue();
 	XMLElement* pLookAt = _xmlElement->FirstChildElement("lookAt");
-	_lookat.x = pLookAt->FindAttribute("x")->FloatValue();
-	_lookat.y = pLookAt->FindAttribute("y")->FloatValue();
-	_lookat.z = pLookAt->FindAttribute("z")->FloatValue();
+	_lookat.x = pLookAt->FindAttribute("x")->DoubleValue();
+	_lookat.y = pLookAt->FindAttribute("y")->DoubleValue();
+	_lookat.z = pLookAt->FindAttribute("z")->DoubleValue();
 	XMLElement* pUp = _xmlElement->FirstChildElement("up");
-	_up.x = pUp->FindAttribute("x")->FloatValue();
-	_up.y = pUp->FindAttribute("y")->FloatValue();
-	_up.z = pUp->FindAttribute("z")->FloatValue();
+	_up.x = pUp->FindAttribute("x")->DoubleValue();
+	_up.y = pUp->FindAttribute("y")->DoubleValue();
+	_up.z = pUp->FindAttribute("z")->DoubleValue();
 	XMLElement* pProjection = _xmlElement->FirstChildElement("projection");
-	_projection.fov = pProjection->FindAttribute("fov")->FloatValue();
-	_projection.near = pProjection->FindAttribute("near")->FloatValue();
-	_projection.far = pProjection->FindAttribute("far")->FloatValue();
+	_projection.fov = pProjection->FindAttribute("fov")->DoubleValue();
+	_projection.near = pProjection->FindAttribute("near")->DoubleValue();
+	_projection.far = pProjection->FindAttribute("far")->DoubleValue();
 }
 
 void Camera::set_camera(point pos, point lookat, point up, perspective perspective) {
