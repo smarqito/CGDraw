@@ -38,6 +38,7 @@ public:
 	bool add_point(point p);
 	point get_point();
 	point get_point(int pos);
+	void _draw();
 };
 
 /*

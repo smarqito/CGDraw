@@ -21,6 +21,10 @@ public:
 
 	void _init();
 
+	void _draw() {
+		groups._draw();
+	}
+
 	void set_camera_pos(point pos);
 
 	void set_camera_lookat(point lookat);

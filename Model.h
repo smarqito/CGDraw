@@ -4,19 +4,32 @@
 #include <string.h>
 #include "cartesian/cartesian.h"
 
+using namespace std;
+
 class Model {
 
 private:
-	std::vector<t_points> points;
+	t_points points;
 	GLenum type;
-	XMLElement xml_elem;
-	texture texture;
-	color color;
+	XMLElement* xml_elem;
+	//texture texture;
+	//color color;
 
 public:
-	Model(GLenum type, int size, XMLElement* xml_elem);
+	Model(int size, XMLElement* xml_elem);
 
-	void _init();
+	void _init() {
+		this->type = xml_elem->FindAttribute("type")->IntValue();
+		int size = xml_elem->FindAttribute("size")->IntValue();
+		//Model m = Model(type, size, path);
+		XMLElement* pPoint = xml_elem->FirstChildElement("point");
+		for (int i = 0; pPoint != NULL; i++) {
+			float x = pPoint->FindAttribute("x")->FloatValue();
+			float y = pPoint->FindAttribute("y")->FloatValue();
+			float z = pPoint->FindAttribute("z")->FloatValue();
+			pPoint = pPoint->NextSiblingElement();
+		}
+	}
 
 	GLenum getType();
 
@@ -28,5 +41,8 @@ public:
 
 	point get_next_point();
 
-	void _draw();
+	void _draw() {
+		glBegin(this->type);
+		this->points._draw();
+	}
 };

@@ -3,7 +3,7 @@
 class Groups {
 
 private:
-	std::vector<Group> _groups;
+	vector<Group> _groups;
 	XMLElement* xml_elem;
 
 public:
@@ -11,5 +11,9 @@ public:
 
 	void _init();
 
-	void _draw();
+	void _draw() {
+		for (int i = 0; i < _groups.size(); i++) {
+			_groups[i]._draw();
+		}
+	}
 };

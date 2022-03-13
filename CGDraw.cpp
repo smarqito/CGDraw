@@ -252,7 +252,7 @@ void draw() {
 	}*/
 }
 
-Model read3D(const char* path) {
+/*Model read3D(const char* path) {
 	XMLDocument doc;
 	doc.LoadFile(path);
 	XMLElement* pRootElement = doc.FirstChild()->ToElement();
@@ -264,11 +264,11 @@ Model read3D(const char* path) {
 		float x = pPoint->FindAttribute("x")->FloatValue();
 		float y = pPoint->FindAttribute("y")->FloatValue();
 		float z = pPoint->FindAttribute("z")->FloatValue();
-		m.addPoint(x, y, z);
+		//m.addPoint(x, y, z);
 		pPoint = pPoint->NextSiblingElement();
 	}
 	return m;
-}
+}*/
 
 
 
@@ -396,7 +396,7 @@ void readCamaraSettings(XMLElement* pCamara) {
 	float fov = pProjection->FindAttribute("fov")->FloatValue();
 	float near = pProjection->FindAttribute("near")->FloatValue();
 	float far = pProjection->FindAttribute("far")->FloatValue();
-	world.setCamera(xPosition, yPosition, zPosition, xLookAt, yLookAt, zLookAt, xUp, yUp, zUp, fov, near, far);
+	//world.setCamera(xPosition, yPosition, zPosition, xLookAt, yLookAt, zLookAt, xUp, yUp, zUp, fov, near, far);
 }
 
 void readGroup(XMLElement* pGroup){
@@ -408,7 +408,7 @@ void readGroup(XMLElement* pGroup){
 			const char* path = "/home/smarqito/test_files_phase_1/";
 			strcpy(fullPath, path);
 			strcat(fullPath, file);
-			Model m = read3D(fullPath);
+			//Model m = read3D(fullPath);
 		}
 }
 
