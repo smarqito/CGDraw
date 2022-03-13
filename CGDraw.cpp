@@ -67,7 +67,6 @@ void drawAxis() {
 	glVertex3f(0.0f, 0.0f, 0.0f);
 	glVertex3f(1000.0f, 0.0f, 0.0f);
 
-
 	// Y Axis in Green
 	glColor3f(0.0f, .3f, 0.0f);
 	glVertex3f(0.0f,
@@ -98,17 +97,14 @@ void renderScene(void) {
 
 	//define camera config
 	//world._draw_lookAt();
-	float px = radius * cos(beta) * sin(alpha);
-	float py = radius * sin(beta);
-	float pz = radius * cos(beta) * cos(alpha);
-	float dx = radius2 * cos(beta2) * sin(alpha2);
-	float dy = radius2 * sin(beta2);
-	float dz = radius2 * cos(beta2) * cos(alpha2);
+	//float px = radius * cos(beta) * sin(alpha);
+	//float py = radius * sin(beta);
+	//float pz = radius * cos(beta) * cos(alpha);
+	//float dx = radius2 * cos(beta2) * sin(alpha2);
+	//float dy = radius2 * sin(beta2);
+	//float dz = radius2 * cos(beta2) * cos(alpha2);
 
-	/*gluLookAt(3.f, 2.f, 1.f,
-		0, 0, 0,
-		0.0f, 1.0f, 0.0f)*/;
-	world.set_camera_pos(px, py, pz);
+	//world.set_camera_pos(px, py, pz);
 	world._draw_lookAt();
 
 	// draw world loaded

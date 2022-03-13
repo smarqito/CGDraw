@@ -38,23 +38,23 @@ t_points create_box(double units, int divisions) {
 		for (int j = 0; j < divisions; j++) {
 
 			//face inferior
-			p_points.add_point(x, 0, z);
-			p_points.add_point(x - step, 0, z);
-			p_points.add_point(x, 0, z - step);
+			p_points.add_point(x, -units/2, z);
+			p_points.add_point(x - step, -units/2, z);
+			p_points.add_point(x, -units/2, z - step);
 
-			p_points.add_point(x - step, 0, z);
-			p_points.add_point(x - step, 0, z - step);
-			p_points.add_point(x, 0, z - step);
+			p_points.add_point(x - step, -units/2, z);
+			p_points.add_point(x - step, -units/2, z - step);
+			p_points.add_point(x, -units/2, z - step);
 
 			//face superior
 
-			p_points.add_point(x, units, z);
-			p_points.add_point(x, units, z - step);
-			p_points.add_point(x - step, units, z);
+			p_points.add_point(x, units/2, z);
+			p_points.add_point(x, units/2, z - step);
+			p_points.add_point(x - step, units/2, z);
 
-			p_points.add_point(x - step, units, z);
-			p_points.add_point(x, units, z - step);
-			p_points.add_point(x - step, units, z - step);
+			p_points.add_point(x - step, units/2, z);
+			p_points.add_point(x, units/2, z - step);
+			p_points.add_point(x - step, units/2, z - step);
 
 			z -= step;
 		}
@@ -63,58 +63,58 @@ t_points create_box(double units, int divisions) {
 	}
 
 	x = units / 2;
-	double y = 0;
+	double y = units/2;
 	for (int i = 0; i < divisions; i++) {
 		for (int j = 0; j < divisions; j++) {
 
 			//face lateral X positivo
 			p_points.add_point(x, y, z);
+			p_points.add_point(x, y - step, z);
 			p_points.add_point(x, y, z - step);
-			p_points.add_point(x, y + step, z);
 
-			p_points.add_point(x, y + step, z);
+			p_points.add_point(x, y - step, z);
+			p_points.add_point(x, y - step, z - step);
 			p_points.add_point(x, y, z - step);
-			p_points.add_point(x, y + step, z - step);
 
 			//face lateral X negativo
-			p_points.add_point(-x, y + step, z);
-			p_points.add_point(-x, y, z - step);
+			p_points.add_point(-x, y - step, z);
 			p_points.add_point(-x, y, z);
-
-			p_points.add_point(-x, y + step, z - step);
 			p_points.add_point(-x, y, z - step);
-			p_points.add_point(-x, y + step, z);
 
-			y += step;
+			p_points.add_point(-x, y - step, z - step);
+			p_points.add_point(-x, y - step, z);
+			p_points.add_point(-x, y, z - step);
+
+			y -= step;
 		}
 		z -= step;
-		y = 0; //volta ao valor inicial
+		y = units/2; //volta ao valor inicial
 	}
 	z = units / 2;
-	y = 0;
+	y = units/2;
 	for (int i = 0; i < divisions; i++) {
 		for (int j = 0; j < divisions; j++) {
 			//face lateral Y positivo
 			p_points.add_point(x, y, z);
-			p_points.add_point(x, y + step, z);
 			p_points.add_point(x - step, y, z);
+			p_points.add_point(x, y - step, z);
 
-			p_points.add_point(x, y + step, z);
-			p_points.add_point(x - step, y + step, z);
+			p_points.add_point(x, y - step, z);
 			p_points.add_point(x - step, y, z);
+			p_points.add_point(x - step, y - step, z);
 
 			//face lateral Y negativo
 			p_points.add_point(x, y, -z);
+			p_points.add_point(x, y - step, -z);
 			p_points.add_point(x - step, y, -z);
-			p_points.add_point(x, y + step, -z);
 
-			p_points.add_point(x, y + step, -z);
+			p_points.add_point(x, y - step, -z);
+			p_points.add_point(x - step, y - step, -z);
 			p_points.add_point(x - step, y, -z);
-			p_points.add_point(x - step, y + step, -z);
-			y += step;
+			y -= step;
 		}
 		x -= step;
-		y = 0; //volta ao valor inicial
+		y = units/2; //volta ao valor inicial
 	}
 
 	return p_points;
@@ -137,13 +137,25 @@ t_points create_sphere(int radius, int slices, int stacks) {
 			point c = polartocart(radius, alpha + ssl, beta - sst);
 			point d = polartocart(radius, alpha + ssl, beta);
 
+			if (i == stacks - 1) {
+				p_points.add_point(a);
+				p_points.add_point(c);
+				p_points.add_point(d);
+			}
+			else if (i == 0) {
+				p_points.add_point(a);
+				p_points.add_point(b);
+				p_points.add_point(c);
+			}
+			else {
 			p_points.add_point(a);
 			p_points.add_point(b);
 			p_points.add_point(c);
-
 			p_points.add_point(a);
 			p_points.add_point(c);
 			p_points.add_point(d);
+
+			}
 
 			alpha += ssl;
 		}
@@ -168,7 +180,7 @@ t_points create_cone(double radius, double height, int slices, int stacks) {
 	for (int i = 0; i < stacks; i++)
 	{
 		alpha = 0;
-		for (int i = 0; i < slices; i++)
+		for (int j = 0; j < slices; j++)
 		{
 			point a = polartocart(r, alpha, beta);
 			point b = polartocart(r + rstep, alpha, beta);

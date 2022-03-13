@@ -20,7 +20,7 @@ void write_point(XMLDocument* xml, point point) {
 */
 void write_xml(const char* filepath, GLenum type, t_points all_points) {
 	XMLDocument xml;
-	int size = all_points.size();
+	int size = all_points.total();
 
 	XMLElement* pRoot = xml.NewElement("model");
 	xml.InsertFirstChild(pRoot);

@@ -1,5 +1,6 @@
 #include "cartesian.h"
 #include "cartesian.h"
+#include "cartesian.h"
 
 /*
 * Author: Group
@@ -30,6 +31,11 @@ t_points::t_points(int size) {
 int t_points::size()
 {
 	return _size;
+}
+
+int t_points::total()
+{
+	return _total;
 }
 
 bool t_points::add_point(double x, double y, double z) {
@@ -67,6 +73,14 @@ point polartocart(float r, float alpha, float beta) {
 	return point;
 }
 
+point cart_to_polar(double x, double y, double z) {
+	point p;
+	p.x = sqrt(x * x + y * y + z * z); // radius
+	p.y = asin(y / p.x);
+	p.z = asin(x / sqrt(x * x + y * y)) * (y < 0 ? -1 : 1); 
+	return p;
+}
+
 void t_points::_draw() {
 	point p;
 	for (int i = 0; i < this->size(); i++) {
@@ -79,3 +93,4 @@ point* t_points::get_points_ptr()
 {
 	return _points;
 }
+

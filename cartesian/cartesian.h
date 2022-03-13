@@ -32,6 +32,7 @@ public:
 	t_points();
 	t_points(int size);
 	int size();
+	int total();
 	bool add_point(double x, double y, double z);
 	bool add_point(point p);
 	point get_point();
