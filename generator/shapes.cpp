@@ -200,7 +200,7 @@ t_points create_cylinder(int radius, int height, int slices, int stacks)
 		}
 		alpha += ssl;
 	}
-	return t_points();
+	return p_points;
 }
 
 t_points create_cone(double radius, double height, int slices, int stacks) {
