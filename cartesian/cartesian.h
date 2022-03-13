@@ -11,7 +11,7 @@ struct point {
 };
 
 struct perspective {
-	double fox, near, far;
+	double fov, near, far;
 };
 
 /*
@@ -24,20 +24,13 @@ struct perspective {
 *	total  -> total de elementos que existem até ao momento
 */
 class t_points {
-	point* points;
-	int pos;
-	int total;
+	point* _points;
+	int _pos;
+	int _total;
 	int _size;
 public:
-	t_points(int size) {
-		pos = 0;
-		total = 0;
-		points = new point[size];
-		_size = size;
-	}
-	int size() {
-		return _size;
-	}
+	t_points(int size);
+	int size();
 	bool add_point(double x, double y, double z);
 	bool add_point(point p);
 	point get_point();
