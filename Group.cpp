@@ -1,21 +1,23 @@
 #include "Group.h"
 
 Group::Group(XMLElement* xml_elem) {
-	// TODO - implement Group::Group
-	throw "Not yet implemented";
+	_xml_elem = xml_elem;
+	_init();
 }
 
 void Group::_init() {
-	// TODO - implement Group::_init
-	throw "Not yet implemented";
+	add_models();
 }
 
 void Group::_draw() {
-	// TODO - implement Group::_draw
-	throw "Not yet implemented";
+	_model._draw();
 }
 
 void Group::add_models() {
-	// TODO - implement Group::add_models
-	throw "Not yet implemented";
+	XMLElement* pModels = _xml_elem->FirstChildElement("models");
+	if (pModels == nullptr) {
+		cout << "Invalid Models XML Element";
+		throw 0x1;
+	}
+	_model = Models(pModels);
 }
