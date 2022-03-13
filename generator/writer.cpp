@@ -102,6 +102,20 @@ int main(int argc, const char** argv) {
 		write_xml(argv[4], GL_TRIANGLES, points);
 
 	}
+	else if (strcmp(argv[1], "cylinder") == 0) {
+		if (argc < 6) {
+			cout << "Insufficient Args.Example: ./generator cylinder radius height slices cylinder.3d";
+		}
+
+		int radius = std::atoi(argv[2]);
+		int height = std::atoi(argv[3]);
+		int slices = std::atoi(argv[4]);
+
+		points = create_cylinder(radius, height, slices);
+
+		write_xml(argv[5], GL_TRIANGLES, points);
+
+	}
 	else {
 		cout << "Geometric Figures: sphere | cone | box | plane";
 	}
