@@ -203,12 +203,12 @@ t_points create_cone(double radius, double height, int slices, int stacks) {
 	return p_points;
 }
 
-t_points create_cylinder(float radius, float height, int slices) {
+t_points create_cylinder(double radius, double height, int slices) {
 	t_points p_points(2*6*slices);
 
-	float step = (2 * M_PI) / slices;
-	float alpha = 0;
-	float beta = 0;
+	double step = (2 * M_PI) / slices;
+	double alpha = 0;
+	double beta = 0;
 	
 	int x = 0, y = 1, z = 0;
 	for (int i = 0; i < slices; i++)
