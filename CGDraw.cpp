@@ -47,8 +47,8 @@ void changeSize(int w, int h) {
 	glViewport(0, 0, w, h);
 
 	// Set perspective
-	//world._draw_projection(ratio);
-	gluPerspective(45.0f, ratio, 1.0f, 1000.0f);
+	world._draw_projection(ratio);
+	//gluPerspective(45.0f, ratio, 1.0f, 1000.0f);
 
 	// return to the model view matrix mode
 	glMatrixMode(GL_MODELVIEW);
