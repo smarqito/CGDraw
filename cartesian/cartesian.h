@@ -29,6 +29,7 @@ class t_points {
 	int total;
 	int _size;
 public:
+	t_points();
 	t_points(int size) {
 		pos = 0;
 		total = 0;

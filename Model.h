@@ -3,37 +3,29 @@
 #include "generator/shapes.h"
 #include <string.h>
 #include "cartesian/cartesian.h"
+#include <tinyxml2.h>
 
 using namespace std;
+using namespace tinyxml2;
 
 class Model {
 
 private:
-	t_points points;
-	GLenum type;
-	XMLElement* xml_elem;
-	//texture texture;
-	//color color;
-
+	t_points _points;
+	GLenum _type;
+	XMLElement* _xml_model;
+	char* _model_path;
+	//texture texture; // phase not 1
+	//color color; // phase not 1
+	void read_points();
 public:
-	Model(int size, XMLElement* xml_elem);
+	Model(XMLElement* xml_elem);
 
-	void _init() {
-		this->type = xml_elem->FindAttribute("type")->IntValue();
-		int size = xml_elem->FindAttribute("size")->IntValue();
-		//Model m = Model(type, size, path);
-		XMLElement* pPoint = xml_elem->FirstChildElement("point");
-		for (int i = 0; pPoint != NULL; i++) {
-			float x = pPoint->FindAttribute("x")->FloatValue();
-			float y = pPoint->FindAttribute("y")->FloatValue();
-			float z = pPoint->FindAttribute("z")->FloatValue();
-			pPoint = pPoint->NextSiblingElement();
-		}
-	}
+	void _init();
 
 	GLenum getType();
 
-	string getFilename();
+	char* getFilename();
 
 	int size();
 
@@ -41,8 +33,5 @@ public:
 
 	point get_next_point();
 
-	void _draw() {
-		glBegin(this->type);
-		this->points._draw();
-	}
+	void _draw();
 };
