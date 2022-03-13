@@ -13,7 +13,9 @@ public:
 
 	void _init();
 
-	void _draw();
+	void _draw() {
+		_model._draw();
+	}
 
 	void add_models();
 };

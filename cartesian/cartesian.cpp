@@ -4,6 +4,7 @@
 */
 #include "cartesian.h"
 #include <math.h>
+#include <GL/glut.h>
 
 //t_points::t_points(int size) {
 //	pos = 0;
@@ -45,4 +46,12 @@ point polartocart(float r, float alpha, float beta) {
 	point.z = r * cos(beta) * cos(alpha);
 
 	return point;
+}
+
+void t_points::_draw() {
+	point p;
+	for (int i = 0; i < this->size(); i++) {
+		p = get_point(i);
+		glVertex3d(p.x, p.y, p.z);
+	}
 }

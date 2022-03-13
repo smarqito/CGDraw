@@ -1,13 +1,13 @@
 #pragma once
-#include <list>
 #include "Model.h"
+#include <vector>
 
 using namespace std;
 
 class Models {
 
 private:
-	std::vector<Model> models;
+	vector<Model> models;
 	XMLElement* xml_elem;
 
 public:
@@ -19,5 +19,9 @@ public:
 
 	Model get_model(int i);
 
-	void _draw();
+	void _draw(){
+		for (int i = 0; i < models.size(); i++) {
+			models[i]._draw();
+		}
+	}
 };
