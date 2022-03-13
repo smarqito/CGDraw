@@ -165,6 +165,44 @@ t_points create_sphere(int radius, int slices, int stacks) {
 	return p_points;
 }
 
+t_points create_cylinder(int radius, int height, int slices, int stacks)
+{
+	t_points p_points(6 * slices + 6 * slices * stacks);
+	float ssl = 2 * M_PI / slices;
+	float sst = height / stacks;
+	float alpha = 0;
+	float beta = 0;
+	float y;
+	for (int i = 0; i < slices; i++) {
+		float x1 = radius * cos(beta) * sin(alpha);
+		float z1 = radius * cos(beta) * cos(alpha);
+		float x2 = radius * cos(beta) * sin(alpha + ssl);
+		float z2 = radius * cos(beta) * cos(alpha + ssl);
+		//Face inferior
+		p_points.add_point(x1, -height / 2, z1);
+		p_points.add_point(0, -height / 2, 0);
+		p_points.add_point(x2, -height / 2, z2);
+		//Face superior
+		p_points.add_point(0, height / 2, 0);
+		p_points.add_point(x1, height / 2, z1);
+		p_points.add_point(x2, height / 2, z2);
+		//Lados
+		y = -height / 2;
+		for (int j = 0; j < stacks; j++) {
+			p_points.add_point(x1, y + sst, z1);
+			p_points.add_point(x1, y, z1);
+			p_points.add_point(x2, y, z2);
+
+			p_points.add_point(x2, y + sst, z2);
+			p_points.add_point(x1, y + sst, z1);
+			p_points.add_point(x2, y, z2);
+			y += sst;
+		}
+		alpha += ssl;
+	}
+	return t_points();
+}
+
 t_points create_cone(double radius, double height, int slices, int stacks) {
 	t_points p_points(6 * slices * stacks + 3 * slices);
 
