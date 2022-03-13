@@ -63,7 +63,7 @@ void changeSize(int w, int h) {
 	glViewport(0, 0, w, h);
 
 	// Set perspective
-	gluPerspective(fov, ratio, near, far);
+	world._draw_projection(ratio);
 
 	// return to the model view matrix mode
 	glMatrixMode(GL_MODELVIEW);
@@ -286,11 +286,9 @@ void renderScene(void) {
 	float dy = radius2 * sin(beta2);
 	float dz = radius2 * cos(beta2) * cos(alpha2);
 
-	gluLookAt(xPosition, yPosition, zPosition,
-		xLookAt, yLookAt, zLookAt,
-		xUp, yUp, zUp);
+	world._draw_lookAt();
 	
-	draw();
+	world._draw();
 
 	// End of frame
 	glutSwapBuffers();
