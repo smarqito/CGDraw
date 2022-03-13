@@ -10,6 +10,7 @@
 #include <tuple>
 #include <tinyxml2.h>
 #include <string>
+#include <iterator>
 #include "generator/shapes.h"
 #include "World.h"
 
@@ -25,7 +26,6 @@ float radius = 10;
 float radius2 = 0;
 float step = 0.1;
 
-//Camara position
 float xPosition;
 float yPosition;
 float zPosition;
@@ -38,6 +38,9 @@ float zUp;
 float fov;
 float near;
 float far;
+
+//Inicializar classe world
+World world = World();
 
 
 
@@ -227,25 +230,35 @@ void drawAxis() {
 }
 
 void draw() {
-	glBegin(type);
-	tuple<float, float, float> t;
-	for (int i = 0; i < points->size; i++) {
-		 t = points->points[i];
-		 glVertex3d(get<0>(t), get<1>(t), get<2>(t));
-	}
-	glEnd();
+	/*Groups groups = world.getGroups();
+	Group g = groups.getGroup();
+	list<Models> list = g.getModel();
+	auto it = list.begin();
+		Models models = *it;
+		list<Model> model_list = models.getModels();
+		auto model_it = model_list.begin();
+		for (int i = 0; i < model_list.size(); i++) {
+			advance(model_it, i);
+			Model m = *model_it;
+			glBegin(m.getType());
+			point p;
+			for (int j = 0; j < m.size(); j++) {
+				p = m.getNextPoint();
+				glVertex3d(p.x, p.y, p.z);
+			}
+			glEnd();
+
+		}
+	}*/
 }
 
-void read3D(const char* path) {
+Model read3D(const char* path) {
 	XMLDocument doc;
 	doc.LoadFile(path);
 	XMLElement* pRootElement = doc.FirstChild()->ToElement();
-	type = pRootElement->FindAttribute("type")->IntValue();
+	GLenum type = pRootElement->FindAttribute("type")->IntValue();
 	int size = pRootElement->FindAttribute("size")->IntValue();
-	//points->points = (tuple<float, float, float>*) malloc(sizeof(tuple<float, float, float>) * size);
-	//points->pos = 0;
-	//points->size = size;
-	
+	Model m = Model(type, size, path);
 	XMLElement* pPoint = pRootElement->FirstChildElement("point");
 	for (int i = 0; pPoint != NULL; i++) {
 		float x = pPoint->FindAttribute("x")->FloatValue();
@@ -254,6 +267,7 @@ void read3D(const char* path) {
 		m.addPoint(x, y, z);
 		pPoint = pPoint->NextSiblingElement();
 	}
+	return m;
 }
 
 
@@ -367,21 +381,22 @@ void handleMouseMotion(int x, int y) {
 
 void readCamaraSettings(XMLElement* pCamara) {
 	XMLElement* pPosition = pCamara->FirstChildElement("position");
-	xPosition = pPosition->FindAttribute("x")->FloatValue();
-	yPosition = pPosition->FindAttribute("y")->FloatValue();
-	zPosition = pPosition->FindAttribute("z")->FloatValue();
+	float xPosition = pPosition->FindAttribute("x")->FloatValue();
+	float yPosition = pPosition->FindAttribute("y")->FloatValue();
+	float zPosition = pPosition->FindAttribute("z")->FloatValue();
 	XMLElement* pLookAt = pCamara->FirstChildElement("lookAt");
-	xLookAt = pLookAt->FindAttribute("x")->FloatValue();
-	yLookAt = pLookAt->FindAttribute("y")->FloatValue();
-	zLookAt = pLookAt->FindAttribute("z")->FloatValue();
+	float xLookAt = pLookAt->FindAttribute("x")->FloatValue();
+	float yLookAt = pLookAt->FindAttribute("y")->FloatValue();
+	float zLookAt = pLookAt->FindAttribute("z")->FloatValue();
 	XMLElement* pUp = pCamara->FirstChildElement("up");
-	xUp = pUp->FindAttribute("x")->FloatValue();
-	yUp = pUp->FindAttribute("y")->FloatValue();
-	zUp = pUp->FindAttribute("z")->FloatValue();
+	float xUp = pUp->FindAttribute("x")->FloatValue();
+	float yUp = pUp->FindAttribute("y")->FloatValue();
+	float zUp = pUp->FindAttribute("z")->FloatValue();
 	XMLElement* pProjection = pCamara->FirstChildElement("projection");
-	fov = pProjection->FindAttribute("fov")->FloatValue();
-	near = pProjection->FindAttribute("near")->FloatValue();
-	far = pProjection->FindAttribute("far")->FloatValue();
+	float fov = pProjection->FindAttribute("fov")->FloatValue();
+	float near = pProjection->FindAttribute("near")->FloatValue();
+	float far = pProjection->FindAttribute("far")->FloatValue();
+	world.setCamera(xPosition, yPosition, zPosition, xLookAt, yLookAt, zLookAt, xUp, yUp, zUp, fov, near, far);
 }
 
 void readGroup(XMLElement* pGroup){
@@ -393,7 +408,7 @@ void readGroup(XMLElement* pGroup){
 			const char* path = "/home/smarqito/test_files_phase_1/";
 			strcpy(fullPath, path);
 			strcat(fullPath, file);
-			read3D(fullPath);
+			Model m = read3D(fullPath);
 		}
 }
 
