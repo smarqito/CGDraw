@@ -1,4 +1,7 @@
 #pragma once
+#ifndef MODELS_H
+#define MODELS_H
+
 #include "Model.h"
 #include <vector>
 #include <tinyxml2.h>
@@ -14,6 +17,7 @@ private:
 	XMLElement* _xml_elem;
 
 public:
+	Models();
 	Models(XMLElement* xml_elem);
 
 	void _init();
@@ -22,3 +26,5 @@ public:
 
 	void _draw();
 };
+#endif // !MODELS_H
+

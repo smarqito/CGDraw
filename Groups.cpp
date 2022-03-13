@@ -1,5 +1,9 @@
 #include "Groups.h"
 
+Groups::Groups()
+{
+}
+
 Groups::Groups(XMLElement* xml_group) {
 	_xml_group = xml_group;
 	_init();

@@ -29,6 +29,7 @@ class t_points {
 	int _total;
 	int _size;
 public:
+	t_points();
 	t_points(int size);
 	int size();
 	bool add_point(double x, double y, double z);
@@ -36,6 +37,7 @@ public:
 	point get_point();
 	point get_point(int pos);
 	void _draw();
+	point* get_points_ptr();
 };
 
 /*

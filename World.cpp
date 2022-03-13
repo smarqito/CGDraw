@@ -1,14 +1,26 @@
 #include "World.h"
+#include <regex>
+#include <string>
+#include "Common.h"
+using namespace std;
+
+string file_path;
+
+
+World::World()
+{
+}
 
 World::World(const char* xmlpath) {
-	path = strdup(xmlpath);
+	_path = strdup(xmlpath);
 	_init();
 
 }
 
 void World::_init() {
 	XMLDocument doc;
-	doc.LoadFile(path);
+	doc.LoadFile(_path);
+	set_root_path();
 	XMLNode* pRootElement = doc.FirstChild();
 
 	if (pRootElement == nullptr) {
@@ -34,8 +46,18 @@ void World::_init() {
 
 void World::_draw()
 {
-	_camera._draw();
 	_groups._draw();
+}
+
+string World::set_root_path()
+{
+	regex regexp("(.*/)?.*.xml");
+	smatch m;
+	string t = string(_path);
+	regex_search(t, m, regexp);
+	cout << m[1];
+	file_path = m[1];
+	return m[1];
 }
 
 void World::_draw_projection(double ratio) {
@@ -49,9 +71,15 @@ void World::_draw_lookAt() {
 void World::set_camera_pos(point pos) {
 	_camera.set_camera_pos(pos);
 }
+void World::set_camera_pos(double x, double y, double z) {
+	_camera.set_camera_pos(x, y, z);
+}
 
 void World::set_camera_lookat(point lookat) {
 	_camera.set_camera_lookat(lookat);
+}
+void World::set_camera_lookat(double x, double y, double z) {
+	_camera.set_camera_lookat(x, y, z);
 }
 
 void World::set_camera_up(point up) {

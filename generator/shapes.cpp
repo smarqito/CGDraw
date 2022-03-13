@@ -125,16 +125,16 @@ t_points create_sphere(int radius, int slices, int stacks) {
 
 	double sst = M_PI / stacks;
 	double ssl = 2 * M_PI / slices;
-	double beta = -M_PI / 2;
+	double beta = M_PI / 2;
 	double alpha = 0;
 
 	for (int i = 0; i < stacks; i++)
 	{
-		for (int i = 0; i < slices; i++)
+		for (int j = 0; j < slices; j++)
 		{
 			point a = polartocart(radius, alpha, beta);
-			point b = polartocart(radius, alpha, beta + sst);
-			point c = polartocart(radius, alpha + ssl, beta + sst);
+			point b = polartocart(radius, alpha, beta - sst);
+			point c = polartocart(radius, alpha + ssl, beta - sst);
 			point d = polartocart(radius, alpha + ssl, beta);
 
 			p_points.add_point(a);
@@ -147,7 +147,7 @@ t_points create_sphere(int radius, int slices, int stacks) {
 
 			alpha += ssl;
 		}
-		beta += sst;
+		beta -= sst;
 		alpha = 0;
 	}
 	return p_points;
@@ -191,8 +191,8 @@ t_points create_cone(double radius, double height, int slices, int stacks) {
 	beta = 0;
 	for (int i = 0; i < slices; i++)
 	{
-		point b = polartocart(r, alpha, beta);
-		point c = polartocart(r, alpha-step, beta);
+		point b = polartocart(radius, alpha, beta);
+		point c = polartocart(radius, alpha-step, beta);
 		p_points.add_point(x, y, z);
 		p_points.add_point(x + b.x, y + b.y, z + b.z);
 		p_points.add_point(x + c.x, y + c.y, z + c.z);

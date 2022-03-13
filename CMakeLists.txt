@@ -5,11 +5,10 @@ PROJECT(CGDraw)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_executable(${PROJECT_NAME} CGDraw.cpp "Model.h" "Model.cpp"  "World.h" "World.cpp" "Models.h" "Models.cpp" "Group.h" "Group.cpp" "Camera.h" "Camera.cpp" "Lights.h" "Lights.cpp" "Groups.h" "Groups.cpp")
+add_executable(${PROJECT_NAME} CGDraw.cpp "Model.h" "Model.cpp"  "World.h" "World.cpp" "Models.h" "Models.cpp" "Group.h" "Group.cpp" "Camera.h" "Camera.cpp" "Lights.h" "Lights.cpp" "Groups.h" "Groups.cpp" "CGDraw.h" "Common.h")
 
 target_link_libraries(CGDraw "cartesian")
 
-target_link_libraries(CGDraw "generator")
 add_executable(generator generator/writer.cpp "generator/shapes.cpp")
 
 target_link_libraries(generator "cartesian")

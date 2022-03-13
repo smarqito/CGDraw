@@ -1,4 +1,5 @@
 #include "cartesian.h"
+#include "cartesian.h"
 
 /*
 * Author: Group
@@ -17,6 +18,7 @@
 
 t_points::t_points()
 {
+}
 
 t_points::t_points(int size) {
 	_pos = 0;
@@ -71,4 +73,9 @@ void t_points::_draw() {
 		p = get_point(i);
 		//glVertex3d(p.x, p.y, p.z);
 	}
+}
+
+point* t_points::get_points_ptr()
+{
+	return _points;
 }

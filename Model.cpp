@@ -1,5 +1,6 @@
 #include "Model.h"
-
+#include "CGDraw.h"
+#include "Common.h"
 
 Model::Model(XMLElement* xml_model)
 {
@@ -8,14 +9,15 @@ Model::Model(XMLElement* xml_model)
 }
 
 void Model::_init() {
-	_model_path = (char*)_xml_model->FindAttribute("file")->Value();
+	string t = string(file_path);
+	_model_path = t + string(_xml_model->FindAttribute("file")->Value());
 	read_points();
 }
 
 void Model::read_points()
 {
 	XMLDocument doc;
-	doc.LoadFile(_model_path);
+	doc.LoadFile(_model_path.c_str());
 	if (doc.Error()) {
 		throw doc.ErrorID();
 	}
@@ -24,7 +26,7 @@ void Model::read_points()
 
 	_type = x_root->FindAttribute("type")->IntValue();
 	int size = x_root->FindAttribute("size")->IntValue();
-
+	_points = t_points(size);
 	XMLElement* pPoint = x_root->FirstChildElement("point");
 
 	double x, y, z;
@@ -46,7 +48,7 @@ GLenum Model::getType() {
 }
 
 char* Model::getFilename() {
-	return strdup(_model_path);
+	return strdup(_model_path.c_str());
 }
 
 int Model::size() {
@@ -54,7 +56,7 @@ int Model::size() {
 }
 
 bool Model::add_point(double x, double y, double z) {
-	_points.add_point(x, y, z);
+	return _points.add_point(x, y, z);
 }
 
 point Model::get_next_point() {
@@ -65,7 +67,14 @@ point Model::get_next_point() {
 void Model::_draw() {
 	// to add texture
 	// to add color
+
+	point* points = _points.get_points_ptr();
+	point p;
 	glBegin(_type);
-	_points._draw();
+	for (int i = 0; i < this->size(); i++) {
+		p = points[i];
+		glVertex3d(p.x, p.y, p.z);
+	}
+	//_points._draw();
 	glEnd();
 }

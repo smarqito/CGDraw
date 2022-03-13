@@ -40,7 +40,7 @@ void write_xml(const char* filepath, GLenum type, t_points all_points) {
 
 int main(int argc, const char** argv) {
 
-	if (argc < 5 || argc > 7) {
+	if (argc == 1) {
 		cout << "Args: ./generator _GEO-FORM_ _PARAMS_ _FILEPATH_";
 		return 1;
 	}
@@ -49,7 +49,8 @@ int main(int argc, const char** argv) {
 
 	if (strcmp(argv[1], "sphere") == 0) {
 		if (argc < 6) {
-			cout << "Insufficient Args.Example: ./generator sphere radius slices stacks sphere.3d";
+			cout << "Insufficient Args.Example: ./generator sphere radius slices stacks sphere.3d\n";
+			return 1;
 		}
 
 		int radius = std::atoi(argv[2]);
@@ -63,7 +64,8 @@ int main(int argc, const char** argv) {
 	}
 	else if (strcmp(argv[1], "box") == 0) {
 		if (argc < 5) {
-			cout << "Insufficient Args.Example: ./generator box units divisions box.3d";
+			cout << "Insufficient Args.Example: ./generator box units divisions box.3d\n";
+			return 1;
 		}
 
 		float units = std::stof(argv[2]);
@@ -76,7 +78,8 @@ int main(int argc, const char** argv) {
 	}
 	else if (strcmp(argv[1], "cone") == 0) {
 		if (argc < 7) {
-			cout << "Insufficient Args.Example: ./generator cone radius height slices stacks cone.3d";
+			cout << "Insufficient Args.Example: ./generator cone radius height slices stacks cone.3d\n";
+			return 1;
 		}
 
 		int radius = std::atoi(argv[2]);
@@ -91,7 +94,8 @@ int main(int argc, const char** argv) {
 	}
 	else if (strcmp(argv[1], "plane") == 0) {
 		if (argc < 5) {
-			cout << "Insufficient Args.Example: ./generator plane length slices plane.3d";
+			cout << "Insufficient Args.Example: ./generator plane length slices plane.3d\n";
+			return 1;
 		}
 
 		float length = std::stof(argv[2]);

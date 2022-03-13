@@ -1,9 +1,13 @@
 #pragma once
+#ifndef MODEL_H
+#define MODEL_H
+
 #include <GL/glut.h>
 #include "generator/shapes.h"
 #include <string.h>
 #include "cartesian/cartesian.h"
 #include <tinyxml2.h>
+
 
 using namespace std;
 using namespace tinyxml2;
@@ -14,7 +18,7 @@ private:
 	t_points _points;
 	GLenum _type;
 	XMLElement* _xml_model;
-	char* _model_path;
+	string _model_path;
 	//texture texture; // phase not 1
 	//color color; // phase not 1
 	void read_points();
@@ -35,3 +39,5 @@ public:
 
 	void _draw();
 };
+
+#endif // !MODEL_H

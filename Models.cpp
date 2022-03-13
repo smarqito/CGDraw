@@ -1,13 +1,19 @@
 #include "Models.h"
 
+Models::Models()
+{
+}
+
 Models::Models(XMLElement* xml_elem) {
 	_xml_elem = xml_elem;
 	_init();
 }
 
 void Models::_init() {
-	for (; _xml_elem != NULL; _xml_elem = _xml_elem->NextSiblingElement()) {
-		_models.push_back(Model(_xml_elem));
+	XMLElement* it = _xml_elem->FirstChildElement("model");
+	while (it != NULL) {
+		_models.push_back(Model(it));
+		it = it->NextSiblingElement("model");
 	}
 }
 

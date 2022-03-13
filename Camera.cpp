@@ -45,10 +45,22 @@ void Camera::set_camera_pos(point pos) {
 	_position.z = pos.z;
 }
 
+void Camera::set_camera_pos(double x, double y, double z)
+{
+	_position.x = x;
+	_position.y = y;
+	_position.z = z;
+}
+
 void Camera::set_camera_lookat(point lookat) {
 	_lookat.x = lookat.x;
 	_lookat.y = lookat.y;
 	_lookat.z = lookat.z;
+}
+void Camera::set_camera_lookat(double x, double y, double z) {
+	_lookat.x = x;
+	_lookat.y = y;
+	_lookat.z = z;
 }
 
 void Camera::set_camera_up(point up) {
@@ -83,7 +95,7 @@ void Camera::_draw_projection(double ratio) {
 	gluPerspective(_projection.fov, ratio, _projection.near, _projection.far);
 }
 
-void Camera::_draw_lookAt(){
+void Camera::_draw_lookAt() {
 	gluLookAt(_position.x, _position.y, _position.z,
 		_lookat.x, _lookat.y, _lookat.z,
 		_up.x, _up.y, _up.z);

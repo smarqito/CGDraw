@@ -1,4 +1,6 @@
 #pragma once
+#ifndef GROUP_H
+#define GROUP_H
 #include "Models.h"
 #include <iostream>
 #include <tinyxml2.h>
@@ -32,3 +34,6 @@ public:
 
 	void add_models();
 };
+
+#endif // !GROUP_H
+

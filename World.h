@@ -1,4 +1,6 @@
 #pragma once
+#ifndef WORLD_H
+#define WORLD_H
 
 #include "Camera.h"
 #include "Lights.h"
@@ -11,16 +13,17 @@
 using namespace std;
 using namespace tinyxml2;
 
+
 class World {
 
 private:
 	Camera _camera;
 	Groups _groups;
 	Lights _lights;
-	char* path;
 
 public:
-	
+	char* _path;
+	World();
 	/*
 	* Construtor vazio para a classe world
 	* Recebe como parâmetro o path para o ficheiro XML a ler
@@ -29,10 +32,12 @@ public:
 	World(const char* xmlpath);
 
 	/*
-	* Inicio do processo de leitura do ficheiro 
+	* Inicio do processo de leitura do ficheiro
 	* Passa à classe Camara e Groups os repetivos elementos XML a ler
 	*/
 	void _init();
+
+	string set_root_path();
 
 	/*
 	* Função para iniciar o processo de desenho da figura geométrica
@@ -48,8 +53,12 @@ public:
 	// Não há nenhuma restrição para a posição a receber 
 	void set_camera_pos(point pos);
 
+	//
+	void set_camera_pos(double x, double y, double z);
 	// Não há nenhuma restrição para o lookaAt da câmera
 	void set_camera_lookat(point lookat);
+
+	void set_camera_lookat(double x, double y, double z);
 
 	// Não há nenhuma restrição para o up point da câmera
 	void set_camera_up(point up);
@@ -58,3 +67,4 @@ public:
 	void set_camera_persp(perspective perp);
 };
 
+#endif // !WORLD_H

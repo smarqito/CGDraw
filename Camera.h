@@ -4,6 +4,9 @@
 #else
 #include <GL/glut.h>
 #endif
+#ifndef CAMERA_H
+#define CAAMERA_H
+
 #include "cartesian/cartesian.h"
 #include <tinyxml2.h>
 
@@ -30,8 +33,10 @@ public:
 	void set_camera(point pos, point lookat, point up, perspective perspective);
 
 	void set_camera_pos(point pos);
+	void set_camera_pos(double x, double y, double z);
 
 	void set_camera_lookat(point lookat);
+	void set_camera_lookat(double x, double y, double z);
 
 	void set_camera_up(point up);
 
@@ -49,3 +54,5 @@ public:
 
 	void _draw_lookAt();
 };
+#endif // !CAMERA_H
+
