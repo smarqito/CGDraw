@@ -202,3 +202,41 @@ t_points create_cone(double radius, double height, int slices, int stacks) {
 
 	return p_points;
 }
+
+t_points create_cylinder(float radius, float height, int slices) {
+	t_points p_points(2*6*slices);
+
+	float step = (2 * M_PI) / slices;
+	float alpha = 0;
+	float beta = 0;
+	
+	int x = 0, y = 1, z = 0;
+	for (int i = 0; i < slices; i++)
+	{
+		p_points.add_point(x, y, z);
+		p_points.add_point(x + radius * cos(beta) * sin(alpha), y + radius * sin(beta), z + radius * cos(beta) * cos(alpha));
+		p_points.add_point(x + radius * cos(beta) * sin(alpha - step), y + radius * sin(beta), z + radius * cos(beta) * cos(alpha - step));
+
+		p_points.add_point(x + radius * cos(beta) * sin(alpha), y + radius * sin(beta), z + radius * cos(beta) * cos(alpha));
+		p_points.add_point(x + radius * cos(beta) * sin(alpha + step), y + radius * sin(beta), z + radius * cos(beta) * cos(alpha + step));
+		p_points.add_point(x + radius * cos(beta) * sin(alpha), y + height + radius * sin(beta), z + radius * cos(beta) * cos(alpha));
+
+		alpha -= step;
+
+	}
+	y += height;
+	for (int i = 0; i < slices; i++)
+	{
+		p_points.add_point(x, y, z);
+		p_points.add_point(x + radius * cos(beta) * sin(alpha), y + radius * sin(beta), z + radius * cos(beta) * cos(alpha));
+		p_points.add_point(x + radius * cos(beta) * sin(alpha + step), y + radius * sin(beta), z + radius * cos(beta) * cos(alpha + step));
+
+		p_points.add_point(x + radius * cos(beta) * sin(alpha), y - height + radius * sin(beta), z + radius * cos(beta) * cos(alpha));
+		p_points.add_point(x + radius * cos(beta) * sin(alpha), y + radius * sin(beta), z + radius * cos(beta) * cos(alpha));
+		p_points.add_point(x + radius * cos(beta) * sin(alpha - step), y + radius * sin(beta), z + radius * cos(beta) * cos(alpha - step));
+
+		alpha += step;
+	}
+
+	return p_points;
+}

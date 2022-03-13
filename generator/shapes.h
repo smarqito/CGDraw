@@ -7,24 +7,29 @@ using namespace std;
 
 
 /*
-* Função que cria um array de pontos para construir o plano
+* Função que cria os pontos para construir o plano
 *
 */
 t_points create_plane(double length, int divisions);
 
 /*
-* Função que cria um array de pontos para construir uma caixa
+* Função que cria os pontos para construir a caixa
 */
 t_points create_box(double units, int divisions);
 
 /*
-* Função que cria um array de pontos para construir o cone
+* Função que cria os pontos para construir o cone
 */
 t_points create_cone(double radius, double height, int slices, int stacks);
 
 /*
-* Função que cria um array de pontos para construir a esfera
+* Função que cria os pontos para construir a esfera
 */
 t_points create_sphere(int radius, int slices, int stacks);
+
+/*
+* Função que cria os pontos para construir o cilindro
+*/
+t_points create_cylinder(float radius, float height, int slices);
 
 #endif // !SHAPES_DRAW
