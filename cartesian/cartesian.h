@@ -10,6 +10,10 @@ struct point {
 	double x, y, z;
 };
 
+struct perspective {
+	double fox, near, far;
+};
+
 /*
 * Estrutura de dados dos pontos para construir uma figura geométrica
 * Os pontos são tuplos -> coordenadas cartesianas x y z

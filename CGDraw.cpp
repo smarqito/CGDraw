@@ -40,7 +40,7 @@ float near;
 float far;
 
 //Inicializar classe world
-World world = World();
+World world;
 
 
 
