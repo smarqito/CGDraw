@@ -3,7 +3,7 @@
 
 // ---------------------------- Funções Auxiliares -------------------------------------
 /*
-* Função criada para escrever no documento xml um ponto 
+* Função criada para escrever no documento xml um ponto
 */
 void write_point(XMLDocument* xml, point point) {
 	XMLNode* root = xml->FirstChild();
@@ -39,13 +39,13 @@ void write_xml(const char* filepath, GLenum type, t_points all_points) {
 // ------------------------------------------------------------------------------------
 
 int main(int argc, const char** argv) {
-	
-	if (argc < 5 || argc > 6) {
+
+	if (argc < 5 || argc > 7) {
 		cout << "Args: ./generator _GEO-FORM_ _PARAMS_ _FILEPATH_";
 		return 1;
 	}
 
-	t_points points = NULL;
+	t_points points(0);
 
 	if (strcmp(argv[1], "sphere") == 0) {
 		if (argc < 6) {
@@ -59,8 +59,9 @@ int main(int argc, const char** argv) {
 		points = create_sphere(radius, slices, stacks);
 
 		write_xml(argv[5], GL_TRIANGLES, points);
-	
-	}else if (strcmp(argv[1], "box") == 0) {
+
+	}
+	else if (strcmp(argv[1], "box") == 0) {
 		if (argc < 5) {
 			cout << "Insufficient Args.Example: ./generator box units divisions box.3d";
 		}
@@ -71,7 +72,7 @@ int main(int argc, const char** argv) {
 		points = create_box(units, divisions);
 
 		write_xml(argv[4], GL_TRIANGLES, points);
-	
+
 	}
 	else if (strcmp(argv[1], "cone") == 0) {
 		if (argc < 7) {
@@ -86,11 +87,11 @@ int main(int argc, const char** argv) {
 		points = create_cone(radius, height, slices, stacks);
 
 		write_xml(argv[6], GL_TRIANGLES, points);
-	
+
 	}
 	else if (strcmp(argv[1], "plane") == 0) {
 		if (argc < 5) {
-			cout << "Insufficient Args.Example: ./generator cone radius height slices stacks cone.3d";
+			cout << "Insufficient Args.Example: ./generator plane length slices plane.3d";
 		}
 
 		float length = std::stof(argv[2]);
@@ -99,7 +100,7 @@ int main(int argc, const char** argv) {
 		points = create_plane(length, divisions);
 
 		write_xml(argv[4], GL_TRIANGLES, points);
-	
+
 	}
 	else {
 		cout << "Geometric Figures: sphere | cone | box | plane";

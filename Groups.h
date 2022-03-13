@@ -1,19 +1,22 @@
 #pragma once
+#include <tinyxml2.h>
+#include "Group.h"
+using namespace tinyxml2;
 
 class Groups {
 
 private:
 	vector<Group> _groups;
-	XMLElement* xml_elem;
+	XMLElement* _xml_group; // first group elem
 
 public:
-	Groups(XMLNode* xml_node);
+	Groups(XMLElement* xml_group);
 
 	void _init();
+	/*
+	* Draw the groups
+	*/
+	void _draw();
 
-	void _draw() {
-		for (int i = 0; i < _groups.size(); i++) {
-			_groups[i]._draw();
-		}
-	}
+	void add_group(XMLElement* elem);
 };

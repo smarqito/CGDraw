@@ -1,12 +1,12 @@
-﻿#include "cartesian.h"
 #include "cartesian.h"
+
 /*
 * Author: Group
 * UC : Computacao Grafica
 */
 #include "cartesian.h"
 #include <math.h>
-#include <GL/glut.h>
+//#include <GL/glut.h>
 
 //t_points::t_points(int size) {
 //	pos = 0;
@@ -15,7 +15,8 @@
 //	points = (point*)malloc(sizeof(point) * size);
 //}
 
-
+t_points::t_points()
+{
 
 t_points::t_points(int size) {
 	_pos = 0;
@@ -68,6 +69,6 @@ void t_points::_draw() {
 	point p;
 	for (int i = 0; i < this->size(); i++) {
 		p = get_point(i);
-		glVertex3d(p.x, p.y, p.z);
+		//glVertex3d(p.x, p.y, p.z);
 	}
 }
