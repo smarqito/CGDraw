@@ -11,6 +11,8 @@
 #include <tinyxml2.h>
 #include <string>
 #include "generator/shapes.h"
+#include "World.h"
+
 
 using namespace std;
 using namespace tinyxml2;
@@ -36,20 +38,6 @@ float zUp;
 float fov;
 float near;
 float far;
-
-//Points
-GLenum type;
-
-t_points* points = (t_points*)malloc(sizeof(struct t_points));
-
-void add_point(tuple<float, float, float> point, t_points* all_points) {
-
-	int pos = all_points->pos++;
-
-	all_points->points[pos] = point;
-}
-
-
 
 
 
@@ -239,7 +227,7 @@ void drawAxis() {
 }
 
 void draw() {
-	glBegin(GL_TRIANGLES);
+	glBegin(type);
 	tuple<float, float, float> t;
 	for (int i = 0; i < points->size; i++) {
 		 t = points->points[i];
@@ -251,18 +239,19 @@ void draw() {
 void read3D(const char* path) {
 	XMLDocument doc;
 	doc.LoadFile(path);
-	XMLElement* pRootElement = doc.RootElement();
+	XMLElement* pRootElement = doc.FirstChild()->ToElement();
 	type = pRootElement->FindAttribute("type")->IntValue();
 	int size = pRootElement->FindAttribute("size")->IntValue();
-	points->points = (tuple<float, float, float>*) malloc(sizeof(tuple<float, float, float>) * size);
-	points->pos = 0;
-	points->size = size;
+	//points->points = (tuple<float, float, float>*) malloc(sizeof(tuple<float, float, float>) * size);
+	//points->pos = 0;
+	//points->size = size;
+	
 	XMLElement* pPoint = pRootElement->FirstChildElement("point");
 	for (int i = 0; pPoint != NULL; i++) {
 		float x = pPoint->FindAttribute("x")->FloatValue();
 		float y = pPoint->FindAttribute("y")->FloatValue();
 		float z = pPoint->FindAttribute("z")->FloatValue();
-		add_point(tuple<float, float, float>(x, y, z), points);
+		m.addPoint(x, y, z);
 		pPoint = pPoint->NextSiblingElement();
 	}
 }
@@ -376,43 +365,47 @@ void handleMouseMotion(int x, int y) {
 	glutPostRedisplay();
 }
 
-void readXML() {
-	const char* path = "/home/smarqito/test_files_phase_1/test_1_2.xml";
-	XMLDocument doc;
-	doc.LoadFile(path);
-	XMLElement* pRootElement = doc.RootElement();
-	XMLElement* pCamara = pRootElement -> FirstChildElement("camera");
-	if (pCamara != NULL) {
-		XMLElement* pPosition = pCamara->FirstChildElement("position");
-		xPosition = pPosition->FindAttribute("x")->FloatValue();
-		yPosition = pPosition->FindAttribute("y")->FloatValue();
-		zPosition = pPosition->FindAttribute("z")->FloatValue();
-		XMLElement* pLookAt = pCamara->FirstChildElement("lookAt");
-		xLookAt = pLookAt->FindAttribute("x")->FloatValue();
-		yLookAt = pLookAt->FindAttribute("y")->FloatValue();
-		zLookAt = pLookAt->FindAttribute("z")->FloatValue();
-		XMLElement* pUp = pCamara->FirstChildElement("up");
-		xUp = pUp->FindAttribute("x")->FloatValue();
-		yUp = pUp->FindAttribute("y")->FloatValue();
-		zUp = pUp->FindAttribute("z")->FloatValue();
-		XMLElement* pProjection = pCamara->FirstChildElement("projection");
-		fov = pProjection->FindAttribute("fov")->FloatValue();
-		near = pProjection->FindAttribute("near")->FloatValue();
-		far = pProjection->FindAttribute("far")->FloatValue();
-	}
-	XMLElement* pGroup = pRootElement->FirstChildElement("group");
-	if (pGroup != NULL) {
-		XMLElement* pModels = pGroup->FirstChildElement("models");
+void readCamaraSettings(XMLElement* pCamara) {
+	XMLElement* pPosition = pCamara->FirstChildElement("position");
+	xPosition = pPosition->FindAttribute("x")->FloatValue();
+	yPosition = pPosition->FindAttribute("y")->FloatValue();
+	zPosition = pPosition->FindAttribute("z")->FloatValue();
+	XMLElement* pLookAt = pCamara->FirstChildElement("lookAt");
+	xLookAt = pLookAt->FindAttribute("x")->FloatValue();
+	yLookAt = pLookAt->FindAttribute("y")->FloatValue();
+	zLookAt = pLookAt->FindAttribute("z")->FloatValue();
+	XMLElement* pUp = pCamara->FirstChildElement("up");
+	xUp = pUp->FindAttribute("x")->FloatValue();
+	yUp = pUp->FindAttribute("y")->FloatValue();
+	zUp = pUp->FindAttribute("z")->FloatValue();
+	XMLElement* pProjection = pCamara->FirstChildElement("projection");
+	fov = pProjection->FindAttribute("fov")->FloatValue();
+	near = pProjection->FindAttribute("near")->FloatValue();
+	far = pProjection->FindAttribute("far")->FloatValue();
+}
+
+void readGroup(XMLElement* pGroup){
+	XMLElement* pModels = pGroup->FirstChildElement("models");
 		XMLElement* pModel = pModels->FirstChildElement("model");
 		for (; pModel != NULL; pModel = pModel->NextSiblingElement()) {
 			char fullPath[100];
 			const char* file = pModel->FindAttribute("file")->Value();
-			const char* path = "/home/smarqito";
+			const char* path = "/home/smarqito/test_files_phase_1/";
 			strcpy(fullPath, path);
 			strcat(fullPath, file);
 			read3D(fullPath);
 		}
-	}
+}
+
+void readXML() {
+	const char* path = "/home/smarqito/test_files_phase_1/test_1_2.xml";
+	XMLDocument doc;
+	doc.LoadFile(path);
+	XMLNode* pRootElement = doc.FirstChild();
+	XMLElement* pCamara = pRootElement -> FirstChildElement("camera");
+	readCamaraSettings(pCamara);
+	XMLElement* pGroup = pRootElement->FirstChildElement("group");
+	readGroup(pGroup);
 }
 
 

@@ -5,22 +5,22 @@
 /*
 * Função criada para escrever no documento xml um ponto 
 */
-void write_point(XMLDocument* xml, tuple<float, float, float> point) {
+void write_point(XMLDocument* xml, point point) {
 	XMLNode* root = xml->FirstChild();
 
 	XMLElement* ponto = xml->NewElement("point");
-	ponto->SetAttribute("x", get<0>(point));
-	ponto->SetAttribute("y", get<1>(point));
-	ponto->SetAttribute("z", get<2>(point));
+	ponto->SetAttribute("x", point.x);
+	ponto->SetAttribute("y", point.y);
+	ponto->SetAttribute("z", point.z);
 	root->InsertEndChild(ponto);
 }
 
 /*
 * Função para escrever todo o ficheiro xml, relativo a uma figura gemométrica
 */
-void write_xml(const char* filepath, GLenum type, t_points* all_points) {
+void write_xml(const char* filepath, GLenum type, t_points all_points) {
 	XMLDocument xml;
-	int size = all_points->size;
+	int size = all_points.size();
 
 	XMLElement* pRoot = xml.NewElement("model");
 	xml.InsertFirstChild(pRoot);
@@ -28,13 +28,12 @@ void write_xml(const char* filepath, GLenum type, t_points* all_points) {
 	pRoot->SetAttribute("type", type);
 	pRoot->SetAttribute("size", size);
 
-
 	for (int i = 0; i < size; i++)
 	{
-		write_point(&xml, all_points->points[i]);
+		write_point(&xml, all_points.get_point(i));
 	}
 
-	XMLError eres = xml.SaveFile(filepath);
+	xml.SaveFile(filepath);
 }
 
 // ------------------------------------------------------------------------------------
@@ -46,7 +45,7 @@ int main(int argc, const char** argv) {
 		return 1;
 	}
 
-	t_points* points;
+	t_points points = NULL;
 
 	if (strcmp(argv[1], "sphere") == 0) {
 		if (argc < 6) {

@@ -5,6 +5,5 @@
 #include <GL/glut.h>
 #include <math.h>
 
-
 using namespace std;
 using namespace tinyxml2;
