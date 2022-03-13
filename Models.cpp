@@ -1,26 +1,22 @@
 #include "Models.h"
 
 Models::Models(XMLElement* xml_elem) {
-	// TODO - implement Models::Models
-	throw "Not yet implemented";
+	_xml_elem = xml_elem;
+	_init();
 }
 
 void Models::_init() {
-	// TODO - implement Models::_init
-	throw "Not yet implemented";
-}
-
-Model Models::get_model() {
-	// TODO - implement Models::get_model
-	throw "Not yet implemented";
+	for (; _xml_elem != NULL; _xml_elem = _xml_elem->NextSiblingElement()) {
+		_models.push_back(Model(_xml_elem));
+	}
 }
 
 Model Models::get_model(int i) {
-	// TODO - implement Models::get_model
-	throw "Not yet implemented";
+	return _models[i];
 }
 
 void Models::_draw() {
-	// TODO - implement Models::_draw
-	throw "Not yet implemented";
+	for (int i = 0; i < _models.size(); i++) {
+		_models[i]._draw();
+	}
 }
