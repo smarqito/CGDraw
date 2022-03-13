@@ -10,16 +10,25 @@ class Model
 	t_points points;
 	char* filename;
 public:
-	Model(GLenum type, int size, char* filename) {
+	Model(GLenum type, int size, const char* filename) {
 		this->type = type;
 		this->filename = strdup(filename);
 		points = t_points(size);
 	}
+
+	GLenum getType() {
+		return type;
+	}
+
 	bool addPoint(double x, double y, double z) {
 		return points.add_point(x, y, z);
 	}
 
-	xyz getNextPoint() {
+	point getNextPoint() {
 		return points.get_point();
+	}
+
+	int size() {
+		return points.size();
 	}
 };
