@@ -27,4 +27,9 @@ t_points create_cone(double radius, double height, int slices, int stacks);
 */
 t_points create_sphere(int radius, int slices, int stacks);
 
+/*
+* Função que cria um array de pontos para construir o cilindro
+*/
+t_points create_cylinder(int radius, int height, int slices, int stacks);
+
 #endif // !SHAPES_DRAW
