@@ -17,14 +17,6 @@
 using namespace std;
 using namespace tinyxml2;
 
-float alpha = 0;
-float beta = 0;
-float alpha2 = 0;
-float beta2 = 0;
-float radius = 5;
-float radius2 = 0;
-float step = 0.1;
-
 //Inicializar classe world
 World world;
 
@@ -83,6 +75,7 @@ void drawAxis() {
 	glColor3f(0.0f, 0.0f, 1.0f);
 	glVertex3f(0.0f, 0.0f, .0f);
 	glVertex3f(0.0f, 0.0f, 1000.0f);
+	glColor3f(1, 1, 1);
 	glEnd();
 }
 
@@ -94,17 +87,7 @@ void renderScene(void) {
 	// set the camera
 	glLoadIdentity();
 
-
-	//define camera config
-	//world._draw_lookAt();
-	//float px = radius * cos(beta) * sin(alpha);
-	//float py = radius * sin(beta);
-	//float pz = radius * cos(beta) * cos(alpha);
-	//float dx = radius2 * cos(beta2) * sin(alpha2);
-	//float dy = radius2 * sin(beta2);
-	//float dz = radius2 * cos(beta2) * cos(alpha2);
-
-	//world.set_camera_pos(px, py, pz);
+	// set lookat world
 	world._draw_lookAt();
 
 	// draw world loaded
@@ -120,27 +103,21 @@ void renderScene(void) {
 
 
 void processKeys(unsigned char c, int xx, int yy) {
-
+	point p;
 	switch (c)
 	{
 	default:
-	case 'w':
-		beta += step;
-		break;
-	case 's':
-		beta -= step;
+	case 'd':
+		world.move_camera_pos(RIGHT);
 		break;
 	case 'a':
-		alpha -= step;
+		world.move_camera_pos(LEFT);
 		break;
-	case 'd':
-		alpha += step;
+	case 's':
+		world.move_camera_pos(BACK);
 		break;
-	case 'j':
-		radius += 1;
-		break;
-	case 'k':
-		radius -= 1;
+	case 'w':
+		world.move_camera_pos(FRONT);
 		break;
 	case 'p':
 		if (drawAxisB) {
@@ -160,10 +137,8 @@ void processSpecialKeys(int key, int xx, int yy) {
 	switch (key)
 	{
 	case GLUT_KEY_UP:
-		radius2 += step;
 		break;
 	case GLUT_KEY_DOWN:
-		radius2 -= step;
 		break;
 	default:
 		break;
@@ -173,39 +148,42 @@ void processSpecialKeys(int key, int xx, int yy) {
 }
 
 bool mouseDown = false;
-int mx, my;
+double mx, my;
 void processMouseKeys(int button, int state, int x, int y) {
 	//float diffx, diffy;
-	switch (button)
-	{
-	case GLUT_DOWN:
-		if (mouseDown) {
-		}
-		else {
-			mouseDown = true;
-			mx = x;
+	if (button == GLUT_LEFT_BUTTON) {
+		switch (state)
+		{
+		case GLUT_DOWN:
+			if (mouseDown) {
+			}
+			else {
+				mouseDown = true;
+				mx = x;
+				my = y;
+			}
+			break;
+		case GLUT_UP:
+			mouseDown = false;
 			my = y;
+			mx = x;
+			break;
+		default:
+			break;
 		}
-		break;
-	case GLUT_UP:
-		mouseDown = false;
-		my = y;
-		mx = x;
-		break;
-	default:
-		break;
+
 	}
 	glutPostRedisplay();
 }
 
 void handleMouseMotion(int x, int y) {
-	float diffx, diffy;
+	double mxx = mx, myy = my;
+	double diffx, diffy;
 	diffx = mx - x;
 	diffy = my - y;
 	mx = x;
 	my = y;
-	alpha2 += (diffx / (800));
-	beta2 -= (diffy / (800));
+	world.move_lookat(diffx / 400, diffy / 400);
 	glutPostRedisplay();
 }
 

@@ -55,6 +55,9 @@ public:
 
 	//
 	void set_camera_pos(double x, double y, double z);
+	//
+	void move_camera_pos(CAMenum m);
+	void move_lookat(double alpha, double beta);
 	// Não há nenhuma restrição para o lookaAt da câmera
 	void set_camera_lookat(point lookat);
 

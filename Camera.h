@@ -12,11 +12,20 @@
 
 using namespace tinyxml2;
 
+enum CAMenum
+{
+	LEFT,
+	RIGHT,
+	FRONT,
+	BACK
+};
+
 class Camera {
 
 private:
 	point _position;
 	point _lookat;
+	polar _lookat_p;
 	point _up;
 	perspective _projection;
 	XMLElement* _xmlElement;
@@ -39,8 +48,10 @@ public:
 	void set_camera_lookat(double x, double y, double z);
 
 	void set_camera_up(point up);
+	void set_camera_up(double x, double y, double z);
 
 	void set_camera_projection(perspective perp);
+	void set_camera_projection(double fov, double near, double far);
 
 	point get_camera_pos();
 
@@ -49,6 +60,9 @@ public:
 	point get_camera_up();
 
 	perspective get_camera_projection();
+
+	void move_camera(CAMenum t);
+	void move_lookat(double alpha, double beta);
 
 	void _draw_projection(double ratio);
 

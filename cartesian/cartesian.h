@@ -10,6 +10,10 @@ struct point {
 	double x, y, z;
 };
 
+struct polar {
+	double r, a, b;
+};
+
 struct perspective {
 	double fov, near, far;
 };
@@ -45,3 +49,16 @@ public:
 * Criar um ponto a partir de coordenadas polares
 */
 point polartocart(float r, float alpha, float beta);
+point polartocart(polar p);
+
+polar cart_to_polar(point p);
+
+polar cart_to_polar(double x, double y, double z);
+
+point sum_points(point a, point b);
+
+void sum_points(point* a, point* b);
+
+point sub_points(point a, point b);
+
+void sub_points(point* a, point* b);

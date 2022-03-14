@@ -42,7 +42,7 @@ bool t_points::add_point(double x, double y, double z) {
 	if (_total == size()) {
 		return false;
 	}
-	point *p = (& _points[_total++]);
+	point* p = (&_points[_total++]);
 	p->x = x;
 	p->y = y;
 	p->z = z;
@@ -64,6 +64,10 @@ point t_points::get_point(int pos) {
 	throw 0x1;
 }
 
+point polartocart(polar p) {
+	return polartocart(p.r, p.a, p.b);
+}
+
 point polartocart(float r, float alpha, float beta) {
 	point point;
 	point.x = r * cos(beta) * sin(alpha);
@@ -73,12 +77,58 @@ point polartocart(float r, float alpha, float beta) {
 	return point;
 }
 
-point cart_to_polar(double x, double y, double z) {
-	point p;
-	p.x = sqrt(x * x + y * y + z * z); // radius
-	p.y = asin(y / p.x);
-	p.z = asin(x / sqrt(x * x + y * y)) * (y < 0 ? -1 : 1); 
+polar cart_to_polar(point p)
+{
+	return cart_to_polar(p.x, p.y, p.z);
+}
+
+polar cart_to_polar(double x, double y, double z)
+{
+	polar p;
+	if (x == 0 || (x == 0 && y == 0 & z == 0)) {
+		p.r = 1;
+		p.a = 0;
+		p.b = 0;
+		return p;
+	}
+	p.r = sqrt(x * x + y * y + z * z);
+	p.a = atan(y / x);
+	p.b = acos(z / p.r);
 	return p;
+}
+
+point sum_points(point a, point b)
+{
+	point p;
+	p.x = a.x + b.x;
+	p.y = a.y + b.y;
+	p.z = a.z + b.z;
+	return p;
+}
+
+void sum_points(point* a, point* b)
+{
+	a->x = a->x + b->x;
+	a->y = a->y + b->y;
+	a->z = a->z + b->z;
+}
+
+point sub_points(point a, point b)
+{
+	point p;
+	p.x = a.x - b.x;
+	p.y = a.y - b.y;
+	p.z = a.z - b.z;
+	return p;
+
+}
+
+void sub_points(point* a, point* b)
+{
+	a->x = a->x - b->x;
+	a->y = a->y - b->y;
+	a->z = a->z - b->z;
+
 }
 
 void t_points::_draw() {

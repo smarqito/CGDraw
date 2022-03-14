@@ -170,10 +170,10 @@ t_points create_cylinder(int radius, int height, int slices, int stacks)
 	t_points p_points(6 * slices + 6 * slices * stacks);
 
 	double ssl = 2 * M_PI / slices;
-	double sst = (double) height / stacks;
+	double sst = (double)height / stacks;
 	double alpha = 0;
 	double beta = 0;
-	double x = 0, y = (double) height / 2, z = 0;
+	double x = 0, y = (double)height / 2, z = 0;
 	for (int i = 0; i < slices; i++)
 	{
 		point a = polartocart(radius, alpha, beta);
@@ -189,24 +189,67 @@ t_points create_cylinder(int radius, int height, int slices, int stacks)
 		alpha += ssl;
 	}
 	alpha = 0;
-	
+
 	for (int i = 0; i < stacks; i++) {
 		for (int j = 0; j < slices; j++)
 		{
 			point a = polartocart(radius, alpha, beta);
 			point b = polartocart(radius, alpha + ssl, beta);
 
-			p_points.add_point(b.x, y + b.y-sst, b.z);
+			p_points.add_point(b.x, y + b.y - sst, b.z);
 			p_points.add_point(b.x, y + b.y, b.z);
 			p_points.add_point(a.x, y + a.y, a.z);
 
 			p_points.add_point(a.x, y + a.y, a.z);
-			p_points.add_point(a.x, y + a.y-sst, a.z);
-			p_points.add_point(b.x, y + b.y-sst, b.z);
+			p_points.add_point(a.x, y + a.y - sst, a.z);
+			p_points.add_point(b.x, y + b.y - sst, b.z);
 			alpha += ssl;
 		}
 		y -= sst;
 		alpha = 0;
+	}
+	return p_points;
+}
+
+t_points create_torus(double radius, double size, int slices, int stack) {
+	t_points p_points(12 * slices * stack + 2 * slices);
+
+	double ssl = (2 * M_PI) / slices;
+	double sst = M_PI / stack;
+	double alpha = 0;
+	double beta = -M_PI/2;
+	double x = 0, y = 0, z = 0;
+
+	for (int j = 0; j < slices; j++) {
+		for (int i = 0; i < stack; i++) {
+			point a = polartocart(radius, alpha, 0);
+			point a1 = polartocart(size, alpha, beta);
+			point a2 = polartocart(size, alpha, beta+sst);
+			
+			point b = polartocart(radius, alpha + ssl, 0);
+			point b1 = polartocart(size, alpha+ssl, beta);
+			point b2 = polartocart(size, alpha+ssl, beta + sst);
+
+			p_points.add_point(sum_points(a, a1));
+			p_points.add_point(sum_points(b, b1));
+			p_points.add_point(sum_points(b, b2));
+
+			p_points.add_point(sum_points(a, a1));
+			p_points.add_point(sum_points(b, b2));
+			p_points.add_point(sum_points(a, a2));
+
+			p_points.add_point(sub_points(a, a1));
+			p_points.add_point(sub_points(b, b1));
+			p_points.add_point(sub_points(b, b2));
+
+			p_points.add_point(sub_points(a, a1));
+			p_points.add_point(sub_points(b, b2));
+			p_points.add_point(sub_points(a, a2));
+
+			beta += sst;
+		}
+		alpha += ssl;
+		beta = -M_PI/2;
 	}
 	return p_points;
 }

@@ -75,6 +75,14 @@ void World::set_camera_pos(double x, double y, double z) {
 	_camera.set_camera_pos(x, y, z);
 }
 
+void World::move_camera_pos(CAMenum t) {
+	_camera.move_camera(t);
+}
+
+void World::move_lookat(double alpha, double beta) {
+	_camera.move_lookat(alpha, beta);
+}
+
 void World::set_camera_lookat(point lookat) {
 	_camera.set_camera_lookat(lookat);
 }
