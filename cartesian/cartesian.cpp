@@ -92,8 +92,8 @@ polar cart_to_polar(double x, double y, double z)
 		return p;
 	}
 	p.r = sqrt(x * x + y * y + z * z);
-	p.a = atan(y / x);
-	p.b = acos(z / p.r);
+	p.a = -acos(z / sqrt(x*x + y*y));
+	p.b = asin(y / p.r);
 	return p;
 }
 

@@ -64,20 +64,22 @@ void Camera::set_camera_lookat(point lookat) {
 }
 
 void Camera::set_camera_lookat(double x, double y, double z) {
+	// A
 	_lookat.x = x;
 	_lookat.y = y;
 	_lookat.z = z;
 	sub_points(&_lookat, &_position);
+	double r = sqrt(_lookat.x * _lookat.x + _lookat.y * _lookat.y + _lookat.z * _lookat.z);
+	_lookat.x /= r;
+	_lookat.y /= r;
+	_lookat.z /= r;
+
 
 	polar p = cart_to_polar(_lookat.x, _lookat.y, _lookat.z);
-	_lookat_p.r = 1;
+	_lookat_p.r = p.r;
 	_lookat_p.a = p.a;
 	_lookat_p.b = p.b;
 
-	point pp = polartocart(_lookat_p);
-	_lookat.x = pp.x;
-	_lookat.y = pp.y;
-	_lookat.z = pp.z;
 	/// 
 	//point pc;
 	//pc.x = x; pc.y = y; pc.z = z;
