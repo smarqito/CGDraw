@@ -6,8 +6,18 @@
 * Estrutura de dados para classificar um ponto cartesiano
 * Pontos do eixo 3D, x, y e z
 */
-struct point {
+//struct point {
+//	double x, y, z;
+//};
+
+class point {
+public:
 	double x, y, z;
+	point() {
+		x = 0;
+		y = 0;
+		z = 0;
+	}
 };
 
 struct polar {

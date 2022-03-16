@@ -5,14 +5,14 @@ PROJECT(CGDraw)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_executable(${PROJECT_NAME} CGDraw.cpp "Model.h" "Model.cpp"  "World.h" "World.cpp" "Models.h" "Models.cpp" "Group.h" "Group.cpp" "Camera.h" "Camera.cpp" "Lights.h" "Lights.cpp" "Groups.h" "Groups.cpp" "CGDraw.h" "Common.h")
+add_executable(${PROJECT_NAME} CGDraw.cpp "Model.h" "Model.cpp"  "World.h" "World.cpp" "Models.h" "Models.cpp" "Group.h" "Group.cpp" "Camera.h" "Camera.cpp" "Lights.h" "Lights.cpp" "Groups.h" "Groups.cpp" "CGDraw.h" "Common.h" "Transform.h" "Transform.cpp")
 
 target_link_libraries(CGDraw "cartesian")
 
 add_executable(generator generator/writer.cpp "generator/shapes.cpp")
 
 target_link_libraries(generator "cartesian")
-
+include_directories("cartesian")
 find_package(OpenGL REQUIRED)
 find_package(tinyxml2 REQUIRED)
 include_directories(${OpenGL_INCLUDE_DIRS})
