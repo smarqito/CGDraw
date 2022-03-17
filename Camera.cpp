@@ -79,23 +79,6 @@ void Camera::set_camera_lookat(double x, double y, double z) {
 	_lookat_p.r = p.r;
 	_lookat_p.a = p.a;
 	_lookat_p.b = p.b;
-
-	/// 
-	//point pc;
-	//pc.x = x; pc.y = y; pc.z = z;
-	//pc = sub_points(pc, _position);
-
-	//polar p = cart_to_polar(pc.x, pc.y, pc.z);
-	//p.r = 1;
-	//_lookat_p.r = p.r;
-	//_lookat_p.a = p.a;
-	//_lookat_p.b = p.b;
-
-	//pc = polartocart(p);
-	//_lookat.x = pc.x;
-	//_lookat.y = pc.y;
-	//_lookat.z = pc.z;
-
 }
 
 void Camera::set_camera_up(point up) {
@@ -161,8 +144,10 @@ void Camera::move_camera(CAMenum t)
 
 void Camera::move_lookat(double alpha, double beta)
 {
+
 	_lookat_p.a += alpha;
-	_lookat_p.b += beta;
+	//_lookat_p.b += beta;
+	_lookat_p.b = fmax(fmin(_lookat_p.b + beta, 1.5f), -1.5f);
 	point p = polartocart(_lookat_p);
 	_lookat.x = p.x;
 	_lookat.y = p.y;

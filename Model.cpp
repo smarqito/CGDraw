@@ -67,7 +67,6 @@ point Model::get_next_point() {
 void Model::_draw() {
 	// to add texture
 	// to add color
-
 	point* points = _points.get_points_ptr();
 	point p;
 	glBegin(_type);

@@ -92,7 +92,9 @@ polar cart_to_polar(double x, double y, double z)
 		return p;
 	}
 	p.r = sqrt(x * x + y * y + z * z);
-	p.a = -acos(z / sqrt(x*x + y*y));
+	double raiz = sqrt(x * x + y * y);
+	double cos2 = z / raiz;
+	p.a = cos2 <= -1.0 ? M_PI : cos2 >= 1.0 ? 0 : -acos(cos2);
 	p.b = asin(y / p.r);
 	return p;
 }

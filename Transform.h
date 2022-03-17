@@ -14,6 +14,7 @@ private:
 	float _rotate_a;
 	bool _t, _r, _s;
 public:
+	Transform();
 	Transform(XMLElement* transform_elem);
 	void _init();
 	void _draw();

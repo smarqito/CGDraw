@@ -1,9 +1,16 @@
 #include "Transform.h"
 #include <GL/glut.h>
 
+Transform::Transform()
+{
+	_t = _r = _s = false;
+}
+
 Transform::Transform(XMLElement* transform_elem)
 {
 	_transform_elem = transform_elem;
+	_t = _r = _s = false;
+	_init();
 }
 
 void Transform::_init()
@@ -32,10 +39,13 @@ void Transform::_init()
 
 void Transform::_draw()
 {
-	if (_t)
-		glTranslatef(_translate.x, _translate.y, _translate.z);
-	if (_r)
+	if (_r) {
 		glRotatef(_rotate_a, _rotate_p.x, _rotate_p.y, _rotate_p.z);
-	if (_s)
+	}
+	if (_t) {
+		glTranslatef(_translate.x, _translate.y, _translate.z);
+	}
+	if (_s) {
 		glScalef(_scale.x, _scale.y, _scale.z);
+	}
 }
