@@ -1,6 +1,4 @@
 #include "cartesian.h"
-#include "cartesian.h"
-#include "cartesian.h"
 
 /*
 * Author: Group
@@ -85,7 +83,7 @@ polar cart_to_polar(point p)
 polar cart_to_polar(double x, double y, double z)
 {
 	polar p;
-	if (x == 0 || (x == 0 && y == 0 & z == 0)) {
+	if (x == 0 || (x == 0 && y == 0 && z == 0)) {
 		p.r = 1;
 		p.a = 0;
 		p.b = 0;

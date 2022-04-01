@@ -1,10 +1,10 @@
 ﻿#ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
+#include <GL/glew.h>
 #include <GL/glut.h>
 #endif
 
-#define _USE_MATH_DEFINES
 #include <math.h>
 #include <iostream>
 #include <tuple>
@@ -187,6 +187,14 @@ void handleMouseMotion(int x, int y) {
 	glutPostRedisplay();
 }
 
+void init() {
+	glEnableClientState(GL_VERTEX_ARRAY);
+	//  OpenGL settings
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+
+}
+
 int main(int argc, char** argv) {
 
 	if (argc != 2) {
@@ -201,9 +209,12 @@ int main(int argc, char** argv) {
 	glutInitWindowSize(800, 800);
 	glutCreateWindow("CG@DI-UM");
 
+	// init GLEW
+	glewInit();
 
 	// Required callback registry 
 	glutDisplayFunc(renderScene);
+	glutIdleFunc(renderScene);
 	glutReshapeFunc(changeSize);
 
 	// Callback registration for keyboard processing
@@ -212,9 +223,8 @@ int main(int argc, char** argv) {
 	glutMouseFunc(processMouseKeys);
 	glutMotionFunc(handleMouseMotion);
 
-	//  OpenGL settings
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
+	// init
+	init();
 
 	// enter GLUT's main cycle
 	glutMainLoop();

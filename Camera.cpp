@@ -1,6 +1,6 @@
 #include "Camera.h"
 #include <math.h>
-
+using namespace std;
 Camera::Camera() {
 
 }
