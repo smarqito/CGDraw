@@ -2,8 +2,13 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#ifndef _GL_INCLUDE
+#define _GL_INCLUDE
 #include <GL/glew.h>
 #include <GL/glut.h>
+#include <GL/gl.h>
+#endif // !_GL_INCLUDE
+
 #include "generator/shapes.h"
 #include <string>
 #include "cartesian/cartesian.h"
@@ -21,7 +26,7 @@ private:
 	GLenum _type;
 	XMLElement* _xml_model;
 	string _model_path;
-	GLuint buffer;
+	GLuint buffer[5];
 	//texture texture; // phase not 1
 	//color color; // phase not 1
 	void read_points();

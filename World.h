@@ -2,11 +2,18 @@
 #ifndef WORLD_H
 #define WORLD_H
 
+#ifndef _GL_INCLUDE
+#define _GL_INCLUDE
+#include <GL/glew.h>
+#include <GL/glut.h>
+#include <GL/gl.h>
+#endif // !_GL_INCLUDE
+
 #include "Camera.h"
 #include "Lights.h"
 #include "Groups.h"
 #include "Group.h"
-#include <GL/gl.h>
+
 #include <tinyxml2.h>
 #include <iostream>
 
@@ -56,6 +63,7 @@ public:
 	//
 	void set_camera_pos(double x, double y, double z);
 	//
+	void change_scale(float newScale);
 	void move_camera_pos(CAMenum m);
 	void move_lookat(double alpha, double beta);
 	// Não há nenhuma restrição para o lookaAt da câmera

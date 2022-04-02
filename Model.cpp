@@ -42,9 +42,9 @@ void Model::read_points()
 		points.push_back(z);
 		pPoint = pPoint->NextSiblingElement("point");
 	}
-	glGenBuffers(1, &buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferData(GL_ARRAY_BUFFER, points.size() * sizeof(float), points.data(), GL_STATIC_DRAW);
+	//glGenBuffers(1, buffer);
+	//glBindBuffer(GL_ARRAY_BUFFER, buffer[0]);
+	//glBufferData(GL_ARRAY_BUFFER, points.size() * sizeof(float), points.data(), GL_STATIC_DRAW);
 //	build_vbo();
 }
 
@@ -77,16 +77,16 @@ point Model::get_next_point() {
 void Model::_draw() {
 	// to add texture
 	// to add color
-	//point* points = _points.get_points_ptr();
+	point* points = _points.get_points_ptr();
 	point p;
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glVertexPointer(3, GL_FLOAT, 0, 0);
-	glDrawArrays(_type, 0, _points.total() * 3);
+	//glBindBuffer(GL_ARRAY_BUFFER, buffer[0]);
+	//glVertexPointer(3, GL_FLOAT, 0, 0);
+	//glDrawArrays(_type, 0, _points.total() * 3);
 	glBegin(_type);
-	//for (int i = 0; i < this->size(); i++) {
-	//	p = points[i];
-	//	glVertex3d(p.x, p.y, p.z);
-	//}
+	for (int i = 0; i < this->size(); i++) {
+		p = points[i];
+		glVertex3d(p.x, p.y, p.z);
+	}
 	//_points._draw();
 	glEnd();
 }

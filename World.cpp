@@ -90,6 +90,11 @@ void World::set_camera_lookat(double x, double y, double z) {
 	_camera.set_camera_lookat(x, y, z);
 }
 
+void World::change_scale(float newScale)
+{
+	_camera.change_scale(newScale);
+}
+
 void World::set_camera_up(point up) {
 	_camera.set_camera_up(up);
 }

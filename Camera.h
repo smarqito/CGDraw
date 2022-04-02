@@ -27,6 +27,7 @@ private:
 	point _lookat;
 	polar _lookat_p;
 	point _up;
+	float _scale;
 	perspective _projection;
 	XMLElement* _xmlElement;
 
@@ -61,6 +62,7 @@ public:
 
 	perspective get_camera_projection();
 
+	void change_scale(float newScale);
 	void move_camera(CAMenum t);
 	void move_lookat(double alpha, double beta);
 

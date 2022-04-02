@@ -1,18 +1,11 @@
-﻿#ifdef __APPLE__
-#include <GLUT/glut.h>
-#else
-#include <GL/glew.h>
-#include <GL/glut.h>
-#endif
-
+﻿#include "CGDraw.h"
+#include "generator/shapes.h"
 #include <math.h>
 #include <iostream>
 #include <tuple>
 #include <tinyxml2.h>
 #include <string>
 #include <iterator>
-#include "generator/shapes.h"
-#include "CGDraw.h"
 
 using namespace std;
 using namespace tinyxml2;
@@ -79,6 +72,18 @@ void drawAxis() {
 	glEnd();
 }
 
+void renderInfo(void) {
+	glPushMatrix();
+	gluOrtho2D(0, 800, 0, 800);
+	glRasterPos2i(10, 0);
+	string menu = "Ola";
+	for (int i = 0; i < menu.length(); i++)
+	{
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, menu[i]);
+	}
+	glPopMatrix();
+}
+
 void renderScene(void) {
 
 	// clear buffers
@@ -97,6 +102,7 @@ void renderScene(void) {
 		// colocar numa tecla
 		drawAxis();
 	}
+	//renderInfo();
 	// End of frame
 	glutSwapBuffers();
 }
@@ -118,6 +124,12 @@ void processKeys(unsigned char c, int xx, int yy) {
 		break;
 	case 'w':
 		world.move_camera_pos(FRONT);
+		break;
+	case '+':
+		world.change_scale(5);
+		break;
+	case '-':
+		world.change_scale(-5);
 		break;
 	case 'p':
 		if (drawAxisB) {
