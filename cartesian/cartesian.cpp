@@ -4,7 +4,7 @@
 * Author: Group
 * UC : Computacao Grafica
 */
-#include "cartesian.h"
+#define _USE_MATH_DEFINES
 #include <math.h>
 //#include <GL/glut.h>
 
@@ -119,6 +119,15 @@ point sub_points(point a, point b)
 	p.x = a.x - b.x;
 	p.y = a.y - b.y;
 	p.z = a.z - b.z;
+	return p;
+
+}
+
+point scale_factor(point x, float factor) {
+	point p;
+	p.x = x.x * factor;
+	p.y = x.y * factor;
+	p.z = x.z * factor;
 	return p;
 
 }

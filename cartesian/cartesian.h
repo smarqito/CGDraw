@@ -25,7 +25,7 @@ struct polar {
 };
 
 struct perspective {
-	double fov, near, far;
+	double fov, nr, fr;
 };
 
 /*
@@ -72,3 +72,8 @@ void sum_points(point* a, point* b);
 point sub_points(point a, point b);
 
 void sub_points(point* a, point* b);
+
+/*
+* Multiply a vector by a factor f (x,y,z) = (fx, fy, fz)
+*/
+point scale_factor(point x, float factor);
