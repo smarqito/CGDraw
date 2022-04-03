@@ -212,7 +212,6 @@ int main(int argc, char** argv) {
 	if (argc != 2) {
 		cout << "./CGDraw world.xml";
 	}
-	world = World(argv[1]);
 
 	// init GLUT and the window
 	glutInit(&argc, argv);
@@ -220,9 +219,6 @@ int main(int argc, char** argv) {
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(800, 800);
 	glutCreateWindow("CG@DI-UM");
-
-	// init GLEW
-	glewInit();
 
 	// Required callback registry 
 	glutDisplayFunc(renderScene);
@@ -237,6 +233,9 @@ int main(int argc, char** argv) {
 
 	// init
 	init();
+	glewInit();
+	// init world from xml
+	world = World(argv[1]);
 
 	// enter GLUT's main cycle
 	glutMainLoop();

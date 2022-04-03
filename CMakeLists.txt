@@ -14,6 +14,8 @@ add_executable(${PROJECT_NAME} CGDraw.cpp Model.cpp World.cpp Models.cpp Group.c
 # link cartesian
 add_subdirectory(cartesian)
 
+# vcpkg install [freeglut, glew, tinyxml2]
+
 #add OpenGL
 find_package(OpenGL REQUIRED)
 include_directories(${OpenGL_INCLUDE_DIRS})

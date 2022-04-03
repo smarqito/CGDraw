@@ -10,8 +10,8 @@
 #endif // !_GL_INCLUDE
 
 #include "generator/shapes.h"
-#include <string>
 #include "cartesian/cartesian.h"
+#include <string>
 #include <tinyxml2.h>
 #include <vector>
 
@@ -22,11 +22,12 @@ using namespace tinyxml2;
 class Model {
 
 private:
-	t_points _points;
+	//t_points _points;
 	GLenum _type;
 	XMLElement* _xml_model;
 	string _model_path;
-	GLuint buffer[5];
+	GLuint _buffer; // VBO buffer pointer
+	GLint _total_points; // hold total points to be drawn
 	//texture texture; // phase not 1
 	//color color; // phase not 1
 	void read_points();
@@ -39,14 +40,13 @@ public:
 
 	char* getFilename();
 
-	int size();
+	//int size();
 
-	bool add_point(double x, double y, double z);
+	//bool add_point(double x, double y, double z);
 
-	point get_next_point();
 
 	void _draw();
-	void build_vbo();
+	//void build_vbo();
 };
 
 #endif // !MODEL_H
