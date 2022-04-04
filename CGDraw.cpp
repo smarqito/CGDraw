@@ -126,10 +126,10 @@ void processKeys(unsigned char c, int xx, int yy) {
 		world.move_camera_pos(FRONT);
 		break;
 	case '+':
-		world.change_scale(5);
+		world.change_scale(1);
 		break;
 	case '-':
-		world.change_scale(-5);
+		world.change_scale(-1);
 		break;
 	case 'p':
 		if (drawAxisB) {
