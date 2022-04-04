@@ -1,18 +1,11 @@
-﻿#ifdef __APPLE__
-#include <GLUT/glut.h>
-#else
-#include <GL/glut.h>
-#endif
-
-#define _USE_MATH_DEFINES
+﻿#include "CGDraw.h"
+#include "generator/shapes.h"
 #include <math.h>
 #include <iostream>
 #include <tuple>
 #include <tinyxml2.h>
 #include <string>
 #include <iterator>
-#include "generator/shapes.h"
-#include "CGDraw.h"
 
 using namespace std;
 using namespace tinyxml2;
@@ -79,6 +72,18 @@ void drawAxis() {
 	glEnd();
 }
 
+void renderInfo(void) {
+	glPushMatrix();
+	gluOrtho2D(0, 800, 0, 800);
+	glRasterPos2i(10, 0);
+	string menu = "Ola";
+	for (int i = 0; i < menu.length(); i++)
+	{
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, menu[i]);
+	}
+	glPopMatrix();
+}
+
 void renderScene(void) {
 
 	// clear buffers
@@ -97,6 +102,7 @@ void renderScene(void) {
 		// colocar numa tecla
 		drawAxis();
 	}
+	//renderInfo();
 	// End of frame
 	glutSwapBuffers();
 }
@@ -118,6 +124,12 @@ void processKeys(unsigned char c, int xx, int yy) {
 		break;
 	case 'w':
 		world.move_camera_pos(FRONT);
+		break;
+	case '+':
+		world.change_scale(1);
+		break;
+	case '-':
+		world.change_scale(-1);
 		break;
 	case 'p':
 		if (drawAxisB) {
@@ -187,12 +199,19 @@ void handleMouseMotion(int x, int y) {
 	glutPostRedisplay();
 }
 
+void init() {
+	glEnableClientState(GL_VERTEX_ARRAY);
+	//  OpenGL settings
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+
+}
+
 int main(int argc, char** argv) {
 
 	if (argc != 2) {
 		cout << "./CGDraw world.xml";
 	}
-	world = World(argv[1]);
 
 	// init GLUT and the window
 	glutInit(&argc, argv);
@@ -201,9 +220,9 @@ int main(int argc, char** argv) {
 	glutInitWindowSize(800, 800);
 	glutCreateWindow("CG@DI-UM");
 
-
 	// Required callback registry 
 	glutDisplayFunc(renderScene);
+	glutIdleFunc(renderScene);
 	glutReshapeFunc(changeSize);
 
 	// Callback registration for keyboard processing
@@ -212,9 +231,11 @@ int main(int argc, char** argv) {
 	glutMouseFunc(processMouseKeys);
 	glutMotionFunc(handleMouseMotion);
 
-	//  OpenGL settings
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
+	// init
+	init();
+	glewInit();
+	// init world from xml
+	world = World(argv[1]);
 
 	// enter GLUT's main cycle
 	glutMainLoop();

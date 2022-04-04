@@ -6,8 +6,18 @@
 * Estrutura de dados para classificar um ponto cartesiano
 * Pontos do eixo 3D, x, y e z
 */
-struct point {
+//struct point {
+//	double x, y, z;
+//};
+
+class point {
+public:
 	double x, y, z;
+	point() {
+		x = 0;
+		y = 0;
+		z = 0;
+	}
 };
 
 struct polar {
@@ -15,7 +25,7 @@ struct polar {
 };
 
 struct perspective {
-	double fov, near, far;
+	double fov, nr, fr;
 };
 
 /*
@@ -62,3 +72,8 @@ void sum_points(point* a, point* b);
 point sub_points(point a, point b);
 
 void sub_points(point* a, point* b);
+
+/*
+* Multiply a vector by a factor f (x,y,z) = (fx, fy, fz)
+*/
+point scale_factor(point x, float factor);

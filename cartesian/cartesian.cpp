@@ -1,12 +1,10 @@
 #include "cartesian.h"
-#include "cartesian.h"
-#include "cartesian.h"
 
 /*
 * Author: Group
 * UC : Computacao Grafica
 */
-#include "cartesian.h"
+#define _USE_MATH_DEFINES
 #include <math.h>
 //#include <GL/glut.h>
 
@@ -85,14 +83,16 @@ polar cart_to_polar(point p)
 polar cart_to_polar(double x, double y, double z)
 {
 	polar p;
-	if (x == 0 || (x == 0 && y == 0 & z == 0)) {
+	if (x == 0 || (x == 0 && y == 0 && z == 0)) {
 		p.r = 1;
 		p.a = 0;
 		p.b = 0;
 		return p;
 	}
 	p.r = sqrt(x * x + y * y + z * z);
-	p.a = -acos(z / sqrt(x*x + y*y));
+	double raiz = sqrt(x * x + y * y);
+	double cos2 = z / raiz;
+	p.a = cos2 <= -1.0 ? M_PI : cos2 >= 1.0 ? 0 : -acos(cos2);
 	p.b = asin(y / p.r);
 	return p;
 }
@@ -119,6 +119,15 @@ point sub_points(point a, point b)
 	p.x = a.x - b.x;
 	p.y = a.y - b.y;
 	p.z = a.z - b.z;
+	return p;
+
+}
+
+point scale_factor(point x, float factor) {
+	point p;
+	p.x = x.x * factor;
+	p.y = x.y * factor;
+	p.z = x.z * factor;
 	return p;
 
 }

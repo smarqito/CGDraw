@@ -6,18 +6,41 @@ Group::Group(XMLElement* xml_elem) {
 }
 
 void Group::_init() {
+	add_transform();
 	add_models();
+	add_groups();
 }
 
 void Group::_draw() {
+	glPushMatrix();
+	_transform._draw();
+	// add nested group
 	_model._draw();
+	for (int i = 0; i < _groups.size(); i++)
+	{
+		_groups[i]._draw();
+	}
+	glPopMatrix();
+}
+
+void Group::add_transform() {
+	XMLElement* pTransform = _xml_elem->FirstChildElement("transform");
+	if (pTransform != nullptr) { // to remove * might not transform
+		_transform = Transform(pTransform);
+	}
+}
+
+void Group::add_groups() {
+	XMLElement* pGroup = _xml_elem->FirstChildElement("group");
+	while (pGroup != nullptr) {
+		_groups.push_back(Group(pGroup));
+		pGroup = pGroup->NextSiblingElement("group");
+	}
 }
 
 void Group::add_models() {
 	XMLElement* pModels = _xml_elem->FirstChildElement("models");
-	if (pModels == nullptr) {
-		cout << "Invalid Models XML Element";
-		throw 0x1;
+	if (pModels != nullptr) {
+		_model = Models(pModels);
 	}
-	_model = Models(pModels);
 }

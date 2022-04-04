@@ -1,5 +1,6 @@
 #ifndef SHAPES_DRAW
 #include <tuple>
+#define _USE_MATH_DEFINES
 #include <math.h>
 #include "../cartesian/cartesian.h"
 

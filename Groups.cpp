@@ -12,6 +12,7 @@ Groups::Groups(XMLElement* xml_group) {
 void Groups::_init() {
 	XMLElement* group = _xml_group; // don't loose the reference to first elem group
 	while (group != NULL) {
+
 		add_group(group);
 		group = group->NextSiblingElement("group");
 	}

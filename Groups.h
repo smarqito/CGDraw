@@ -1,10 +1,9 @@
 #pragma once
+#include "Group.h"
 #ifndef GROUPS_H
 #define GROUPS_H
-#endif // !GROUPS_H
 
 #include <tinyxml2.h>
-#include "Group.h"
 using namespace tinyxml2;
 
 class Groups {
@@ -25,3 +24,5 @@ public:
 
 	void add_group(XMLElement* elem);
 };
+
+#endif // !GROUPS_H

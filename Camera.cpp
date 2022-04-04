@@ -1,17 +1,19 @@
 #include "Camera.h"
+#define _USE_MATH_DEFINES
 #include <math.h>
-
+using namespace std;
 Camera::Camera() {
-
+	_scale = 1;
 }
 
 Camera::Camera(XMLElement* xmlElement) {
 	_xmlElement = xmlElement;
-
+	_scale = 1;
 	_init();
 }
 
 Camera::Camera(point pos, point lookat, point up, perspective perspective) {
+	_scale = 1;
 	set_camera(pos, lookat, up, perspective);
 }
 
@@ -79,23 +81,6 @@ void Camera::set_camera_lookat(double x, double y, double z) {
 	_lookat_p.r = p.r;
 	_lookat_p.a = p.a;
 	_lookat_p.b = p.b;
-
-	/// 
-	//point pc;
-	//pc.x = x; pc.y = y; pc.z = z;
-	//pc = sub_points(pc, _position);
-
-	//polar p = cart_to_polar(pc.x, pc.y, pc.z);
-	//p.r = 1;
-	//_lookat_p.r = p.r;
-	//_lookat_p.a = p.a;
-	//_lookat_p.b = p.b;
-
-	//pc = polartocart(p);
-	//_lookat.x = pc.x;
-	//_lookat.y = pc.y;
-	//_lookat.z = pc.z;
-
 }
 
 void Camera::set_camera_up(point up) {
@@ -109,13 +94,13 @@ void Camera::set_camera_up(double x, double y, double z) {
 }
 
 void Camera::set_camera_projection(perspective perp) {
-	set_camera_projection(perp.fov, perp.near, perp.far);
+	set_camera_projection(perp.fov, perp.nr, perp.fr);
 }
 
-void Camera::set_camera_projection(double fov, double near, double far) {
+void Camera::set_camera_projection(double fov, double nr, double fr) {
 	_projection.fov = fov;
-	_projection.near = near;
-	_projection.far = far;
+	_projection.nr = nr;
+	_projection.fr = fr;
 }
 
 point Camera::get_camera_pos() {
@@ -134,6 +119,11 @@ perspective Camera::get_camera_projection() {
 	return _projection;
 }
 
+void Camera::change_scale(float newScale)
+{
+	_scale = max(_scale + newScale, 0.1f);
+}
+
 // TODO
 void Camera::move_camera(CAMenum t)
 {
@@ -141,18 +131,20 @@ void Camera::move_camera(CAMenum t)
 	switch (t)
 	{
 	case LEFT:
-		p = polartocart(1, _lookat_p.a + (M_PI / 2), 0);
+		p = polartocart(_scale, _lookat_p.a + (M_PI / 2), 0);
 		sum_points(&_position, &p);
 		break;
 	case RIGHT:
-		p = polartocart(1, _lookat_p.a - (M_PI / 2), 0);
+		p = polartocart(_scale, _lookat_p.a - (M_PI / 2), 0);
 		sum_points(&_position, &p);
 		break;
 	case FRONT:
-		sum_points(&_position, &_lookat);
+		p = scale_factor(_lookat, _scale);
+		sum_points(&_position, &p);
 		break;
 	case BACK:
-		sub_points(&_position, &_lookat);
+		p = scale_factor(_lookat, _scale);
+		sub_points(&_position, &p);
 		break;
 	default:
 		break;
@@ -161,8 +153,10 @@ void Camera::move_camera(CAMenum t)
 
 void Camera::move_lookat(double alpha, double beta)
 {
+
 	_lookat_p.a += alpha;
-	_lookat_p.b += beta;
+	//_lookat_p.b += beta;
+	_lookat_p.b = fmax(fmin(_lookat_p.b + beta, 1.5f), -1.5f);
 	point p = polartocart(_lookat_p);
 	_lookat.x = p.x;
 	_lookat.y = p.y;
@@ -170,7 +164,7 @@ void Camera::move_lookat(double alpha, double beta)
 }
 
 void Camera::_draw_projection(double ratio) {
-	gluPerspective(_projection.fov, ratio, _projection.near, _projection.far);
+	gluPerspective(_projection.fov, ratio, _projection.nr, _projection.fr);
 }
 
 void Camera::_draw_lookAt() {

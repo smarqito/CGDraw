@@ -16,6 +16,7 @@ void Model::_init() {
 
 void Model::read_points()
 {
+	vector<float> points;
 	XMLDocument doc;
 	doc.LoadFile(_model_path.c_str());
 	if (doc.Error()) {
@@ -26,7 +27,7 @@ void Model::read_points()
 
 	_type = x_root->FindAttribute("type")->IntValue();
 	int size = x_root->FindAttribute("size")->IntValue();
-	_points = t_points(size);
+	//_points = t_points(size);
 	XMLElement* pPoint = x_root->FirstChildElement("point");
 
 	double x, y, z;
@@ -35,13 +36,18 @@ void Model::read_points()
 		x = pPoint->FindAttribute("x")->DoubleValue();
 		y = pPoint->FindAttribute("y")->DoubleValue();
 		z = pPoint->FindAttribute("z")->DoubleValue();
-		add_point(x, y, z);
+		//add_point(x, y, z);
+		points.push_back(x);
+		points.push_back(y);
+		points.push_back(z);
 		pPoint = pPoint->NextSiblingElement("point");
 	}
+	_total_points = points.size();
+	glGenBuffers(1, &_buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, _buffer);
+	glBufferData(GL_ARRAY_BUFFER, points.size() * sizeof(float), points.data(), GL_STATIC_DRAW);
+//	build_vbo();
 }
-
-
-
 
 GLenum Model::getType() {
 	return _type;
@@ -51,30 +57,27 @@ char* Model::getFilename() {
 	return strdup(_model_path.c_str());
 }
 
-int Model::size() {
-	return _points.size();
-}
+//int Model::size() {
+//	return _points.size();
+//}
 
-bool Model::add_point(double x, double y, double z) {
-	return _points.add_point(x, y, z);
-}
-
-point Model::get_next_point() {
-	// TODO - implement Model::get_next_point
-	throw "Not yet implemented";
-}
+//bool Model::add_point(double x, double y, double z) {
+//	return _points.add_point(x, y, z);
+//}
 
 void Model::_draw() {
 	// to add texture
 	// to add color
-
-	point* points = _points.get_points_ptr();
+	//point* points = _points.get_points_ptr();
 	point p;
-	glBegin(_type);
-	for (int i = 0; i < this->size(); i++) {
-		p = points[i];
-		glVertex3d(p.x, p.y, p.z);
-	}
-	//_points._draw();
-	glEnd();
+	glBindBuffer(GL_ARRAY_BUFFER, _buffer);
+	glVertexPointer(3, GL_FLOAT, 0, 0);
+	glDrawArrays(_type, 0, _total_points * 3);
+	//glBegin(_type);
+	//for (int i = 0; i < this->size(); i++) {
+	//	p = points[i];
+	//	glVertex3d(p.x, p.y, p.z);
+	//}
+	////_points._draw();
+	//glEnd();
 }

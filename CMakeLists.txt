@@ -3,69 +3,57 @@
 # Project Name
 PROJECT(CGDraw)
 
+set(CXX_STANDARD 11)
+
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_executable(${PROJECT_NAME} CGDraw.cpp "Model.h" "Model.cpp"  "World.h" "World.cpp" "Models.h" "Models.cpp" "Group.h" "Group.cpp" "Camera.h" "Camera.cpp" "Lights.h" "Lights.cpp" "Groups.h" "Groups.cpp" "CGDraw.h" "Common.h")
+include_directories(${PROJECT_SOURCE_DIR})
 
-target_link_libraries(CGDraw "cartesian")
+add_executable(${PROJECT_NAME} CGDraw.cpp Model.cpp World.cpp Models.cpp Group.cpp Camera.cpp Lights.cpp Groups.cpp Transform.cpp)
 
-add_executable(generator generator/writer.cpp "generator/shapes.cpp")
+# link cartesian
+add_subdirectory(cartesian)
 
-target_link_libraries(generator "cartesian")
+# vcpkg install [freeglut, glew, tinyxml2]
 
+#add OpenGL
 find_package(OpenGL REQUIRED)
-find_package(tinyxml2 REQUIRED)
 include_directories(${OpenGL_INCLUDE_DIRS})
 link_directories(${OpenGL_LIBRARY_DIRS})
 add_definitions(${OpenGL_DEFINITIONS})
 
-target_link_libraries(generator tinyxml2::tinyxml2)
+#add tinyxml
+find_package(tinyxml2 REQUIRED)
 
-if(NOT OPENGL_FOUND)
-    message(ERROR " OPENGL not found!")
-endif(NOT OPENGL_FOUND)
+# add glut
+find_package(GLUT REQUIRED)
+include_directories(${GLUT_INCLUDE_DIR})
+link_directories(${GLUT_LIBRARY_DIRS})
+add_definitions(${GLUT_DEFINITIONS})
 
-if  (WIN32)
+#add Glew
+find_package(GLEW REQUIRED)
+include_directories(${GLEW_INCLUDE_DIRS})
+link_libraries(${GLEW_LIBRARIES})
 
-	message(STATUS "Toolkits_DIR set to: " ${TOOLKITS_FOLDER})
-	set(TOOLKITS_FOLDER "" CACHE PATH "Path to Toolkits folder")
-	
-	if (NOT EXISTS "${TOOLKITS_FOLDER}/glut/GL/glut.h" OR NOT EXISTS "${TOOLKITS_FOLDER}/glut/glut32.lib")
-		message(ERROR ": GLUT not found")
-	endif (NOT EXISTS "${TOOLKITS_FOLDER}/glut/GL/glut.h" OR NOT EXISTS "${TOOLKITS_FOLDER}/glut/glut32.lib")	
-	
-	
-	include_directories(${TOOLKITS_FOLDER}/glut )
-	target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} 
-										  ${TOOLKITS_FOLDER}/glut/glut32.lib)
-	
-	if (EXISTS "${TOOLKITS_FOLDER}/glut/glut32.dll" )
-		file(COPY ${TOOLKITS_FOLDER}/glut/glut32.dll DESTINATION ${CMAKE_BINARY_DIR})
-	endif(EXISTS "${TOOLKITS_FOLDER}/glut/glut32.dll" )	
-	
+
+target_include_directories(CGDraw PUBLIC cartesian)
+
+target_link_libraries(${PROJECT_NAME} PUBLIC ${OPENGL_LIBRARIES} ${GLEW_LIBRARY} ${GLUT_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} PUBLIC GLUT::GLUT)
+target_link_libraries(${PROJECT_NAME} PUBLIC GLEW::GLEW)
+target_link_libraries(${PROJECT_NAME} PUBLIC tinyxml2::tinyxml2)
+target_link_libraries(${PROJECT_NAME} PUBLIC cartesian)
+
+if(WIN32)
 	set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
-	
-else (WIN32) #Linux and Mac
-
-	set( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} Wno-deprecated")
-	find_package(GLUT REQUIRED)
-	include_directories(${GLUT_INCLUDE_DIR})
-	link_directories(${GLUT_LIBRARY_DIRS})
-	add_definitions(${GLUT_DEFINITIONS})
-	
-	target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} tinyxml2::tinyxml2)
-	if(NOT GLUT_FOUND)
-	   message(ERROR ": GLUT not found!")
-	endif(NOT GLUT_FOUND)
-	
+else (WIN32)
+	set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} Wno-deprecated")
 endif(WIN32)
 
-
-
-
-
-
-
-
-
-add_subdirectory("cartesian")
+# GENERATOR EXECUTABLE
+add_executable(generator generator/writer.cpp generator/shapes.cpp)
+target_link_libraries(generator cartesian)
+target_link_libraries(generator tinyxml2::tinyxml2)
+#target_link_libraries(generator m)
+target_include_directories(generator PUBLIC cartesian)
