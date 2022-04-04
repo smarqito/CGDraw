@@ -14,6 +14,7 @@ framesep=2mm
 \usepackage{lscape}
 \usepackage{microtype} % melhora a formatação do texto para evitar overfull box, entre outros
 \usepackage{hyperref}
+\usepackage{amsmath}
 % to insert sourcecode
 \newenvironment{code}{\captionsetup{type=listing}}{}
 \SetupFloatingEnvironment{listing}{name=\underline{\textbf{CGDraw} Source Code}}
@@ -31,19 +32,26 @@ framesep=2mm
 \maketitle              % typeset the header of the contribution
 %
 \begin{abstract}
-    Devido à influência crescente de novas indústrias, nomeadamente a de jogos e cinematográfica, a integração dos meios para gerar graficamente novos ambientes é da mais elevada importância.
-    No âmbito de um primeiro contacto esta vasta área, de computação gráfica, será apresentada a conceção da primeira fase do projeto académico realizado pelo grupo.
-    Este relatório engloba a conceção de duas aplicações, para gerar e apresentar figuras geométricas, a partir de valores dados.
-    \keywords{ OpenGL \and GLUT \and Figuras Geométricas \and 3D \and C++}
+    Por forma a permitir a construção de um mundo gráfico virtual, é necessário 
+    a possibilidade de transformações geométricas dos objetos a serem 
+    construídos.
+    Assim, procedeu-se à utilização das funções que permitem transformações geométricas,
+    como glTranslate, glRotate e glScale para construir um modelo do sistema solar
+    a partir da definição hierárquica do sol, planetas e luas.
+    
+    Procedeu-se, ainda, à utilização de VBO e implementação de uma câmera FPS para 
+    navegar pelo mundo.
+    
+    \keywords{ OpenGL \and GLUT \and Glew \and c++ \and Transformations \and FPS}
 \end{abstract}
 
 \section{Introdução}
 
 \subsection{Contextualização}
 
-No seguimento da fase I do projeto da disciplina de \textit{Compucação Gráfica} da Licenciatura em
+No seguimento da fase I do projeto da disciplina de \textit{Computação Gráfica} da Licenciatura em
 Engenharia Informática da Universidade do Minho, foi proposto a aplicação de transformações geométricas
-ao motor previamente desenvolvido, assim como o desenvolvimento de um modelo sistema solar.
+ao motor previamente desenvolvido, assim como o desenvolvimento de um modelo do sistema solar.
 
 \subsection{Breve Descrição do Enunciado Proposto}
 O principal foco da fase a que este relatório se remete é a aplicação de um conjunto de transformações geométricas,
@@ -70,7 +78,8 @@ Funcionalidades implementadas:
           \begin{enumerate}
               \item Acréscimo de escala de navegação
           \end{enumerate}
-    \item Construção de modelo do sistema solar (\ref{sec:modelo_ss})
+    \item Implementação de VBO's
+    \item Construção do modelo do sistema solar (\ref{sec:modelo_ss})
 \end{enumerate}
 
 \subsection{Transformações Geométricas} \label{sec:transf_geometricas}
@@ -130,24 +139,94 @@ Durante o \textit{parsing} do ficheiro $XML$:
     elemento \mintinline{xml}{<up x="X" y="Y" z="Z" />}
 \end{enumerate}
 
-Após efetuar o \textit{parsing} do xml, tem-se o estado inicial de navegação.
+Após efetuar o \textit{parsing} do \textit{xml}, tem-se o estado inicial de navegação.
 A partir deste, foi utilizado os métodos \mintinline{cpp}{move_camera(CAMenum t)} e
 \mintinline{cpp}{move_lookat(double alpha, double beta)}.
 
 A movimentação do $lookat$ consiste em incrementar o valor do $\alpha$ conforme o movimento do 
 rato ao longo da janela.
-Quanto ao primeiro - move_camera(CAMenum) efetua um movimento para a frente, trás, direita e esquerda.
+Quanto ao primeiro - move\_camera(CAMenum) efetua um movimento para a frente, trás, direita e esquerda.
 Em qualquer um dos casos, é utilizado o vetor $lookat$ multiplicado por um escalar para movimentar a posição da câmera.
 No caso de movimentar para a esquerda e direita, como a referência é para onde a câmera está a olhar,
-utilizou-se uma rotação de [+-] 90$\deg$ e, posteriormente, movimentou-se a câmera.
-Ao utilizar o vetor $lookAt$ garante-se que o movimento é uniforme e congruente com a sua dieração.
+utilizou-se uma rotação de $\pm90\deg$ e, posteriormente, movimentou-se a câmera.
+Ao utilizar o vetor $lookAt$ garante-se que o movimento é uniforme e congruente com a sua direção.
+
+\textbf{Nota:} Atualmente esta funcionalidade encontra-se com um 
+\textit{bug}. A primeira interação do rato com o ecrã gera uma pequena 
+deslocação do \textit{lookat}. 
+Após esta, encontra-se uma interação fluída do utilizador.
+
+\subsection{\textit{Vertex Buffer Object} (VBO)}
+Optou-se por implementar, desde já, a utilização de VBO's
+para melhorar a performance da renderização.
+
+A implementação foi efetuada ao nível da \mintinline{cpp}{class Model},
+que representa a definição de um modelo do sistema e
+implicou pequenas alterações, nomeadamente:
+\begin{itemize}
+    \item Remoção da variável de instância \_points que apontava para um \mintinline{cpp}{std::vector}
+    \item Acréscimo de um \mintinline{cpp}{GLuint _buffer} para apontar para um buffer gerado na memória da placa gráfica
+\end{itemize}
+
+Após estas alterações, tratou-se de alocar um buffer na memória 
+da placa gráfica e popular esse buffer com os pontos a serem desenhados,
+ficando o índice do buffer disponível como variável de instância.
+Este procedimento decorre durante o \textit{parsing} do 
+documento XML e respetiva leitura dos pontos do modelo:
+
+\begin{code}
+\captionof{listing}{Gerar e popular VBO}
+\label{code:vbo_gen}
+\inputminted[firstline=46, lastline=48]{cpp}{../../Model.cpp}
+\end{code}
+
+Depois de ter o \textit{buffer} disponível, a sua renderização
+ocorre durante a execução do método \mintinline{cpp}{_draw}:
+\begin{code}
+\captionof{listing}{Renderizar VBO}
+\label{code:render_vbo}
+\inputminted[firstline=73, lastline=75]{cpp}{../../Model.cpp}
+\end{code}
+
+\textbf{Futuramente}, na \underline{próxima fase}, pretende-se a implementação
+de VBO's com índices, por forma a otimizar a \textit{performance}.
 
 \subsection{Modelo do Sistema Solar} \label{sec:modelo_ss}
-OK - Aplicação transformações geométricas
-OK -- criação de vetor transformações no objeto Grupo (desta forma é aplicado a todos os seus elementos: modelos ou subgrupos)
-OK --- aplica multiplas transformações por ordem definida (pode aplicar uma ou mais vezes a mesma transformação)
-- Câmera FPS
--- implementação de escala para movmientação da câmera (botões + e - para aumentar ou reduzir a escala de movimento, respetivamente)
+Conforme requisitado pela equipa docente, procedeu-se
+à construção de um modelo do sistema solar utilizando a
+sintaxe \textit{XML} previamente definida, assim como
+as figuras geométricas geradas pela aplicação \textbf{generator}, desenvolvido na fase I.
+
+Assim, a construção do modelo consistiu na criação, de 
+forma hierárquica, do sol, planetas e algumas luas.
+
+A principal dificuldade prendeu-se com a escolha de uma escala adequada.
+Atendendo às grandes dimensões de diâmetro dos planetas e ainda maior distância entre estes,
+foi necessário definir escalas diferentes para ambas as medidas.
+
+A escala do diâmetro e distância do sol foi obtida através da fórmula:
+\begin{align*}
+    terra_{diametro}^{scale} & = 10 u \\
+    planeta_{x}^{scale} &= \frac{terra_{diametro}^{scale} \cdot planeta_{x}^{real}}{terra_{diametro}^{real}} \\
+    distancia_{x}^{scale} &= \frac{x^{scale}\cdot x^{distance}_{real}}{x_{diametro}^{real}} \cdot 500^{-1}
+\end{align*}
+
+Depois de definida a escala, a sua concretização foi relativamente linear.
+Através da utilização da \textit{sphere} gerada no \textit{generator},
+aliado ao poder da translação e \textit{scale}, permitiu que se construísse
+os vários planetas na posição previamente calculada com a escala definida.
+
+De salientar a utilização da figura geométrica \textbf{\textit{tórus}} para 
+a representação dos anéis de saturno.
+
+Em suma, foi construído um grupo que corresponde à origem, onde é definido o sol.
+Posteriormente, há vários subgrupos que identificam cada um dos planetas.
+Os planetas Terra e Marte têm, ainda, outros subgrupos que permitem a
+criação das suas luas.
+Optou-se por não representar as luas de outros planetas, atendendo à sua quantidade.
+O facto de se ter representado o sistema solar de forma hierárquica, 
+permite que, nas fases que se aproximam seja mais fácil a implementação 
+de animações relacionadas com cada planeta e/ ou a totalidade do sistema solar. 
 
 \begin{landscape}
     \begin{figure}
@@ -165,15 +244,37 @@ OK --- aplica multiplas transformações por ordem definida (pode aplicar uma ou
     \end{figure}
 \end{landscape}
 
-
-
 \section{Conclusão}
-No contexto de um primeiro contacto com o ambiente gráfico inerente à cadeira, várias dificuldades surgiram na conceção da primeira fase do projeto.
-A construção de objetos, com uma abstração ao plano \textbf{3D}, aliada à nomenclatura de uma nova linguagem, colocou questões sobre como atingir os resultados requiridos, em duas aplicações bem construídas dignas do nível académico do grupo.
+Com a conclusão da fase $I$, verificou-se que a implementação da atual fase 
+se tornou bastante expedita pelo facto de se ter desenvolvido
+uma arquitetura que permite a implementação de novas funcionalidades 
+de forma quase \textit{cirúrgica}, i.e. é possível determinar o exato 
+local onde se terá de efetuar alterações para que se obtenha o resultado
+pretendido.
 
-Munidos com o auxílio da equipa docente, foi possível realizar a dinâmica proposta, o \textbf{generator} e a \textbf{engine}, com uma arquitetura multifacetada, tendo em consideração as futuras alterações das próximas fases do projeto.
+Assim, com a presente fase, foi possível implementar todos os requisitos 
+definidos pela equipa docente e, ainda, acrescentar algumas funcionalidades extra.
+Em particular, nesta fase foi implementado:
+\begin{itemize}
+    \item Transformações geométricas
+    \item Geração do tórus
+    \item Navegação com câmera FPS
+    \item Utilização de VBO
+    \item Construção do modelo do sistema solar
+\end{itemize}
 
-Assim, o grupo apresenta uma solução que responde ao requisitos da fase inicial, procurando trazer outros elementos, como a adição da escolha da construção de um cilindro, como lecionado nas aulas práticas.
+Assim, pretende-se na próxima fase implementar a utilização de VBOs 
+com recurso a índices, tal como todas as funcionalidade propostas pela
+equipa docente.
+
+\section*{Anexos}
+\subsection*{Modelo do Sistema Solar}
+\begin{code}
+\captionof{listing}{Modelo do Sistema Solar}
+\label{code:sistema_solar_xml}
+\inputminted[linenos, breaklines, frame=lines]{xml}{../../demos/solar_system.xml}
+\end{code}
+
 
 %
 % ---- Bibliography ----
