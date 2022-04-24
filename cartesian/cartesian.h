@@ -8,18 +8,18 @@
 * Pontos do eixo 3D, x, y e z
 */
 struct point {
-	double x, y, z;
+	float x, y, z;
 };
 
 struct polar {
-	double r, a, b;
+	float r, a, b;
 };
 
 struct perspective {
-	double fov, near, far;
+	float fov, near, far;
 };
 
-struct matrix {
+typedef struct matrix {
 	float* mat;
 	int m;
 	int n;
@@ -75,13 +75,15 @@ void sub_points(point* a, point* b);
 point scale_factor(point x, float factor);
 
 /*
-Equivalente a Out = Ax
+Equivalente a Out = AxB
 @param a matriz A
 @param b matriz B
 @param out Apontador para matriz resultado
 @return True if possible to multiply; False otherwise
 */
 bool mul_matrix(matrix* a, matrix* b, matrix* out);
+
+matrix mul_matrix(matrix a, matrix b);
 
 /*
 Cross-product between a x b

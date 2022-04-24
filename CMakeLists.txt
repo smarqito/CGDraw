@@ -14,10 +14,10 @@ add_executable(generator generator/writer.cpp "generator/shapes.cpp")
 target_link_libraries(generator "cartesian")
 
 find_package(OpenGL REQUIRED)
-find_package(tinyxml2 REQUIRED)
 include_directories(${OpenGL_INCLUDE_DIRS})
 link_directories(${OpenGL_LIBRARY_DIRS})
 add_definitions(${OpenGL_DEFINITIONS})
+find_package(tinyxml2 REQUIRED)
 
 target_link_libraries(generator tinyxml2::tinyxml2)
 
@@ -37,7 +37,8 @@ if  (WIN32)
 	
 	include_directories(${TOOLKITS_FOLDER}/glut )
 	target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} 
-										  ${TOOLKITS_FOLDER}/glut/glut32.lib)
+										  ${TOOLKITS_FOLDER}/glut/glut32.lib
+											tinyxml2::tinyxml2)
 	
 	if (EXISTS "${TOOLKITS_FOLDER}/glut/glut32.dll" )
 		file(COPY ${TOOLKITS_FOLDER}/glut/glut32.dll DESTINATION ${CMAKE_BINARY_DIR})

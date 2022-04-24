@@ -85,7 +85,7 @@ polar cart_to_polar(point p)
 polar cart_to_polar(double x, double y, double z)
 {
 	polar p;
-	if (x == 0 || (x == 0 && y == 0 & z == 0)) {
+	if (x == 0 || (x == 0 && y == 0 && z == 0)) {
 		p.r = 1;
 		p.a = 0;
 		p.b = 0;
@@ -159,6 +159,19 @@ bool mul_matrix(matrix* a, matrix* b, matrix* out)
 	}
 	return true;
 }
+
+matrix mul_matrix(matrix a, matrix b)
+{
+	if (a.n != b.m) {
+		throw "Matrix dim can't be multiplied";
+	}
+	float tmp[a.m * b.n];
+	matrix tmp_mat = { tmp, a.m, b.n };
+	mul_matrix(&a, &b, &tmp_mat);
+	return tmp_mat;
+}
+
+
 
 void cross(point* a, point* b, point* res)
 {
