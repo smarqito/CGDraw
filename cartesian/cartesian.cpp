@@ -131,12 +131,48 @@ void sub_points(point* a, point* b)
 
 }
 
-void t_points::_draw() {
+point scale_factor(point x, float factor) {
 	point p;
-	for (int i = 0; i < this->size(); i++) {
-		p = get_point(i);
-		//glVertex3d(p.x, p.y, p.z);
+	p.x = x.x * factor;
+	p.y = x.y * factor;
+	p.z = x.z * factor;
+	return p;
+
+}
+
+bool mul_matrix(matrix* a, matrix* b, matrix* out)
+{
+	if (!a || !b || a->n != b->m) {
+		return false;
 	}
+	out->m = a->m;
+	out->n = b->n;
+	for (int i = 0; i < a->m; i++)
+	{
+		for (int j = 0; j < b->n; j++) {
+			out->mat[i * b->n + j] = 0;
+			for (int k = 0; k < a->m; k++)
+			{
+				out->mat[i * b->n + j] += a->mat[i * a->n + j] * b->mat[j * b->n + i];
+			}
+		}
+	}
+	return true;
+}
+
+void cross(point* a, point* b, point* res)
+{
+	res->x = a->y * b->z - a->z * b->y;
+	res->y = a->z * b->x - a->x * b->z;
+	res->z = a->x * b->y - a->y * b->x;
+}
+
+void normalize(point* a)
+{
+	float l = sqrt(a->x * a->x + a->y * a->y + a->z * a->z);
+	a->x /= l;
+	a->y /= l;
+	a->z /= l;
 }
 
 point* t_points::get_points_ptr()

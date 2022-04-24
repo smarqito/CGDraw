@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <list>
 
+
 /*
 * Estrutura de dados para classificar um ponto cartesiano
 * Pontos do eixo 3D, x, y e z
@@ -16,6 +17,12 @@ struct polar {
 
 struct perspective {
 	double fov, near, far;
+};
+
+struct matrix {
+	float* mat;
+	int m;
+	int n;
 };
 
 /*
@@ -41,7 +48,6 @@ public:
 	bool add_point(point p);
 	point get_point();
 	point get_point(int pos);
-	void _draw();
 	point* get_points_ptr();
 };
 
@@ -62,3 +68,27 @@ void sum_points(point* a, point* b);
 point sub_points(point a, point b);
 
 void sub_points(point* a, point* b);
+
+/*
+* Multiply a vector by a factor f (x,y,z) = (fx, fy, fz)
+*/
+point scale_factor(point x, float factor);
+
+/*
+Equivalente a Out = Ax
+@param a matriz A
+@param b matriz B
+@param out Apontador para matriz resultado
+@return True if possible to multiply; False otherwise
+*/
+bool mul_matrix(matrix* a, matrix* b, matrix* out);
+
+/*
+Cross-product between a x b
+*/
+void cross(point* a, point* b, point* res);
+
+/*
+Normaliza o ponto a
+*/
+void normalize(point* a);
