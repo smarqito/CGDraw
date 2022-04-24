@@ -25,7 +25,7 @@ class Camera {
 private:
 	point _position;
 	point _lookat;
-	polar _lookat_p;
+	my_polar _lookat_p;
 	point _up;
 	float _scale;
 	perspective _projection;

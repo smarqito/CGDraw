@@ -2,6 +2,7 @@
 #include <tuple>
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <vector>
 #include "../cartesian/cartesian.h"
 
 using namespace std;
@@ -34,4 +35,6 @@ t_points create_sphere(int radius, int slices, int stacks);
 t_points create_cylinder(int radius, int height, int slices, int stacks);
 
 t_points create_torus(double radius, double size, int slices, int stack);
+
+vector<t_points> create_bezier(vector<vector<int>> patches, vector<point> points, int level);
 #endif // !SHAPES_DRAW

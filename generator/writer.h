@@ -4,6 +4,8 @@
 #include <tuple>
 #include <GL/glut.h>
 #include <math.h>
+#include <fstream>
+
 
 using namespace std;
 using namespace tinyxml2;

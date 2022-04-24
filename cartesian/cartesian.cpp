@@ -62,7 +62,7 @@ point t_points::get_point(int pos) {
 	throw 0x1;
 }
 
-point polartocart(polar p) {
+point polartocart(my_polar p) {
 	return polartocart(p.r, p.a, p.b);
 }
 
@@ -75,14 +75,14 @@ point polartocart(float r, float alpha, float beta) {
 	return point;
 }
 
-polar cart_to_polar(point p)
+my_polar cart_to_polar(point p)
 {
 	return cart_to_polar(p.x, p.y, p.z);
 }
 
-polar cart_to_polar(double x, double y, double z)
+my_polar cart_to_polar(double x, double y, double z)
 {
-	polar p;
+	my_polar p;
 	if (x == 0 || (x == 0 && y == 0 && z == 0)) {
 		p.r = 1;
 		p.a = 0;

@@ -1,5 +1,6 @@
 #include "writer.h"
 #include "shapes.h"
+#include <bits/stdc++.h>
 
 // ---------------------------- Funções Auxiliares -------------------------------------
 /*
@@ -14,6 +15,17 @@ void write_point(XMLDocument* xml, point point) {
 	ponto->SetAttribute("z", point.z);
 	root->InsertEndChild(ponto);
 }
+
+void write_point_2(XMLDocument * xml, XMLElement * elem, point point) {
+	XMLNode* root = xml->FirstChild();
+
+	XMLElement* ponto = xml->NewElement("point");
+	ponto->SetAttribute("x", point.x);
+	ponto->SetAttribute("y", point.y);
+	ponto->SetAttribute("z", point.z);
+	elem->InsertEndChild(ponto);
+}
+
 
 /*
 * Função para escrever todo o ficheiro xml, relativo a uma figura gemométrica
@@ -31,6 +43,53 @@ void write_xml(const char* filepath, GLenum type, t_points all_points) {
 	for (int i = 0; i < size; i++)
 	{
 		write_point(&xml, all_points.get_point(i));
+	}
+
+	xml.SaveFile(filepath);
+}
+
+string vector_to_string(vector<int> v) {
+	stringstream result;
+	copy(v.begin(), v.end(), ostream_iterator<int>(result, ","));
+	string s = result.str();
+	s = s.substr(0, s.length() - 1);
+	return s;
+}
+
+/*
+* Função criada para escrever no documento xml indices
+*/
+void write_xml_indexes(const char* filepath, GLenum type, vector<vector<int>> indexes,vector<point> all_points, double level) {
+	XMLDocument xml;
+	int size = all_points.size();
+
+	XMLElement* pRoot = xml.NewElement("model");
+	xml.InsertFirstChild(pRoot);
+
+	pRoot->SetAttribute("type", type);
+	pRoot->SetAttribute("size", size);
+	pRoot->SetAttribute("indexes", "True");
+	if (type == 2) {
+		pRoot->SetAttribute("bezier", level);
+	}
+	else {
+		pRoot->SetAttribute("bezier", 0.0);
+	}
+
+	//write indexes
+	XMLNode* indexs = xml.NewElement("indexes");
+	//XMLElement* indexs = xml.NewElement("indexes");
+	pRoot->InsertEndChild(indexs);
+	for (int i = 0; i < indexes.size(); i++)
+	{
+		XMLElement* index = xml.NewElement("index");
+		index->SetText(vector_to_string(indexes[i]).data());
+		indexs->InsertEndChild(index);
+	}
+	XMLElement* points = xml.NewElement("points");
+	pRoot->InsertEndChild(points);
+	for (int j = 0; j < size; j++) {
+		write_point_2(&xml, points, all_points[j]);
 	}
 
 	xml.SaveFile(filepath);
@@ -136,8 +195,51 @@ int main(int argc, const char** argv) {
 
 		write_xml(argv[6], GL_TRIANGLES, points);
 	}
+	else if (strcmp(argv[1], "bezier") == 0) {
+		if (argc < 5) {
+			cout << "Insufficient Args.Example: ./generator bezier namefile tessellationLevel bezier.3d";
+			return 1;
+		}
+		fstream file;
+		file.open(argv[2], ios::in);
+		string tp;
+		getline(file, tp);
+		int patchs = stoi(tp);
+		vector<vector<int>> v;
+		for (int i = 0; i < patchs; i++) {
+			getline(file, tp);
+			stringstream ss(tp);
+			vector<int> v2;
+			while (ss.good()) {
+				string substr;
+				getline(ss, substr, ',');
+				v2.push_back(stoi(substr));
+			}
+			v.push_back(v2);
+		}
+		getline(file, tp);
+		int npoints = stoi(tp);
+		vector<point> _points;
+		for (int i = 0; i < npoints; i++) {
+			getline(file, tp);
+			stringstream ss(tp);
+			point p;
+			string substr;
+			getline(ss, substr, ',');
+			p.x = stod(substr);
+			getline(ss, substr, ',');
+			p.y = stod(substr);
+			getline(ss, substr, ',');
+			p.z = stod(substr);
+			_points.push_back(p);
+		}
+		file.close();
+		//res = create_bezier(v, _points, stod(argv[3]));
+		write_xml_indexes(argv[4], GL_LINE_LOOP, v, _points, stod(argv[3]));
+
+	}
 	else {
-		cout << "Geometric Figures: sphere | cone | box | plane";
+		cout << "Geometric Figures: sphere | cone | box | plane | bezier";
 	}
 
 	return 0;

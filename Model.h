@@ -11,6 +11,7 @@
 
 #include "generator/shapes.h"
 #include "cartesian/cartesian.h"
+#include "curves/curves.h"
 #include <string>
 #include <tinyxml2.h>
 #include <vector>
@@ -28,6 +29,8 @@ private:
 	string _model_path;
 	GLuint _buffer; // VBO buffer pointer
 	GLint _total_points; // hold total points to be drawn
+	vector<GLuint> _indexes;
+	vector<unsigned int> _indexes_count;
 	//texture texture; // phase not 1
 	//color color; // phase not 1
 	void read_points();

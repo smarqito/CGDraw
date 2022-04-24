@@ -77,7 +77,7 @@ void Camera::set_camera_lookat(double x, double y, double z) {
 	_lookat.z /= r;
 
 
-	polar p = cart_to_polar(_lookat.x, _lookat.y, _lookat.z);
+	my_polar p = cart_to_polar(_lookat.x, _lookat.y, _lookat.z);
 	_lookat_p.r = p.r;
 	_lookat_p.a = p.a;
 	_lookat_p.b = p.b;

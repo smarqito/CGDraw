@@ -20,7 +20,7 @@ public:
 	}
 };
 
-struct polar {
+struct my_polar {
 	double r, a, b;
 };
 
@@ -59,11 +59,11 @@ public:
 * Criar um ponto a partir de coordenadas polares
 */
 point polartocart(float r, float alpha, float beta);
-point polartocart(polar p);
+point polartocart(my_polar p);
 
-polar cart_to_polar(point p);
+my_polar cart_to_polar(point p);
 
-polar cart_to_polar(double x, double y, double z);
+my_polar cart_to_polar(double x, double y, double z);
 
 point sum_points(point a, point b);
 

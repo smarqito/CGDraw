@@ -9,10 +9,11 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 include_directories(${PROJECT_SOURCE_DIR})
 
-add_executable(${PROJECT_NAME} CGDraw.cpp Model.cpp World.cpp Models.cpp Group.cpp Camera.cpp Lights.cpp Groups.cpp Transform.cpp)
+add_executable(${PROJECT_NAME} CGDraw.cpp Model.cpp World.cpp Models.cpp Group.cpp Camera.cpp Lights.cpp Groups.cpp Transform.cpp curves/curves.cpp)
 
 # link cartesian
 add_subdirectory(cartesian)
+
 
 # vcpkg install [freeglut, glew, tinyxml2]
 
