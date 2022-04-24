@@ -28,6 +28,12 @@ struct perspective {
 	double fov, nr, fr;
 };
 
+struct matrix {
+	float* mat;
+	int m;
+	int n;
+};
+
 /*
 * Estrutura de dados dos pontos para construir uma figura geométrica
 * Os pontos são tuplos -> coordenadas cartesianas x y z
@@ -77,3 +83,22 @@ void sub_points(point* a, point* b);
 * Multiply a vector by a factor f (x,y,z) = (fx, fy, fz)
 */
 point scale_factor(point x, float factor);
+
+/*
+Equivalente a Out = Ax
+@param a matriz A
+@param b matriz B
+@param out Apontador para matriz resultado
+@return True if possible to multiply; False otherwise
+*/
+bool mul_matrix(matrix* a, matrix* b, matrix* out);
+
+/*
+Cross-product between a x b
+*/
+void cross(point* a, point* b, point* res);
+
+/*
+Normaliza o ponto a
+*/
+void normalize(point* a);

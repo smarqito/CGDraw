@@ -28,8 +28,8 @@ void Model::read_points()
 
 	_type = x_root->FindAttribute("type")->IntValue();
 	int size = x_root->FindAttribute("size")->IntValue();
-	bool indexes = x_root->FindAttribute("indexes")->BoolValue();
-	double level = x_root->FindAttribute("bezier")->DoubleValue();
+	bool indexes = x_root->BoolAttribute("indexes");
+	double level = x_root->DoubleAttribute("bezier");
 	//_points = t_points(size);
 	if (indexes) {
 		XMLElement* pIndexes = x_root->FirstChildElement("indexes");

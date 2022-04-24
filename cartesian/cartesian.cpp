@@ -132,6 +132,41 @@ point scale_factor(point x, float factor) {
 
 }
 
+bool mul_matrix(matrix *a, matrix *b, matrix *out)
+{
+	if (!a || !b || a->n != b->m) {
+		return false;
+	}
+	out->m = a->m;
+	out->n = b->n;
+	for (int i = 0; i < a->m; i++)
+	{
+		for (int j = 0; j < b->n; j++) {
+			out->mat[i * b->n + j] = 0;
+			for (int k = 0; k < a->m; k++)
+			{
+				out->mat[i * b->n + j] += a->mat[i * a->n + j] * b->mat[j * b->n + i];
+			}
+		}
+	}
+	return true;
+}
+
+void cross(point* a, point* b, point* res)
+{
+	res->x = a->y * b->z - a->z * b->y;
+	res->y = a->z * b->x - a->x * b->z;
+	res->z = a->x * b->y - a->y * b->x;
+}
+
+void normalize(point* a)
+{
+	float l = sqrt(a->x * a->x + a->y * a->y + a->z * a->z);
+	a->x /= l;
+	a->y /= l;
+	a->z /= l;
+}
+
 void sub_points(point* a, point* b)
 {
 	a->x = a->x - b->x;
