@@ -100,6 +100,8 @@ Equivalente a Out = AxB
 @return True if possible to multiply; False otherwise
 */
 bool mul_matrix(matrix* a, matrix* b, matrix* out);
+/*
+*/
 bool mul_matrix(pmatrix* a, matrix* b, pmatrix* out);
 bool mul_matrix(matrix* a, pmatrix* b, pmatrix* out);
 
@@ -114,5 +116,10 @@ void cross(point* a, point* b, point* res);
 Normaliza o ponto a
 */
 void normalize(point* a);
+
+/*
+Transpose matrix
+*/
+void transpose(matrix* a, matrix* res);
 
 #endif // !CARTESIAN_H

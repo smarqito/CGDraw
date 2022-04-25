@@ -257,3 +257,18 @@ void normalize(point* a)
 	a->z /= l;
 }
 
+void transpose(matrix* a, matrix* res)
+{
+	if (a->m != res->n || a->n != res->m) {
+		throw "res doesn't allow transpose! check sizes";
+	}
+
+	for (int i = 0; i < a->n; i++)
+	{
+		for (int j = 0; j < a->m; j++)
+		{
+			res[i * a->m + j] = a[j * a->n + i];
+		}
+	}
+}
+
