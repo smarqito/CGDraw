@@ -3,10 +3,11 @@
 #define MODEL_H
 
 #include <GL/glut.h>
-#include "generator/shapes.h"
 #include <string.h>
-#include "cartesian/cartesian.h"
 #include <tinyxml2.h>
+
+#include "generator/shapes.h"
+#include "cartesian/cartesian.h"
 
 
 using namespace std;
