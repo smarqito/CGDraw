@@ -1,11 +1,11 @@
 #include "shapes.h"
 
-t_points create_plane(double length, int divisions) {
+t_points create_plane(float length, int divisions) {
 	t_points p_points(6 * pow(divisions, 2));
 
-	double x = length / 2;
-	double z = length / 2;
-	double step = length / divisions;
+	float x = length / 2;
+	float z = length / 2;
+	float step = length / divisions;
 
 	for (int i = 0; i < divisions; i++) {
 		for (int j = 0; j < divisions; j++) {
@@ -27,13 +27,13 @@ t_points create_plane(double length, int divisions) {
 }
 
 
-t_points create_box(double units, int divisions) {
+t_points create_box(float units, int divisions) {
 	t_points p_points(3 * pow(divisions, 2) * 12);
 
-	double z = units / 2;
-	double x = units / 2;
+	float z = units / 2;
+	float x = units / 2;
 
-	double step = units / divisions;
+	float step = units / divisions;
 	for (int i = 0; i < divisions; i++) {
 		for (int j = 0; j < divisions; j++) {
 
@@ -63,7 +63,7 @@ t_points create_box(double units, int divisions) {
 	}
 
 	x = units / 2;
-	double y = units / 2;
+	float y = units / 2;
 	for (int i = 0; i < divisions; i++) {
 		for (int j = 0; j < divisions; j++) {
 
@@ -123,10 +123,10 @@ t_points create_box(double units, int divisions) {
 t_points create_sphere(int radius, int slices, int stacks) {
 	t_points p_points(6 * stacks * slices);
 
-	double sst = M_PI / stacks;
-	double ssl = 2 * M_PI / slices;
-	double beta = M_PI / 2;
-	double alpha = 0;
+	float sst = M_PI / stacks;
+	float ssl = 2 * M_PI / slices;
+	float beta = M_PI / 2;
+	float alpha = 0;
 
 	for (int i = 0; i < stacks; i++)
 	{
@@ -169,11 +169,11 @@ t_points create_cylinder(int radius, int height, int slices, int stacks)
 {
 	t_points p_points(6 * slices + 6 * slices * stacks);
 
-	double ssl = 2 * M_PI / slices;
-	double sst = (double)height / stacks;
-	double alpha = 0;
-	double beta = 0;
-	double x = 0, y = (double)height / 2, z = 0;
+	float ssl = 2 * M_PI / slices;
+	float sst = (float)height / stacks;
+	float alpha = 0;
+	float beta = 0;
+	float x = 0, y = (float)height / 2, z = 0;
 	for (int i = 0; i < slices; i++)
 	{
 		point a = polartocart(radius, alpha, beta);
@@ -211,14 +211,14 @@ t_points create_cylinder(int radius, int height, int slices, int stacks)
 	return p_points;
 }
 
-t_points create_torus(double radius, double size, int slices, int stack) {
+t_points create_torus(float radius, float size, int slices, int stack) {
 	t_points p_points(12 * slices * stack + 2 * slices);
 
-	double ssl = (2 * M_PI) / slices;
-	double sst = M_PI / stack;
-	double alpha = 0;
-	double beta = -M_PI/2;
-	double x = 0, y = 0, z = 0;
+	float ssl = (2 * M_PI) / slices;
+	float sst = M_PI / stack;
+	float alpha = 0;
+	float beta = -M_PI/2;
+	float x = 0, y = 0, z = 0;
 
 	for (int j = 0; j < slices; j++) {
 		for (int i = 0; i < stack; i++) {
@@ -254,17 +254,17 @@ t_points create_torus(double radius, double size, int slices, int stack) {
 	return p_points;
 }
 
-t_points create_cone(double radius, double height, int slices, int stacks) {
+t_points create_cone(float radius, float height, int slices, int stacks) {
 	t_points p_points(6 * slices * stacks + 3 * slices);
 
-	double step = (2 * M_PI) / slices;
-	double alpha = 0;
-	double beta = atan(height / radius);
-	double l = radius / cos(beta);
-	double rstep = l / stacks;
+	float step = (2 * M_PI) / slices;
+	float alpha = 0;
+	float beta = atan(height / radius);
+	float l = radius / cos(beta);
+	float rstep = l / stacks;
 
 	int x = 0, y = height, z = 0;
-	double r = 0;
+	float r = 0;
 	beta = -beta;
 	for (int i = 0; i < stacks; i++)
 	{
@@ -302,4 +302,32 @@ t_points create_cone(double radius, double height, int slices, int stacks) {
 	}
 
 	return p_points;
+}
+
+vector<t_points> create_bezier(vector<vector<int>> patches, vector<point> all_points, int level) {
+	float step = 1.0 / level;
+
+	float pos_[3] = { 0,0,0 };
+	float deriv_[3] = { 0,0,0 };
+	matrix pos = {
+		pos_, 1, 3
+	};
+	matrix deriv = {
+		deriv_, 1, 3
+	};
+
+	Curve c;
+	c.addControlPoint(all_points);
+
+	vector<t_points> res;
+	for (int i = 0; i < patches.size(); i++) {
+		t_points p_points(level);
+		vector<point> p;
+		for (float j = 0; j < 1; j += step) {
+			c.getPoint(j, patches[i], &pos, &deriv);
+			p_points.add_point(pos.mat[0], pos.mat[1], pos.mat[2]);
+		}
+		res.push_back(p_points);
+	}
+	return res;
 }

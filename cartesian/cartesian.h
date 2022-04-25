@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <stdlib.h>
 #include <list>
-
+#ifndef CERTESIAN_H
 /*
 * Estrutura de dados para classificar um ponto cartesiano
 * Pontos do eixo 3D, x, y e z
@@ -9,23 +9,29 @@
 //struct point {
 //	double x, y, z;
 //};
+struct matrix {
+	float* mat;
+	int m;
+	int n;
+};
 
 class point {
 public:
-	double x, y, z;
+	float x, y, z;
 	point() {
 		x = 0;
 		y = 0;
 		z = 0;
 	}
+	point(float x_, float y_, float z_);
 };
 
 struct polar {
-	double r, a, b;
+	float r, a, b;
 };
 
 struct perspective {
-	double fov, nr, fr;
+	float fov, nr, fr;
 };
 
 /*
@@ -77,3 +83,26 @@ void sub_points(point* a, point* b);
 * Multiply a vector by a factor f (x,y,z) = (fx, fy, fz)
 */
 point scale_factor(point x, float factor);
+
+/*
+Equivalente a Out = AxB
+@param a matriz A
+@param b matriz B
+@param out Apontador para matriz resultado
+@return True if possible to multiply; False otherwise
+*/
+bool mul_matrix(matrix* a, matrix* b, matrix* out);
+
+matrix mul_matrix(matrix a, matrix b);
+
+/*
+Cross-product between a x b
+*/
+void cross(point* a, point* b, point* res);
+
+/*
+Normaliza o ponto a
+*/
+void normalize(point* a);
+
+#endif // !CERTESIAN_H

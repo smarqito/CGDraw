@@ -52,7 +52,7 @@ else (WIN32)
 endif(WIN32)
 
 # GENERATOR EXECUTABLE
-add_executable(generator generator/writer.cpp generator/shapes.cpp)
+add_executable(generator generator/writer.h generator/writer.cpp generator/shapes.h generator/shapes.cpp)
 target_link_libraries(generator cartesian)
 target_link_libraries(generator tinyxml2::tinyxml2)
 #target_link_libraries(generator m)
