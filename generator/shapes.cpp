@@ -154,9 +154,7 @@ t_points create_sphere(int radius, int slices, int stacks) {
 				p_points.add_point(a);
 				p_points.add_point(c);
 				p_points.add_point(d);
-
 			}
-
 			alpha += ssl;
 		}
 		beta -= sst;
@@ -302,4 +300,33 @@ t_points create_cone(double radius, double height, int slices, int stacks) {
 	}
 
 	return p_points;
+}
+
+vector<t_points> create_bezier(vector<vector<int>> patches, vector<point> all_points, int level) {
+	float step = 1.0 / level;
+	
+	float pos_[3];
+	float deriv_[3];
+	matrix pos = {
+		pos_, 1, 3
+	};
+	matrix deriv = {
+		deriv_, 1, 3
+	};
+	
+	Curve c;
+	c.addControlPoint(all_points);
+
+	vector<t_points> res;
+	for (int i = 0; i < patches.size(); i++) {
+		t_points p_points(level);
+		vector<point> p;
+		for (float j = 0; j < 1; j += step) {
+			c.getPoint(j, patches[i], &pos, &deriv);
+			p_points.add_point(pos.mat[0], pos.mat[1], pos.mat[2]);
+		}
+		res.push_back(p_points);
+	}
+	return res;
+
 }

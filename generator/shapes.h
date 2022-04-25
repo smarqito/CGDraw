@@ -1,7 +1,9 @@
 #ifndef SHAPES_DRAW
 #include <tuple>
 #include <math.h>
+#include <vector>
 #include "../cartesian/cartesian.h"
+#include "../cartesian/Curve.h"
 
 using namespace std;
 
@@ -33,4 +35,9 @@ t_points create_sphere(int radius, int slices, int stacks);
 t_points create_cylinder(int radius, int height, int slices, int stacks);
 
 t_points create_torus(double radius, double size, int slices, int stack);
+
+/*
+Create a vector of list of points that can be drawn with line loop
+*/
+vector<t_points> create_bezier(vector<vector<int>> patches, vector<point> points, int level);
 #endif // !SHAPES_DRAW
