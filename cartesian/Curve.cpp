@@ -22,6 +22,11 @@ void Curve::calculate(float t, matrix* pos, matrix* deriv)
 }
 
 
+static float catmull[16] = { -0.5f,  1.5f, -1.5f,  0.5f,
+				1.0f, -2.5f,  2.0f, -0.5f,
+				-0.5f,  0.0f,  0.5f,  0.0f,
+				0.0f,  1.0f,  0.0f,  0.0f
+};
 Curve::Curve()
 {
 	_m.mat = catmull;
@@ -65,9 +70,17 @@ void Curve::addControlPoint(point p)
 	_control_points.push_back(p);
 }
 
-void Curve::getPoint(float gt, matrix* pos, matrix* deriv)
+void Curve::addControlPoint(std::vector<point> points)
 {
-	int size = _control_points.size();
+	for (int i = 0; i < points.size(); i++)
+	{
+		_control_points.push_back(points[i]);
+	}
+}
+
+void Curve::getPoint(float gt, std::vector<int> control_index, matrix* pos, matrix* deriv)
+{
+	int size = control_index.size();
 	float t = gt * size; // real global t
 	int index = floor(t); // which segment
 	t = t - index; // where within segment
@@ -77,13 +90,14 @@ void Curve::getPoint(float gt, matrix* pos, matrix* deriv)
 	i[1] = (i[0] + 1) % size;
 	i[2] = (i[1] + 1) % size;
 	i[3] = (i[2] + 1) % size;
-
+	float tmp[12];
 	// populate _tmp matrix with current 4 control points
 	for (int j = 0; j < 4; j++)
 	{
-		_tmp.mat[3 * j] = _control_points[j].x;
-		_tmp.mat[3 * j + 1] = _control_points[j].y;
-		_tmp.mat[3 * j + 2] = _control_points[j].y;
+
+		_tmp.mat[3 * j] = _control_points[control_index[i[j]]].x;
+		_tmp.mat[3 * j + 1] = _control_points[control_index[i[j]]].y;
+		_tmp.mat[3 * j + 2] = _control_points[control_index[i[j]]].z;
 	}
 	calculate(t, pos, deriv);
 }

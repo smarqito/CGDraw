@@ -151,9 +151,9 @@ bool mul_matrix(matrix* a, matrix* b, matrix* out)
 	{
 		for (int j = 0; j < b->n; j++) {
 			out->mat[i * b->n + j] = 0;
-			for (int k = 0; k < a->m; k++)
+			for (int k = 0; k < a->n; k++)
 			{
-				out->mat[i * b->n + j] += a->mat[i * a->n + j] * b->mat[j * b->n + i];
+				out->mat[i * b->n + j] += a->mat[i * a->n + k] * b->mat[k * b->n + j];
 			}
 		}
 	}

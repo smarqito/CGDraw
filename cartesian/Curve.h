@@ -1,15 +1,11 @@
-#ifndef CURVE_H
 #include <vector>
 #include <math.h>
 
 #include "cartesian.h"
+#ifndef CURVE_H
+
 
 #pragma once
-float catmull[16] = { -0.5f,  1.5f, -1.5f,  0.5f,
-					1.0f, -2.5f,  2.0f, -0.5f,
-					-0.5f,  0.0f,  0.5f,  0.0f,
-					0.0f,  1.0f,  0.0f,  0.0f
-};
 /*
 Class that's able to generate curves based on 
 control points
@@ -46,13 +42,14 @@ public:
 	void addControlPoint(float x, float y, float z);
 	void addControlPoint(float* v);
 	void addControlPoint(point p);
+	void addControlPoint(std::vector<point> points);
 	/*
 	Calculate the point using gt segment
 	@param gt
 	@param pos 1x3 matrix
 	@param deriv 1x3 matrix
 	*/
-	void getPoint(float gt, matrix* pos, matrix* deriv);
+	void getPoint(float gt, std::vector<int> control_index, matrix* pos, matrix* deriv);
 };
 
 #endif // !CURVE_H

@@ -19,7 +19,7 @@ struct perspective {
 	float fov, near, far;
 };
 
-typedef struct matrix {
+struct matrix {
 	float* mat;
 	int m;
 	int n;
