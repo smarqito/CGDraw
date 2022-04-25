@@ -33,3 +33,11 @@
 
 .vs/
 out/
+/docs/phase2/_minted-relatorio
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.gz
+.vscode/
+out/

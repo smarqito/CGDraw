@@ -21,6 +21,14 @@ private:
 	string _model_path;
 	//texture texture; // phase not 1
 	//color color; // phase not 1
+	/*
+	*/
+	void read_points_basic(XMLElement* x_root);
+	/*
+	*/
+	void read_points_patch(XMLElement* x_root);
+	/*
+	*/
 	void read_points();
 public:
 	Model(XMLElement* xml_elem);
