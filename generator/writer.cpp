@@ -1,5 +1,4 @@
 #include "writer.h"
-#include "shapes.h"
 
 // ---------------------------- Funções Auxiliares -------------------------------------
 /*
@@ -199,7 +198,7 @@ int main(int argc, const char** argv) {
 			regex regexp(R"(([+-]?\d+(?:\.\d+)?), ([+-]?\d+(?:\.\d+)?), ([+-]?\d+(?:\.\d+)?))");
 			smatch m;
 			regex_search(tp, m, regexp);
-			point p = { 0,0,0 };
+			point p;
 			p.x = stod(m[1]); p.y = stod(m[2]); p.z = stod(m[3]);
 			_points.push_back(p);
 		}

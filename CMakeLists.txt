@@ -52,8 +52,10 @@ else (WIN32)
 endif(WIN32)
 
 # GENERATOR EXECUTABLE
-add_executable(generator generator/writer.h generator/writer.cpp generator/shapes.h generator/shapes.cpp)
-target_link_libraries(generator cartesian)
+add_executable(generator generator/shapes.h generator/shapes.cpp generator/writer.h generator/writer.cpp)
 target_link_libraries(generator tinyxml2::tinyxml2)
+target_link_libraries(generator cartesian)
+target_link_libraries(generator ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES})
+target_link_libraries(generator GLUT::GLUT)
 #target_link_libraries(generator m)
-target_include_directories(generator PUBLIC cartesian)
+#target_include_directories(generator PUBLIC cartesian)

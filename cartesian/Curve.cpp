@@ -87,7 +87,7 @@ void Curve::addControlPoint(point p)
 
 void Curve::addControlPoint(std::vector<point> points)
 {
-	for (int i = 0; i < points.size(); i++)
+	for (size_t i = 0; i < points.size(); i++)
 	{
 		_control_points.push_back(points[i]);
 	}

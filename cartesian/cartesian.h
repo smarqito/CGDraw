@@ -1,14 +1,11 @@
 ﻿#pragma once
 #include <stdlib.h>
 #include <list>
-#ifndef CERTESIAN_H
+#ifndef CARTESIAN_H
 /*
 * Estrutura de dados para classificar um ponto cartesiano
 * Pontos do eixo 3D, x, y e z
 */
-//struct point {
-//	double x, y, z;
-//};
 struct matrix {
 	float* mat;
 	int m;
@@ -23,7 +20,11 @@ public:
 		y = 0;
 		z = 0;
 	}
-	point(float x_, float y_, float z_);
+	point(float x_, float y_, float z_) {
+		x = x_;
+		y = y_;
+		z = z_;
+	};
 };
 
 struct polar {
@@ -105,4 +106,4 @@ Normaliza o ponto a
 */
 void normalize(point* a);
 
-#endif // !CERTESIAN_H
+#endif // !CARTESIAN_H

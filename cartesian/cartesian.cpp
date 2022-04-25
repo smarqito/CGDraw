@@ -1,4 +1,3 @@
-#include "cartesian.h"
 
 /*
 * Author: Group
@@ -6,7 +5,7 @@
 */
 #define _USE_MATH_DEFINES
 #include <math.h>
-//#include <GL/glut.h>
+#include "cartesian.h"
 
 //t_points::t_points(int size) {
 //	pos = 0;
@@ -17,6 +16,10 @@
 
 t_points::t_points()
 {
+	_pos = 0;
+	_total = 0;
+	_points = new point[10];
+	_size = 10;
 }
 
 t_points::t_points(int size) {
@@ -60,6 +63,19 @@ point t_points::get_point(int pos) {
 		return _points[pos];
 	}
 	throw 0x1;
+}
+
+void t_points::_draw() {
+	point p;
+	for (int i = 0; i < this->size(); i++) {
+		p = get_point(i);
+		//glVertex3d(p.x, p.y, p.z);
+	}
+}
+
+point* t_points::get_points_ptr()
+{
+	return _points;
 }
 
 point polartocart(polar p) {
@@ -140,16 +156,52 @@ void sub_points(point* a, point* b)
 
 }
 
-void t_points::_draw() {
-	point p;
-	for (int i = 0; i < this->size(); i++) {
-		p = get_point(i);
-		//glVertex3d(p.x, p.y, p.z);
+bool mul_matrix(matrix* a, matrix* b, matrix* out)
+{
+	if (!a || !b || a->n != b->m) {
+		return false;
 	}
+	out->m = a->m;
+	out->n = b->n;
+	for (int i = 0; i < a->m; i++)
+	{
+		for (int j = 0; j < b->n; j++) {
+			out->mat[i * b->n + j] = 0;
+			for (int k = 0; k < a->n; k++)
+			{
+				out->mat[i * b->n + j] += a->mat[i * a->n + k] * b->mat[k * b->n + j];
+			}
+		}
+	}
+	return true;
 }
 
-point* t_points::get_points_ptr()
+matrix mul_matrix(matrix a, matrix b)
 {
-	return _points;
+	if (a.n != b.m) {
+		throw "Matrix dim can't be multiplied";
+	}
+	float* tmp_ = (float*) malloc(sizeof(float) * a.m * b.n);
+	//float tmp[m_i * b.n];
+	matrix tmp_mat = { tmp_, a.m, b.n };
+	mul_matrix(&a, &b, &tmp_mat);
+	return tmp_mat;
+}
+
+
+
+void cross(point* a, point* b, point* res)
+{
+	res->x = a->y * b->z - a->z * b->y;
+	res->y = a->z * b->x - a->x * b->z;
+	res->z = a->x * b->y - a->y * b->x;
+}
+
+void normalize(point* a)
+{
+	float l = sqrt(a->x * a->x + a->y * a->y + a->z * a->z);
+	a->x /= l;
+	a->y /= l;
+	a->z /= l;
 }
 

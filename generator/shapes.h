@@ -1,9 +1,10 @@
-#ifndef SHAPES_DRAW
 #include <tuple>
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include "../cartesian/cartesian.h"
 #include "../cartesian/Curve.h"
+#ifndef SHAPES_DRAW
+#pragma once
 
 using namespace std;
 

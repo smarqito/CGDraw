@@ -1,11 +1,11 @@
+#pragma once
 #include <vector>
 #include <math.h>
 
-#include "cartesian.h"
 #ifndef CURVE_H
+#include "cartesian.h"
+using namespace std;
 
-
-#pragma once
 /*
 Class that's able to generate curves based on
 control points
@@ -17,7 +17,7 @@ class Curve
 {
 private:
 	matrix _m; // 4x4 : catmull, bezier, ...
-	std::vector<point> _control_points;
+	vector<point> _control_points;
 	matrix _tmp;
 	float *_pos_t_ptr; //size 4
 	matrix _pos_t;
@@ -38,7 +38,7 @@ public:
 	void addControlPoint(float x, float y, float z);
 	void addControlPoint(float* v);
 	void addControlPoint(point p);
-	void addControlPoint(std::vector<point> points);
+	void addControlPoint(vector<point> points);
 	/*
 	Calculate the point using gt segment
 	@param gt
