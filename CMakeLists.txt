@@ -9,7 +9,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 include_directories(${PROJECT_SOURCE_DIR})
 
-add_executable(${PROJECT_NAME} CGDraw.cpp Model.cpp World.cpp Models.cpp Group.cpp Camera.cpp Lights.cpp Groups.cpp Transform.cpp)
+add_executable(${PROJECT_NAME} CGDraw.h CGDraw.h CGDraw.cpp Model.h Model.cpp World.h World.cpp Models.h Models.cpp Group.h Group.cpp Camera.h Camera.cpp Lights.h Lights.cpp Groups.h Groups.cpp Transform.h Transform.cpp)
 
 # link cartesian
 add_subdirectory(cartesian)
