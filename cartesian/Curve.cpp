@@ -33,7 +33,17 @@ Curve::Curve()
 	_m.m = 4;
 	_m.n = 4;
 
+	_pos_t_ptr = (float*)malloc(sizeof(float) * 4);
+	_pos_t.mat = _pos_t_ptr;
+
+	_pos_d_ptr = (float*)malloc(sizeof(float) * 4);
+	_pos_d.mat = _pos_d_ptr;
+	
 	_tmp.mat = (float*)malloc(sizeof(float) * 4 * 3);
+
+	_pos_t.m = _pos_d.m = 1;
+	_pos_t.n = _pos_d.n = 4;
+
 	_tmp.m = 4;
 	_tmp.n = 3;
 }
@@ -43,6 +53,15 @@ Curve::Curve(float* curve_def)
 	_m.mat = curve_def;
 	_m.m = 4;
 	_m.n = 4;
+
+	_pos_t_ptr = (float*)malloc(sizeof(float) * 4);
+	_pos_t.mat = _pos_t_ptr;
+
+	_pos_d_ptr = (float*)malloc(sizeof(float) * 4);
+	_pos_d.mat = _pos_d_ptr;
+
+	_pos_t.m = _pos_d.m = 1;
+	_pos_t.n = _pos_d.n = 4;
 
 	_tmp.mat = (float*)malloc(sizeof(float) * 4 * 3);
 	_tmp.m = 4;

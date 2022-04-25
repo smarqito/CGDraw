@@ -51,7 +51,7 @@ void World::_draw()
 
 string World::set_root_path()
 {
-	regex regexp("(.*/)?.*.xml");
+	regex regexp(R"((.*(/|\\))?.*.xml)");
 	smatch m;
 	string t = string(_path);
 	regex_search(t, m, regexp);

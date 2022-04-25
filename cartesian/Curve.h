@@ -19,14 +19,10 @@ private:
 	matrix _m; // 4x4 : catmull, bezier, ...
 	std::vector<point> _control_points;
 	matrix _tmp;
-	float _pos_t_ptr[4];
-	matrix _pos_t = {
-		_pos_t_ptr,1,4
-	};
-	float _pos_d_ptr[4];
-	matrix _pos_d = {
-		_pos_d_ptr,1,4
-	};
+	float *_pos_t_ptr; //size 4
+	matrix _pos_t;
+	float *_pos_d_ptr; //size 4
+	matrix _pos_d;
 	void calculate_t(float t);
 	void calculate(float t, matrix* pos, matrix* deriv);
 public:
