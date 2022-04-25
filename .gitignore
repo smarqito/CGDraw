@@ -31,7 +31,7 @@
 *.out
 *.app
 
-.vs/
+.vs/*
 out/
 /docs/phase2/_minted-relatorio
 *.aux
