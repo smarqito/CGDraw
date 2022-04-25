@@ -99,7 +99,7 @@ void Transform::_draw()
 					glMultMatrixf(m[0]);
 				}
 				int time = glutGet(GLUT_ELAPSED_TIME);
-				gt += 0.001;
+				gt += 0.0001;
 			}
 			else {
 				glTranslatef(_transformations[i].p.x, _transformations[i].p.y, _transformations[i].p.z);

@@ -4,6 +4,7 @@
 #include <math.h>
 #include <vector>
 #include "../cartesian/cartesian.h"
+#include "../curves/curves.h"
 
 using namespace std;
 

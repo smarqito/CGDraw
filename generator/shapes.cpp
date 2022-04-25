@@ -305,7 +305,7 @@ t_points create_cone(double radius, double height, int slices, int stacks) {
 }
 
 
-/*vector<t_points> create_bezier(vector<vector<int>> patches, vector<point> all_points, int level) {
+vector<t_points> create_bezier(vector<vector<int>> patches, vector<point> all_points, int level) {
 	float pos[4];
 	float deriv[4];
 	float step = 1.0 / level;
@@ -316,7 +316,7 @@ t_points create_cone(double radius, double height, int slices, int stacks) {
 		for (int k = 0; k < patches[i].size(); k++) {
 			p.push_back(all_points[patches[i][k]]);
 		}
-		for (double j = 0; j < 1; j += step) {
+		for (float j = 0; j < 1; j += step) {
 			getGlobalCatmullRomPoint(j, pos, deriv, p);
 			p_points.add_point(pos[0], pos[1], pos[2]);
 		}
@@ -324,4 +324,4 @@ t_points create_cone(double radius, double height, int slices, int stacks) {
 	}
 	return res;
 
-}*/
+}

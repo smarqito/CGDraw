@@ -29,6 +29,8 @@ private:
 	string _model_path;
 	GLuint _buffer; // VBO buffer pointer
 	GLint _total_points; // hold total points to be drawn
+	vector<GLuint> _patches_buffers;
+	vector<GLint> _patches_total_points;
 	vector<GLuint> _indexes;
 	vector<unsigned int> _indexes_count;
 	//texture texture; // phase not 1

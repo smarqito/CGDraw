@@ -48,18 +48,42 @@ void write_xml(const char* filepath, GLenum type, t_points all_points) {
 	xml.SaveFile(filepath);
 }
 
-string vector_to_string(vector<int> v) {
+void write_xml_patch(const char* filepath, GLenum type, vector<t_points> all_points) {
+	XMLDocument xml;
+	int size = all_points.size();
+
+	XMLElement* pRoot = xml.NewElement("model");
+	xml.InsertFirstChild(pRoot);
+
+	pRoot->SetAttribute("type", type);
+	pRoot->SetAttribute("size", size);
+	pRoot->SetAttribute("vbo", "False");
+	pRoot->SetAttribute("patches", size);
+
+	for (int i = 0; i < size; i++)
+	{
+		XMLElement* patches = xml.NewElement("patches");
+		pRoot->InsertEndChild(patches);
+		for (int j = 0; j < all_points[i].total(); j++) {
+			write_point_2(&xml, patches, all_points[i].get_point(j));
+		}
+	}
+
+	xml.SaveFile(filepath);
+}
+
+/*string vector_to_string(vector<int> v) {
 	stringstream result;
 	copy(v.begin(), v.end(), ostream_iterator<int>(result, ","));
 	string s = result.str();
 	s = s.substr(0, s.length() - 1);
 	return s;
-}
+}*/
 
 /*
 * Função criada para escrever no documento xml indices
 */
-void write_xml_indexes(const char* filepath, GLenum type, vector<vector<int>> indexes,vector<point> all_points, double level) {
+/*void write_xml_indexes(const char* filepath, GLenum type, vector<vector<int>> indexes, vector<point> all_points, double level) {
 	XMLDocument xml;
 	int size = all_points.size();
 
@@ -93,7 +117,7 @@ void write_xml_indexes(const char* filepath, GLenum type, vector<vector<int>> in
 	}
 
 	xml.SaveFile(filepath);
-}
+}*/
 
 // ------------------------------------------------------------------------------------
 
@@ -234,8 +258,8 @@ int main(int argc, const char** argv) {
 			_points.push_back(p);
 		}
 		file.close();
-		//res = create_bezier(v, _points, stod(argv[3]));
-		write_xml_indexes(argv[4], GL_LINE_LOOP, v, _points, stod(argv[3]));
+		vector<t_points> res = create_bezier(v, _points, stod(argv[3]));
+		write_xml_patch(argv[4], GL_LINE_LOOP, res);
 
 	}
 	else {
