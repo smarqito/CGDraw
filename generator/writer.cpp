@@ -58,7 +58,7 @@ void write_xml_patch(const char* filepath, GLenum type, vector<t_points> all_poi
 
 	for (int i = 0; i < size; i++)
 	{
-		XMLElement* patches = xml.NewElement("patches");
+		XMLElement* patches = xml.NewElement("patch");
 		pRoot->InsertEndChild(patches);
 		for (int j = 0; j < all_points[i].total(); j++) {
 			write_point(&xml, patches, all_points[i].get_point(j));
@@ -198,7 +198,7 @@ int main(int argc, const char** argv) {
 			regex regexp(R"(([+-]?\d+(?:\.\d+)?), ([+-]?\d+(?:\.\d+)?), ([+-]?\d+(?:\.\d+)?))");
 			smatch m;
 			regex_search(tp, m, regexp);
-			point p;
+			point p = {0,0,0};
 			p.x = stod(m[1]); p.y = stod(m[2]); p.z = stod(m[3]);
 			_points.push_back(p);
 		}

@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <stdlib.h>
 #include <list>
-
+#ifndef CERTESIAN_H
 
 /*
 * Estrutura de dados para classificar um ponto cartesiano
@@ -94,3 +94,5 @@ void cross(point* a, point* b, point* res);
 Normaliza o ponto a
 */
 void normalize(point* a);
+
+#endif // !CERTESIAN_H

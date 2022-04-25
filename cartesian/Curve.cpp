@@ -90,11 +90,9 @@ void Curve::getPoint(float gt, std::vector<int> control_index, matrix* pos, matr
 	i[1] = (i[0] + 1) % size;
 	i[2] = (i[1] + 1) % size;
 	i[3] = (i[2] + 1) % size;
-	float tmp[12];
 	// populate _tmp matrix with current 4 control points
 	for (int j = 0; j < 4; j++)
 	{
-
 		_tmp.mat[3 * j] = _control_points[control_index[i[j]]].x;
 		_tmp.mat[3 * j + 1] = _control_points[control_index[i[j]]].y;
 		_tmp.mat[3 * j + 2] = _control_points[control_index[i[j]]].z;

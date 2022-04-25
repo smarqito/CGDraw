@@ -1,21 +1,10 @@
-#include "cartesian.h"
-#include "cartesian.h"
-#include "cartesian.h"
-
 /*
 * Author: Group
 * UC : Computacao Grafica
 */
-#include "cartesian.h"
 #include <math.h>
-//#include <GL/glut.h>
 
-//t_points::t_points(int size) {
-//	pos = 0;
-//	total = 0;
-//	this->size = size;
-//	points = (point*)malloc(sizeof(point) * size);
-//}
+#include "cartesian.h"
 
 t_points::t_points()
 {
@@ -69,7 +58,7 @@ point polartocart(polar p) {
 }
 
 point polartocart(float r, float alpha, float beta) {
-	point point;
+	point point = {0,0,0};
 	point.x = r * cos(beta) * sin(alpha);
 	point.y = r * sin(beta);
 	point.z = r * cos(beta) * cos(alpha);
@@ -84,7 +73,7 @@ polar cart_to_polar(point p)
 
 polar cart_to_polar(double x, double y, double z)
 {
-	polar p;
+	polar p = {0,0,0};
 	if (x == 0 || (x == 0 && y == 0 && z == 0)) {
 		p.r = 1;
 		p.a = 0;
@@ -99,7 +88,7 @@ polar cart_to_polar(double x, double y, double z)
 
 point sum_points(point a, point b)
 {
-	point p;
+	point p = {0,0,0};
 	p.x = a.x + b.x;
 	p.y = a.y + b.y;
 	p.z = a.z + b.z;
@@ -115,7 +104,7 @@ void sum_points(point* a, point* b)
 
 point sub_points(point a, point b)
 {
-	point p;
+	point p = {0,0,0};
 	p.x = a.x - b.x;
 	p.y = a.y - b.y;
 	p.z = a.z - b.z;
@@ -132,7 +121,7 @@ void sub_points(point* a, point* b)
 }
 
 point scale_factor(point x, float factor) {
-	point p;
+	point p = {0,0,0};
 	p.x = x.x * factor;
 	p.y = x.y * factor;
 	p.z = x.z * factor;
