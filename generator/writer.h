@@ -5,6 +5,7 @@
 #include <GL/glut.h>
 #include <math.h>
 #include <fstream>
+#include <regex>
 
 
 using namespace std;

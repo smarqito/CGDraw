@@ -232,12 +232,12 @@ int main(int argc, const char** argv) {
 		vector<vector<int>> v;
 		for (int i = 0; i < patchs; i++) {
 			getline(file, tp);
-			stringstream ss(tp);
 			vector<int> v2;
-			while (ss.good()) {
-				string substr;
-				getline(ss, substr, ',');
-				v2.push_back(stoi(substr));
+			regex regexp(R"(\d+)");
+			smatch m;
+			while (regex_search(tp, m, regexp)) {
+				v2.push_back(stoi(m[0]));
+				tp = m.suffix().str();
 			}
 			v.push_back(v2);
 		}
@@ -246,15 +246,11 @@ int main(int argc, const char** argv) {
 		vector<point> _points;
 		for (int i = 0; i < npoints; i++) {
 			getline(file, tp);
-			stringstream ss(tp);
+			regex regexp(R"(([+-]?\d+(?:\.\d+)?), ([+-]?\d+(?:\.\d+)?), ([+-]?\d+(?:\.\d+)?))");
+			smatch m;
+			regex_search(tp, m, regexp);
 			point p;
-			string substr;
-			getline(ss, substr, ',');
-			p.x = stod(substr);
-			getline(ss, substr, ',');
-			p.y = stod(substr);
-			getline(ss, substr, ',');
-			p.z = stod(substr);
+			p.x = stod(m[1]); p.y = stod(m[2]); p.z = stod(m[3]);
 			_points.push_back(p);
 		}
 		file.close();
