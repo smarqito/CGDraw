@@ -34,6 +34,10 @@ void Model::read_points_basic(XMLElement* x_root)
 
 void Model::read_points_patch(XMLElement* x_root)
 {
+	_type = x_root->FindAttribute("type")->IntValue();
+	int size = x_root->FindAttribute("size")->IntValue();
+	XMLElement* ePatches = x_root->FirstChildElement("patch");
+
 
 }
 
