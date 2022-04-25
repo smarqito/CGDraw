@@ -176,6 +176,58 @@ bool mul_matrix(matrix* a, matrix* b, matrix* out)
 	return true;
 }
 
+bool mul_matrix(pmatrix* a, matrix* b, pmatrix* out)
+{
+	if (!a || !b || a->n != b->m) {
+		return false;
+	}
+	out->m = a->m;
+	out->n = b->n;
+	float tmp;
+	for (int i = 0; i < a->m; i++)
+	{
+		for (int j = 0; j < b->n; j++) {
+			out->mat[i * b->n + j].x = 0;
+			out->mat[i * b->n + j].y = 0;
+			out->mat[i * b->n + j].z = 0;
+			for (int k = 0; k < a->n; k++)
+			{
+				tmp = b->mat[k * b->n + j];
+				out->mat[i * b->n + j].x += a->mat[i * a->n + k].x * tmp;
+				out->mat[i * b->n + j].y += a->mat[i * a->n + k].x * tmp;
+				out->mat[i * b->n + j].z += a->mat[i * a->n + k].x * tmp;
+			}
+		}
+	}
+	return true;
+}
+
+bool mul_matrix(matrix* a, pmatrix* b, pmatrix* out)
+{
+	if (!a || !b || a->n != b->m) {
+		return false;
+	}
+	out->m = a->m;
+	out->n = b->n;
+	float tmp;
+	for (int i = 0; i < a->m; i++)
+	{
+		for (int j = 0; j < b->n; j++) {
+			out->mat[i * b->n + j].x = 0;
+			out->mat[i * b->n + j].y = 0;
+			out->mat[i * b->n + j].z = 0;
+			for (int k = 0; k < a->n; k++)
+			{
+				tmp = a->mat[i * a->n + k];
+				out->mat[i * b->n + j].x += tmp * b->mat[k * b->n + j].x;
+				out->mat[i * b->n + j].y += tmp * b->mat[k * b->n + j].y;
+				out->mat[i * b->n + j].z += tmp * b->mat[k * b->n + j].z;
+			}
+		}
+	}
+	return true;
+}
+
 matrix mul_matrix(matrix a, matrix b)
 {
 	if (a.n != b.m) {

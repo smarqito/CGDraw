@@ -12,6 +12,7 @@ struct matrix {
 	int n;
 };
 
+
 class point {
 public:
 	float x, y, z;
@@ -25,6 +26,12 @@ public:
 		y = y_;
 		z = z_;
 	};
+};
+
+struct pmatrix {
+	point* mat;
+	int m;
+	int n;
 };
 
 struct polar {
@@ -93,6 +100,8 @@ Equivalente a Out = AxB
 @return True if possible to multiply; False otherwise
 */
 bool mul_matrix(matrix* a, matrix* b, matrix* out);
+bool mul_matrix(pmatrix* a, matrix* b, pmatrix* out);
+bool mul_matrix(matrix* a, pmatrix* b, pmatrix* out);
 
 matrix mul_matrix(matrix a, matrix b);
 
