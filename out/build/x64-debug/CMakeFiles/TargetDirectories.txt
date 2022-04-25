@@ -1,3 +1,0 @@
-C:/Users/smarq/source/repos/CGDraw/out/build/x64-debug/CMakeFiles/CGDraw.dir
-C:/Users/smarq/source/repos/CGDraw/out/build/x64-debug/CMakeFiles/edit_cache.dir
-C:/Users/smarq/source/repos/CGDraw/out/build/x64-debug/CMakeFiles/rebuild_cache.dir

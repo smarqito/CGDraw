@@ -33,4 +33,12 @@
 
 .vs/
 out/
+.vscode/
 
+#latex stuff
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
+_minted-relatorio/
