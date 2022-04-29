@@ -18,7 +18,7 @@ static float HERMITE_MAT[16] = { 2.f, -2.f, 1.f, 1.f,
 								1.f, 0.f, 0.f, 0.f
 };
 
-Matrix::Matrix() : Matrix(CATMULL)
+Matrix::Matrix() : Matrix(BEZIER)
 {
 }
 

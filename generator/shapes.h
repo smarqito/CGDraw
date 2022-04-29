@@ -3,6 +3,7 @@
 #include <math.h>
 #include "../cartesian/cartesian.h"
 #include "../cartesian/Curve.h"
+#include "../cartesian/BezierTriangles.h"
 #ifndef SHAPES_DRAW
 #pragma once
 
@@ -40,5 +41,5 @@ t_points create_torus(float radius, float size, int slices, int stack);
 /*
 Create a vector of list of points that can be drawn with line loop
 */
-vector<t_points> create_bezier(vector<vector<int>> patches, vector<Point> points, int level);
+t_points create_bezier(vector<vector<int>> patches, vector<Point> points, int level);
 #endif // !SHAPES_DRAW

@@ -203,8 +203,8 @@ int main(int argc, const char** argv) {
 			_points.push_back(p);
 		}
 		file.close();
-		vector<t_points> res = create_bezier(v, _points, stod(argv[3]));
-		write_xml_patch(argv[4], GL_LINE_LOOP, res);
+		t_points res = create_bezier(v, _points, stod(argv[3]));
+		write_xml(argv[4], GL_TRIANGLES, res);
 
 	}
 	else {

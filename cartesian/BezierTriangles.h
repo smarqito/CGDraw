@@ -6,9 +6,9 @@ class BezierTriangles
 {
 private:
 	PointMatrix _points;	// 4 x 4
-	PointMatrix _const;		// 4 x 4
-	PointMatrix _u_mpm;		// 1 x 4
-	PointMatrix _mpm_v;		// 1 x 1
+	PointMatrix _const;		// 4 x 4 :: M . P . M^T
+	PointMatrix _u_mpm;		// 1 x 4 :: u . const
+	PointMatrix _mpm_v;		// 1 x 1 :: .. v
 	Matrix _m;				// 4 x 4
 	Matrix _m_t;			// 4 x 4
 	Matrix _u;				// 1 x 4

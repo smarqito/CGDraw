@@ -3,17 +3,17 @@
 void BezierTriangles::calculateU(float u)
 {
 	_u.setPoint(0, u * u * u);
-	_u.setPoint(0, u * u);
-	_u.setPoint(0, u);
-	_u.setPoint(0, 1);
+	_u.setPoint(1, u * u);
+	_u.setPoint(2, u);
+	_u.setPoint(3, 1);
 }
 
 void BezierTriangles::calculateV(float v)
 {
 	_v.setPoint(0, v * v * v);
-	_v.setPoint(0, v * v);
-	_v.setPoint(0, v);
-	_v.setPoint(0, 1);
+	_v.setPoint(1, v * v);
+	_v.setPoint(2, v);
+	_v.setPoint(3, 1);
 }
 
 BezierTriangles::BezierTriangles(int m, int n, Matrix transf)
@@ -25,6 +25,8 @@ BezierTriangles::BezierTriangles(int m, int n, Matrix transf)
 	_v = Matrix(4, 1);
 	_const = PointMatrix(m, n);
 	_points = PointMatrix(m, n);
+	_u_mpm = PointMatrix(1, 4);
+	_mpm_v = PointMatrix(1, 1);
 }
 
 void BezierTriangles::preCalculus()
@@ -62,7 +64,7 @@ void BezierTriangles::setPatchPoint(int pos, vector<Point> points)
 Point BezierTriangles::getControlPoint(float u, float v)
 {
 	calculateU(u); // 1 x 4
-	calculateU(v); // 1 x 4
+	calculateU(v); // 4 x 1
 	_const.mul_matrix(_u_mpm, _u); // (1 x 4) x (4 x 4)  = 1 x 4 = _u_mpm
 	_u_mpm.mul_matrix(_v, _mpm_v); // (1 x 4) x (4 x 1)  = 1 x 1 = _mpm_v
 	return _mpm_v.getPoint(0);

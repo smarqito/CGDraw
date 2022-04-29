@@ -217,18 +217,18 @@ t_points create_torus(float radius, float size, int slices, int stack) {
 	float ssl = (2 * M_PI) / slices;
 	float sst = M_PI / stack;
 	float alpha = 0;
-	float beta = -M_PI/2;
+	float beta = -M_PI / 2;
 	float x = 0, y = 0, z = 0;
 
 	for (int j = 0; j < slices; j++) {
 		for (int i = 0; i < stack; i++) {
 			Point a = polartocart(radius, alpha, 0);
 			Point a1 = polartocart(size, alpha, beta);
-			Point a2 = polartocart(size, alpha, beta+sst);
-			
+			Point a2 = polartocart(size, alpha, beta + sst);
+
 			Point b = polartocart(radius, alpha + ssl, 0);
-			Point b1 = polartocart(size, alpha+ssl, beta);
-			Point b2 = polartocart(size, alpha+ssl, beta + sst);
+			Point b1 = polartocart(size, alpha + ssl, beta);
+			Point b2 = polartocart(size, alpha + ssl, beta + sst);
 
 			p_points.add_point(sum_points(a, a1));
 			p_points.add_point(sum_points(b, b1));
@@ -249,7 +249,7 @@ t_points create_torus(float radius, float size, int slices, int stack) {
 			beta += sst;
 		}
 		alpha += ssl;
-		beta = -M_PI/2;
+		beta = -M_PI / 2;
 	}
 	return p_points;
 }
@@ -304,24 +304,37 @@ t_points create_cone(float radius, float height, int slices, int stacks) {
 	return p_points;
 }
 
-vector<t_points> create_bezier(vector<vector<int>> patches, vector<Point> all_points, int level) {
+t_points create_bezier(vector<vector<int>> patches, vector<Point> all_points, int level) {
 	float step = 1.0 / level;
 
-	Matrix pos(1, 3);
-	Matrix deriv(1, 3);
+	Matrix bezier(BEZIER);
+	BezierTriangles p(4, 4, bezier);
 
-	Curve c;
-	c.addControlPoint(all_points);
-
-	vector<t_points> res;
+	t_points res(6 * level * level * 3);
+	Point u0v0, u0v1, u1v0, u1v1;
 	for (int i = 0; i < patches.size(); i++) {
-		t_points p_points(level);
-		vector<Point> p;
-		for (float j = 0; j < 1; j += step) {
-			c.getPoint(j, patches[i], pos, deriv);
-			p_points.add_point(pos.getPoint(0), pos.getPoint(1), pos.getPoint(2));
+		// add patch points
+		for (int j = 0; j < patches[i].size(); j++)
+		{
+			p.setPatchPoint(j, all_points[patches[i][j]]);
 		}
-		res.push_back(p_points);
+		p.preCalculus();
+		for (float u = 0; u < 1; u += step)
+		{
+			for (float v = 0; v < 1; v += step)
+			{
+				u0v0 = p.getControlPoint(u, v);
+				u1v0 = p.getControlPoint(u + step, v);
+				u0v1 = p.getControlPoint(u, v + step);
+				u1v1 = p.getControlPoint(u + step, v + step);
+				res.add_point(u0v0);
+				res.add_point(u0v1);
+				res.add_point(u1v1);
+				res.add_point(u0v0);
+				res.add_point(u1v1);
+				res.add_point(u1v0);
+			}
+		}
 	}
 	return res;
 }
