@@ -16,9 +16,7 @@ void write_point(XMLDocument* xml, point point) {
 	root->InsertEndChild(ponto);
 }
 
-void write_point_2(XMLDocument * xml, XMLElement * elem, point point) {
-	XMLNode* root = xml->FirstChild();
-
+void write_point(XMLDocument * xml, XMLElement * elem, point point) {
 	XMLElement* ponto = xml->NewElement("point");
 	ponto->SetAttribute("x", point.x);
 	ponto->SetAttribute("y", point.y);
@@ -65,7 +63,7 @@ void write_xml_patch(const char* filepath, GLenum type, vector<t_points> all_poi
 		XMLElement* patches = xml.NewElement("patches");
 		pRoot->InsertEndChild(patches);
 		for (int j = 0; j < all_points[i].total(); j++) {
-			write_point_2(&xml, patches, all_points[i].get_point(j));
+			write_point(&xml, patches, all_points[i].get_point(j));
 		}
 	}
 

@@ -24,6 +24,9 @@ struct transformation {
 	float a; // angle (use in rotate)
 	type t; // type: translate, rotate, scale
 	bool curve; // if the transformation use cubic curve
+	float last_time;
+	float translate_rate;
+	float rotate_rate;
 };
 
 class Transform

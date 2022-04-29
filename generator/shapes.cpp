@@ -212,46 +212,46 @@ t_points create_cylinder(int radius, int height, int slices, int stacks)
 }
 
 t_points create_torus(double radius, double size, int slices, int stack) {
-	t_points p_points(12 * slices * stack + 2 * slices);
+t_points p_points(12 * slices * stack + 2 * slices);
 
-	double ssl = (2 * M_PI) / slices;
-	double sst = M_PI / stack;
-	double alpha = 0;
-	double beta = -M_PI/2;
-	double x = 0, y = 0, z = 0;
+double ssl = (2 * M_PI) / slices;
+double sst = M_PI / stack;
+double alpha = 0;
+double beta = -M_PI / 2;
+double x = 0, y = 0, z = 0;
 
-	for (int j = 0; j < slices; j++) {
-		for (int i = 0; i < stack; i++) {
-			point a = polartocart(radius, alpha, 0);
-			point a1 = polartocart(size, alpha, beta);
-			point a2 = polartocart(size, alpha, beta+sst);
-			
-			point b = polartocart(radius, alpha + ssl, 0);
-			point b1 = polartocart(size, alpha+ssl, beta);
-			point b2 = polartocart(size, alpha+ssl, beta + sst);
+for (int j = 0; j < slices; j++) {
+	for (int i = 0; i < stack; i++) {
+		point a = polartocart(radius, alpha, 0);
+		point a1 = polartocart(size, alpha, beta);
+		point a2 = polartocart(size, alpha, beta + sst);
 
-			p_points.add_point(sum_points(a, a1));
-			p_points.add_point(sum_points(b, b1));
-			p_points.add_point(sum_points(b, b2));
+		point b = polartocart(radius, alpha + ssl, 0);
+		point b1 = polartocart(size, alpha + ssl, beta);
+		point b2 = polartocart(size, alpha + ssl, beta + sst);
 
-			p_points.add_point(sum_points(a, a1));
-			p_points.add_point(sum_points(b, b2));
-			p_points.add_point(sum_points(a, a2));
+		p_points.add_point(sum_points(a, a1));
+		p_points.add_point(sum_points(b, b1));
+		p_points.add_point(sum_points(b, b2));
 
-			p_points.add_point(sub_points(a, a1));
-			p_points.add_point(sub_points(b, b1));
-			p_points.add_point(sub_points(b, b2));
+		p_points.add_point(sum_points(a, a1));
+		p_points.add_point(sum_points(b, b2));
+		p_points.add_point(sum_points(a, a2));
 
-			p_points.add_point(sub_points(a, a1));
-			p_points.add_point(sub_points(b, b2));
-			p_points.add_point(sub_points(a, a2));
+		p_points.add_point(sub_points(a, a1));
+		p_points.add_point(sub_points(b, b1));
+		p_points.add_point(sub_points(b, b2));
 
-			beta += sst;
-		}
-		alpha += ssl;
-		beta = -M_PI/2;
+		p_points.add_point(sub_points(a, a1));
+		p_points.add_point(sub_points(b, b2));
+		p_points.add_point(sub_points(a, a2));
+
+		beta += sst;
 	}
-	return p_points;
+	alpha += ssl;
+	beta = -M_PI / 2;
+}
+return p_points;
 }
 
 t_points create_cone(double radius, double height, int slices, int stacks) {
@@ -304,14 +304,22 @@ t_points create_cone(double radius, double height, int slices, int stacks) {
 	return p_points;
 }
 
-
 vector<t_points> create_bezier(vector<vector<int>> patches, vector<point> all_points, int level) {
 	float pos[4];
 	float deriv[4];
 	float step = 1.0 / level;
 	vector<t_points> res;
 	for (int i = 0; i < patches.size(); i++) {
-		t_points p_points(patches[i].size());
+		for (int j = 0; j < level; j++) {
+			for (int k = 0; k < level; k++) {
+				float x1 = step * j;
+				float x2 = step * (j + 1);
+				float x3 = step * k;
+				float x4 = step * (k+1);
+
+			}
+		}
+		t_points p_points(level);
 		vector<point> p;
 		for (int k = 0; k < patches[i].size(); k++) {
 			p.push_back(all_points[patches[i][k]]);

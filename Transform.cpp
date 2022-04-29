@@ -32,6 +32,7 @@ void Transform::_init()
 	XMLElement* elem = _transform_elem->FirstChildElement();
 	while (elem != nullptr) {
 		transformation t;
+		t.last_time = 0.0;
 		t.curve = false;
 		nome = elem->Value();
 		if (strcmp(nome, "translate") == 0 && strcmp(elem->FirstAttribute()->Name(), "time") == 0) {
@@ -71,6 +72,21 @@ void Transform::_init()
 	}
 }
 
+void renderCatmullRomCurve(vector<point> points) {
+
+	// draw curve using line segments with GL_LINE_LOOP
+	float pos[4];
+	float deriv[4];
+
+
+	glBegin(GL_LINE_LOOP);
+	for (float i = 0; i < 1; i += 0.01) {
+		getGlobalCatmullRomPoint(i, pos, deriv, points);
+		glVertex3f(pos[0], pos[1], pos[2]);
+	}
+	glEnd();
+}
+
 void Transform::_draw()
 {
 	for (int i = 0; i < _transformations.size(); i++)
@@ -79,10 +95,10 @@ void Transform::_draw()
 		{
 		case TRANSLATE:
 			if (_transformations[i].curve) {
-				static float gt = 0;
+				renderCatmullRomCurve(_transformations[i].points);
 				float pos[3];
 				float deriv[3];
-				getGlobalCatmullRomPoint(gt, pos, deriv, _transformations[i].points);
+				getGlobalCatmullRomPoint(_transformations[i].translate_rate, pos, deriv, _transformations[i].points);
 				glTranslatef(pos[0], pos[1], pos[2]);
 				if (_transformations[i].align) {
 					float m[4][4];
@@ -98,8 +114,11 @@ void Transform::_draw()
 
 					glMultMatrixf(m[0]);
 				}
-				int time = glutGet(GLUT_ELAPSED_TIME);
-				gt += 0.0001;
+				
+				float time = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
+				_transformations[i].translate_rate += (time - _transformations[i].last_time) / float(_transformations[i].time); //calculte the new translate_rate
+				//_transformations[i].translate_rate -= 1 * floor(_transformations[i].translate_rate / 1); //normalize between 0 - 1 
+				_transformations[i].last_time = time; //update the last time
 			}
 			else {
 				glTranslatef(_transformations[i].p.x, _transformations[i].p.y, _transformations[i].p.z);
@@ -107,12 +126,12 @@ void Transform::_draw()
 			break;
 		case ROTATE:
 			if (_transformations[i].curve) {
-				static float rt = 0.0;
-				
-				int time = glutGet(GLUT_ELAPSED_TIME); //rever esta parte
-				float angle = 360.0 / time;
+				float time = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
+				_transformations[i].rotate_rate += (time - _transformations[i].last_time) / float(_transformations[i].time);//calculte the new rotate_rate
+				_transformations[i].rotate_rate -= 1 * floor(_transformations[i].rotate_rate / 1); //normalize between 0 - 1 
+				float angle = 360 * _transformations[i].rotate_rate; //calculate the new angle
 				glRotatef(angle, _transformations[i].p.x, _transformations[i].p.y, _transformations[i].p.z);
-				rt += angle;
+				_transformations[i].last_time = time;
 			}
 			else {
 				glRotatef(_transformations[i].a, _transformations[i].p.x, _transformations[i].p.y, _transformations[i].p.z);

@@ -28,7 +28,7 @@ void Model::read_points()
 
 	_type = x_root->FindAttribute("type")->IntValue();
 	int size = x_root->FindAttribute("size")->IntValue();
-	bool vbo = x_root->FindAttribute("vbo")->BoolValue();
+	//bool vbo = x_root->FindAttribute("vbo")->BoolValue();
 	int patchesNum = x_root->FindAttribute("patches")->IntValue();
 	//_points = t_points(size);
 	/*if (indexes) {
@@ -128,19 +128,20 @@ void Model::_draw() {
 	//point* points = _points.get_points_ptr();
 	point p;
 	
-	if (_patches_buffers.size() != 0) {
-		for (int i = 0; i < _patches_buffers.size(); i++) {
+	/*if (_patches_buffers.size() != 0) {
+		/*for (int i = 0; i < _patches_buffers.size(); i++) {
 			glBindBuffer(GL_ARRAY_BUFFER, _patches_buffers[i]);
 			glVertexPointer(3, GL_FLOAT, 0, 0);
 			glDrawArrays(_type, 0, _patches_total_points[i]);
-		}
+		}*/
+		//glutWireTeapot(3);
 
-	}
-	else {
-		glBindBuffer(GL_ARRAY_BUFFER, _buffer);
-		glVertexPointer(3, GL_FLOAT, 0, 0);
-		glDrawArrays(_type, 0, _total_points * 3);
-	}
+	//}
+	//else {
+	glBindBuffer(GL_ARRAY_BUFFER, _buffer);
+	glVertexPointer(3, GL_FLOAT, 0, 0);
+	glDrawArrays(_type, 0, _total_points * 3);
+	//}
 	//glBegin(_type);
 	//for (int i = 0; i < this->size(); i++) {
 	//	p = points[i];
