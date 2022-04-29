@@ -141,3 +141,14 @@ int Matrix::getN()
 {
 	return _n;
 }
+
+Matrix Matrix::clone()
+{
+	Matrix res(_m, _n);
+	int total = _m * _n;
+	for (int i = 0; i < total; i++)
+	{
+		res._mat[i] = _mat[i];
+	}
+	return res;
+}

@@ -122,3 +122,14 @@ void PointMatrix::transpose()
 	_mat = res;
 
 }
+
+PointMatrix PointMatrix::clone()
+{
+	PointMatrix res(_m, _n);
+	int total = _m * _n;
+	for (int i = 0; i < total; i++)
+	{
+		res._mat[i].setPoint(_mat[i]);
+	}
+	return res;
+}

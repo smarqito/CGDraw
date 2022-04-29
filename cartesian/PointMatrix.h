@@ -21,7 +21,8 @@ public:
 	*/
 	bool mul_matrix(PointMatrix out, Matrix b);
 	/*
-	Multiply this.*/
+	Multiply this x b
+	*/
 	PointMatrix mul_matrix(PointMatrix b);
 	/*
 	Set new value for point at line m, column n
@@ -51,5 +52,6 @@ public:
 	Transpose the matrix...
 	*/
 	void transpose();
+	PointMatrix clone();
 
 };

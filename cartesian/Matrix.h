@@ -61,6 +61,7 @@ public:
 	void transpose();
 	int getM();
 	int getN();
+	Matrix clone();
 };
 
 #endif // !MATRIX_H
