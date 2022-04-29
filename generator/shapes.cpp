@@ -307,14 +307,8 @@ t_points create_cone(float radius, float height, int slices, int stacks) {
 vector<t_points> create_bezier(vector<vector<int>> patches, vector<point> all_points, int level) {
 	float step = 1.0 / level;
 
-	float pos_[3] = { 0,0,0 };
-	float deriv_[3] = { 0,0,0 };
-	matrix pos = {
-		pos_, 1, 3
-	};
-	matrix deriv = {
-		deriv_, 1, 3
-	};
+	Matrix pos(1, 3);
+	Matrix deriv(1, 3);
 
 	Curve c;
 	c.addControlPoint(all_points);
@@ -324,8 +318,8 @@ vector<t_points> create_bezier(vector<vector<int>> patches, vector<point> all_po
 		t_points p_points(level);
 		vector<point> p;
 		for (float j = 0; j < 1; j += step) {
-			c.getPoint(j, patches[i], &pos, &deriv);
-			p_points.add_point(pos.mat[0], pos.mat[1], pos.mat[2]);
+			c.getPoint(j, patches[i], pos, deriv);
+			p_points.add_point(pos.getPoint(0), pos.getPoint(1), pos.getPoint(2));
 		}
 		res.push_back(p_points);
 	}

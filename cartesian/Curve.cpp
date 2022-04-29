@@ -2,70 +2,49 @@
 
 void Curve::calculate_t(float t) {
 	// calculate pos
-	_pos_t_ptr[0] = t * t * t;
-	_pos_t_ptr[1] = t * t;
-	_pos_t_ptr[2] = t;
-	_pos_t_ptr[3] = 1;
+	_pos_t.setPoint(0, t * t * t);
+	_pos_t.setPoint(1, t * t);
+	_pos_t.setPoint(2, t);
+	_pos_t.setPoint(3, 1);
 	// calculate derivative
-	_pos_d_ptr[0] = 3 * t * t;
-	_pos_d_ptr[1] = 2 * t;
-	_pos_d_ptr[2] = 1;
-	_pos_d_ptr[3] = 0;
+	_pos_d.setPoint(0, 3 * t * t);
+	_pos_d.setPoint(1, 2 * t);
+	_pos_d.setPoint(2, 1);
+	_pos_d.setPoint(3, 0);
 }
 
-void Curve::calculate(float t, matrix* pos, matrix* deriv)
+void Curve::calculate(float t, Matrix pos, Matrix deriv)
 {
-	matrix a = mul_matrix(_m, _tmp);
-	calculate_t(t); // will modify _pos_#_ptr (both)
-	mul_matrix(&_pos_t, &a, pos);
-	mul_matrix(&_pos_d, &a, deriv);
+	// a = _m x _tmp
+	Matrix a = _m.mul_matrix(_tmp);
+	//matrix a = mul_matrix(_m, _tmp);
+	calculate_t(t); // will modify _pos_d & _pos_t matrix
+	// pos = _pos_t x a
+	_pos_t.mul_matrix(a, pos);
+	//mul_matrix(&_pos_t, &a, pos);
+	_pos_d.mul_matrix(a, deriv);
+	//mul_matrix(&_pos_d, &a, deriv);
 }
 
 
-static float catmull[16] = { -0.5f,  1.5f, -1.5f,  0.5f,
-				1.0f, -2.5f,  2.0f, -0.5f,
-				-0.5f,  0.0f,  0.5f,  0.0f,
-				0.0f,  1.0f,  0.0f,  0.0f
-};
 Curve::Curve()
 {
-	_m.mat = catmull;
-	_m.m = 4;
-	_m.n = 4;
-
-	_pos_t_ptr = (float*)malloc(sizeof(float) * 4);
-	_pos_t.mat = _pos_t_ptr;
-
-	_pos_d_ptr = (float*)malloc(sizeof(float) * 4);
-	_pos_d.mat = _pos_d_ptr;
-	
-	_tmp.mat = (float*)malloc(sizeof(float) * 4 * 3);
-
-	_pos_t.m = _pos_d.m = 1;
-	_pos_t.n = _pos_d.n = 4;
-
-	_tmp.m = 4;
-	_tmp.n = 3;
+	// _m is default Bezier
+	_pos_t = Matrix(1, 4);
+	_pos_d = Matrix(1, 4);
+	_tmp = Matrix(4, 3);
 }
 
-Curve::Curve(float* curve_def)
+Curve::Curve(float* curve_def) : Curve()
 {
-	_m.mat = curve_def;
-	_m.m = 4;
-	_m.n = 4;
+	_m = Matrix(4, 4);
+	// TODO accept external pointer as matrix
+	//@@@@@ _m.mat = curve_def;
+}
 
-	_pos_t_ptr = (float*)malloc(sizeof(float) * 4);
-	_pos_t.mat = _pos_t_ptr;
-
-	_pos_d_ptr = (float*)malloc(sizeof(float) * 4);
-	_pos_d.mat = _pos_d_ptr;
-
-	_pos_t.m = _pos_d.m = 1;
-	_pos_t.n = _pos_d.n = 4;
-
-	_tmp.mat = (float*)malloc(sizeof(float) * 4 * 3);
-	_tmp.m = 4;
-	_tmp.n = 3;
+Curve::Curve(DefMat type) : Curve()
+{
+	_m = Matrix(type);
 }
 
 void Curve::addControlPoint(float x, float y, float z)
@@ -93,7 +72,7 @@ void Curve::addControlPoint(std::vector<point> points)
 	}
 }
 
-void Curve::getPoint(float gt, std::vector<int> control_index, matrix* pos, matrix* deriv)
+void Curve::getPoint(float gt, std::vector<int> control_index, Matrix pos, Matrix deriv)
 {
 	int size = control_index.size();
 	float t = gt * size; // real global t
@@ -108,9 +87,11 @@ void Curve::getPoint(float gt, std::vector<int> control_index, matrix* pos, matr
 	// populate _tmp matrix with current 4 control points
 	for (int j = 0; j < 4; j++)
 	{
-		_tmp.mat[3 * j] = _control_points[control_index[i[j]]].x;
-		_tmp.mat[3 * j + 1] = _control_points[control_index[i[j]]].y;
-		_tmp.mat[3 * j + 2] = _control_points[control_index[i[j]]].z;
+		_tmp.setPoint(j, 0, _control_points[control_index[i[j]]].x);
+		_tmp.setPoint(j, 1, _control_points[control_index[i[j]]].y);
+		_tmp.setPoint(j, 2, _control_points[control_index[i[j]]].z);
+		//_tmp.mat[3 * j + 1] = _control_points[control_index[i[j]]].y;
+		//_tmp.mat[3 * j + 2] = _control_points[control_index[i[j]]].z;
 	}
 	calculate(t, pos, deriv);
 }
