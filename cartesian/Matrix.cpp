@@ -99,3 +99,18 @@ float Matrix::getPoint(int absolute_index)
 {
 	return _mat[absolute_index];
 }
+
+void Matrix::transpose()
+{
+	float* a = new float[_m * _n]();
+
+	for (int i = 0; i < _n; i++)
+	{
+		for (int j = 0; j < _m; j++)
+		{
+			a[i * _m + j] = _mat[j * _n + i];
+		}
+	}
+	_mat = a;
+	free(_mat);
+}

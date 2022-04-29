@@ -55,6 +55,10 @@ public:
 	Get point at absolute index from 0 + abs_index
 	*/
 	float getPoint(int absolute_index);
+	/*
+	Transpose the matrix...
+	*/
+	void transpose();
 };
 
 #endif // !MATRIX_H
