@@ -125,7 +125,7 @@ void Model::_draw() {
 	// to add texture
 	// to add color
 	//point* points = _points.get_points_ptr();
-	point p;
+	Point p;
 	for (int i = 0; i < _n_buffers; i++)
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, _buffer[i]);

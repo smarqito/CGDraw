@@ -18,7 +18,7 @@ class Curve
 {
 private:
 	Matrix _m; // 4x4 : catmull, bezier, ...
-	vector<point> _control_points;
+	vector<Point> _control_points;
 	// add new instance var for patches (???)
 	// matrix application as constexpr
 	Matrix _tmp;		// size 4 x 3
@@ -42,8 +42,8 @@ public:
 	Curve(float* curve_def); // must get 4x4 matrix
 	void addControlPoint(float x, float y, float z);
 	void addControlPoint(float* v);
-	void addControlPoint(point p);
-	void addControlPoint(vector<point> points);
+	void addControlPoint(Point p);
+	void addControlPoint(vector<Point> points);
 	/*
 	Calculate the point using gt segment
 	@param gt

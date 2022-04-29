@@ -15,7 +15,7 @@ enum type
 };
 
 struct transformation {
-	point p; // transformation x, y, z
+	Point p; // transformation x, y, z
 	float a; // angle (use in rotate)
 	type t; // type: translate, rotate, scale
 };

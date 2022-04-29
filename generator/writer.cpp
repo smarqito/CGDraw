@@ -4,7 +4,7 @@
 /*
 * Função criada para escrever no documento xml um ponto
 */
-void write_point(XMLDocument* xml, point point) {
+void write_point(XMLDocument* xml, Point point) {
 	XMLNode* root = xml->FirstChild();
 
 	XMLElement* ponto = xml->NewElement("point");
@@ -14,7 +14,7 @@ void write_point(XMLDocument* xml, point point) {
 	root->InsertEndChild(ponto);
 }
 
-void write_point(XMLDocument* xml, XMLElement* elem, point point) {
+void write_point(XMLDocument* xml, XMLElement* elem, Point point) {
 	XMLElement* ponto = xml->NewElement("point");
 	ponto->SetAttribute("x", point.x);
 	ponto->SetAttribute("y", point.y);
@@ -192,13 +192,13 @@ int main(int argc, const char** argv) {
 		}
 		getline(file, tp);
 		int npoints = stoi(tp);
-		vector<point> _points;
+		vector<Point> _points;
 		for (int i = 0; i < npoints; i++) {
 			getline(file, tp);
 			regex regexp(R"(([+-]?\d+(?:\.\d+)?), ([+-]?\d+(?:\.\d+)?), ([+-]?\d+(?:\.\d+)?))");
 			smatch m;
 			regex_search(tp, m, regexp);
-			point p;
+			Point p;
 			p.x = stod(m[1]); p.y = stod(m[2]); p.z = stod(m[3]);
 			_points.push_back(p);
 		}

@@ -49,22 +49,22 @@ Curve::Curve(DefMat type) : Curve()
 
 void Curve::addControlPoint(float x, float y, float z)
 {
-	point p(x, y, z);
+	Point p(x, y, z);
 	addControlPoint(p);
 }
 
 void Curve::addControlPoint(float* v)
 {
-	point p(v[0], v[1], v[2]);
+	Point p(v[0], v[1], v[2]);
 	addControlPoint(p);
 }
 
-void Curve::addControlPoint(point p)
+void Curve::addControlPoint(Point p)
 {
 	_control_points.push_back(p);
 }
 
-void Curve::addControlPoint(std::vector<point> points)
+void Curve::addControlPoint(std::vector<Point> points)
 {
 	for (size_t i = 0; i < points.size(); i++)
 	{

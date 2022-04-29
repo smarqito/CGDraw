@@ -27,6 +27,10 @@ Matrix::Matrix(int m, int n)
 	_mat = new float[m * n]();
 	_m = m;
 	_n = n;
+	for (int i = 0; i < m*n; i++)
+	{
+		_mat[i] = 0;
+	}
 }
 
 Matrix::Matrix(DefMat type) : Matrix(4, 4)
@@ -49,6 +53,14 @@ Matrix::Matrix(DefMat type) : Matrix(4, 4)
 	for (int i = 0; i < 16; i++)
 	{
 		_mat[i] = fill[i];
+	}
+}
+
+Matrix::Matrix(int m, int n, float* values) : Matrix(m,n)
+{
+	for (int i = 0; i < (m*n); i++)
+	{
+		_mat[i] = values[i];
 	}
 }
 
@@ -111,6 +123,21 @@ void Matrix::transpose()
 			a[i * _m + j] = _mat[j * _n + i];
 		}
 	}
-	_mat = a;
+
+	int tmp = _m;
+	_m = _n;
+	_n = tmp;
+	
 	free(_mat);
+	_mat = a;
+}
+
+int Matrix::getM()
+{
+	return _m;
+}
+
+int Matrix::getN()
+{
+	return _n;
 }

@@ -21,9 +21,9 @@ public:
 	Default is Bezier
 	*/
 	Matrix();
-
 	Matrix(int m, int n);
 	Matrix(DefMat type);
+	Matrix(int m, int n, float* values);
 	/*
 	Multiply THIS._mat by b
 	result in Matrix out
@@ -44,7 +44,7 @@ public:
 	*/
 	void setPoint(int m, int n, float newValue);
 	/*
-	
+
 	*/
 	void setPoint(int absolute_index, float newValue);
 	/*
@@ -59,6 +59,8 @@ public:
 	Transpose the matrix...
 	*/
 	void transpose();
+	int getM();
+	int getN();
 };
 
 #endif // !MATRIX_H

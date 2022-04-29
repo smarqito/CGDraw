@@ -18,14 +18,14 @@ t_points::t_points()
 {
 	_pos = 0;
 	_total = 0;
-	_points = new point[10];
+	_points = new Point[10];
 	_size = 10;
 }
 
 t_points::t_points(int size) {
 	_pos = 0;
 	_total = 0;
-	_points = new point[size];
+	_points = new Point[size];
 	_size = size;
 }
 
@@ -43,22 +43,22 @@ bool t_points::add_point(double x, double y, double z) {
 	if (_total == size()) {
 		return false;
 	}
-	point* p = (&_points[_total++]);
+	Point* p = (&_points[_total++]);
 	p->x = x;
 	p->y = y;
 	p->z = z;
 	return true;
 }
 
-bool t_points::add_point(point p) {
+bool t_points::add_point(Point p) {
 	return add_point(p.x, p.y, p.z);
 }
 
-point t_points::get_point() {
+Point t_points::get_point() {
 	return get_point(this->_pos++);
 }
 
-point t_points::get_point(int pos) {
+Point t_points::get_point(int pos) {
 	if (pos < _total) {
 		return _points[pos];
 	}
@@ -66,24 +66,24 @@ point t_points::get_point(int pos) {
 }
 
 void t_points::_draw() {
-	point p;
+	Point p;
 	for (int i = 0; i < this->size(); i++) {
 		p = get_point(i);
 		//glVertex3d(p.x, p.y, p.z);
 	}
 }
 
-point* t_points::get_points_ptr()
+Point* t_points::get_points_ptr()
 {
 	return _points;
 }
 
-point polartocart(polar p) {
+Point polartocart(polar p) {
 	return polartocart(p.r, p.a, p.b);
 }
 
-point polartocart(float r, float alpha, float beta) {
-	point point;
+Point polartocart(float r, float alpha, float beta) {
+	Point point;
 	point.x = r * cos(beta) * sin(alpha);
 	point.y = r * sin(beta);
 	point.z = r * cos(beta) * cos(alpha);
@@ -91,7 +91,7 @@ point polartocart(float r, float alpha, float beta) {
 	return point;
 }
 
-polar cart_to_polar(point p)
+polar cart_to_polar(Point p)
 {
 	return cart_to_polar(p.x, p.y, p.z);
 }
@@ -113,25 +113,25 @@ polar cart_to_polar(double x, double y, double z)
 	return p;
 }
 
-point sum_points(point a, point b)
+Point sum_points(Point a, Point b)
 {
-	point p;
+	Point p;
 	p.x = a.x + b.x;
 	p.y = a.y + b.y;
 	p.z = a.z + b.z;
 	return p;
 }
 
-void sum_points(point* a, point* b)
+void sum_points(Point* a, Point* b)
 {
 	a->x = a->x + b->x;
 	a->y = a->y + b->y;
 	a->z = a->z + b->z;
 }
 
-point sub_points(point a, point b)
+Point sub_points(Point a, Point b)
 {
-	point p;
+	Point p;
 	p.x = a.x - b.x;
 	p.y = a.y - b.y;
 	p.z = a.z - b.z;
@@ -139,8 +139,8 @@ point sub_points(point a, point b)
 
 }
 
-point scale_factor(point x, float factor) {
-	point p;
+Point scale_factor(Point x, float factor) {
+	Point p;
 	p.x = x.x * factor;
 	p.y = x.y * factor;
 	p.z = x.z * factor;
@@ -148,7 +148,7 @@ point scale_factor(point x, float factor) {
 
 }
 
-void sub_points(point* a, point* b)
+void sub_points(Point* a, Point* b)
 {
 	a->x = a->x - b->x;
 	a->y = a->y - b->y;
@@ -242,14 +242,14 @@ matrix mul_matrix(matrix a, matrix b)
 
 
 
-void cross(point* a, point* b, point* res)
+void cross(Point* a, Point* b, Point* res)
 {
 	res->x = a->y * b->z - a->z * b->y;
 	res->y = a->z * b->x - a->x * b->z;
 	res->z = a->x * b->y - a->y * b->x;
 }
 
-void normalize(point* a)
+void normalize(Point* a)
 {
 	float l = sqrt(a->x * a->x + a->y * a->y + a->z * a->z);
 	a->x /= l;

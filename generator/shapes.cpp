@@ -132,10 +132,10 @@ t_points create_sphere(int radius, int slices, int stacks) {
 	{
 		for (int j = 0; j < slices; j++)
 		{
-			point a = polartocart(radius, alpha, beta);
-			point b = polartocart(radius, alpha, beta - sst);
-			point c = polartocart(radius, alpha + ssl, beta - sst);
-			point d = polartocart(radius, alpha + ssl, beta);
+			Point a = polartocart(radius, alpha, beta);
+			Point b = polartocart(radius, alpha, beta - sst);
+			Point c = polartocart(radius, alpha + ssl, beta - sst);
+			Point d = polartocart(radius, alpha + ssl, beta);
 
 			if (i == stacks - 1) {
 				p_points.add_point(a);
@@ -176,8 +176,8 @@ t_points create_cylinder(int radius, int height, int slices, int stacks)
 	float x = 0, y = (float)height / 2, z = 0;
 	for (int i = 0; i < slices; i++)
 	{
-		point a = polartocart(radius, alpha, beta);
-		point b = polartocart(radius, alpha + ssl, beta);
+		Point a = polartocart(radius, alpha, beta);
+		Point b = polartocart(radius, alpha + ssl, beta);
 		p_points.add_point(x, y, z);
 		p_points.add_point(x + a.x, y + a.y, z + a.z);
 		p_points.add_point(x + b.x, y + b.y, z + b.z);
@@ -193,8 +193,8 @@ t_points create_cylinder(int radius, int height, int slices, int stacks)
 	for (int i = 0; i < stacks; i++) {
 		for (int j = 0; j < slices; j++)
 		{
-			point a = polartocart(radius, alpha, beta);
-			point b = polartocart(radius, alpha + ssl, beta);
+			Point a = polartocart(radius, alpha, beta);
+			Point b = polartocart(radius, alpha + ssl, beta);
 
 			p_points.add_point(b.x, y + b.y - sst, b.z);
 			p_points.add_point(b.x, y + b.y, b.z);
@@ -222,13 +222,13 @@ t_points create_torus(float radius, float size, int slices, int stack) {
 
 	for (int j = 0; j < slices; j++) {
 		for (int i = 0; i < stack; i++) {
-			point a = polartocart(radius, alpha, 0);
-			point a1 = polartocart(size, alpha, beta);
-			point a2 = polartocart(size, alpha, beta+sst);
+			Point a = polartocart(radius, alpha, 0);
+			Point a1 = polartocart(size, alpha, beta);
+			Point a2 = polartocart(size, alpha, beta+sst);
 			
-			point b = polartocart(radius, alpha + ssl, 0);
-			point b1 = polartocart(size, alpha+ssl, beta);
-			point b2 = polartocart(size, alpha+ssl, beta + sst);
+			Point b = polartocart(radius, alpha + ssl, 0);
+			Point b1 = polartocart(size, alpha+ssl, beta);
+			Point b2 = polartocart(size, alpha+ssl, beta + sst);
 
 			p_points.add_point(sum_points(a, a1));
 			p_points.add_point(sum_points(b, b1));
@@ -271,10 +271,10 @@ t_points create_cone(float radius, float height, int slices, int stacks) {
 		alpha = 0;
 		for (int j = 0; j < slices; j++)
 		{
-			point a = polartocart(r, alpha, beta);
-			point b = polartocart(r + rstep, alpha, beta);
-			point c = polartocart(r, alpha + step, beta);
-			point d = polartocart(r + rstep, alpha + step, beta);
+			Point a = polartocart(r, alpha, beta);
+			Point b = polartocart(r + rstep, alpha, beta);
+			Point c = polartocart(r, alpha + step, beta);
+			Point d = polartocart(r + rstep, alpha + step, beta);
 
 			p_points.add_point(a.x, a.y + y, a.z); //a
 			p_points.add_point(b.x, b.y + y, b.z); //b
@@ -292,8 +292,8 @@ t_points create_cone(float radius, float height, int slices, int stacks) {
 	beta = 0;
 	for (int i = 0; i < slices; i++)
 	{
-		point b = polartocart(radius, alpha, beta);
-		point c = polartocart(radius, alpha - step, beta);
+		Point b = polartocart(radius, alpha, beta);
+		Point c = polartocart(radius, alpha - step, beta);
 		p_points.add_point(x, y, z);
 		p_points.add_point(x + b.x, y + b.y, z + b.z);
 		p_points.add_point(x + c.x, y + c.y, z + c.z);
@@ -304,7 +304,7 @@ t_points create_cone(float radius, float height, int slices, int stacks) {
 	return p_points;
 }
 
-vector<t_points> create_bezier(vector<vector<int>> patches, vector<point> all_points, int level) {
+vector<t_points> create_bezier(vector<vector<int>> patches, vector<Point> all_points, int level) {
 	float step = 1.0 / level;
 
 	Matrix pos(1, 3);
@@ -316,7 +316,7 @@ vector<t_points> create_bezier(vector<vector<int>> patches, vector<point> all_po
 	vector<t_points> res;
 	for (int i = 0; i < patches.size(); i++) {
 		t_points p_points(level);
-		vector<point> p;
+		vector<Point> p;
 		for (float j = 0; j < 1; j += step) {
 			c.getPoint(j, patches[i], pos, deriv);
 			p_points.add_point(pos.getPoint(0), pos.getPoint(1), pos.getPoint(2));

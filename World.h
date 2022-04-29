@@ -58,7 +58,7 @@ public:
 	void _draw_lookAt();
 
 	// Não há nenhuma restrição para a posição a receber 
-	void set_camera_pos(point pos);
+	void set_camera_pos(Point pos);
 
 	//
 	void set_camera_pos(double x, double y, double z);
@@ -67,12 +67,12 @@ public:
 	void move_camera_pos(CAMenum m);
 	void move_lookat(double alpha, double beta);
 	// Não há nenhuma restrição para o lookaAt da câmera
-	void set_camera_lookat(point lookat);
+	void set_camera_lookat(Point lookat);
 
 	void set_camera_lookat(double x, double y, double z);
 
 	// Não há nenhuma restrição para o up point da câmera
-	void set_camera_up(point up);
+	void set_camera_up(Point up);
 
 	// Não há nenhuma restrição para a projection da câmera
 	void set_camera_persp(perspective perp);
