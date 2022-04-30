@@ -310,7 +310,7 @@ t_points create_bezier(vector<vector<int>> patches, vector<Point> all_points, in
 	Matrix bezier(BEZIER);
 	BezierTriangles p(4, 4, bezier);
 
-	t_points res(6 * level * level * 3);
+	t_points res(patches.size() * level * level * 6);
 	Point u0v0, u0v1, u1v0, u1v1;
 	for (int i = 0; i < patches.size(); i++) {
 		// add patch points
@@ -329,10 +329,10 @@ t_points create_bezier(vector<vector<int>> patches, vector<Point> all_points, in
 				u1v1 = p.getControlPoint(u + step, v + step);
 				res.add_point(u0v0);
 				res.add_point(u0v1);
-				res.add_point(u1v1);
-				res.add_point(u0v0);
-				res.add_point(u1v1);
 				res.add_point(u1v0);
+				res.add_point(u1v0);
+				res.add_point(u0v1);
+				res.add_point(u1v1);
 			}
 		}
 	}

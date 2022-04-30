@@ -16,8 +16,15 @@ enum type
 
 struct transformation {
 	Point p; // transformation x, y, z
+	vector<Point> points; // points to define a Catmull-Rom cubic curve
+	float time; //the number of seconds to run the whole curve
+	bool align; //aligned with the curve
 	float a; // angle (use in rotate)
 	type t; // type: translate, rotate, scale
+	bool curve; // if the transformation use cubic curve
+	float last_time;
+	float translate_rate;
+	float rotate_rate;
 };
 
 class Transform
@@ -25,6 +32,7 @@ class Transform
 private:
 	XMLElement* _transform_elem;
 	vector<transformation> _transformations;
+	float yAnt[3];
 public:
 	Transform();
 	Transform(XMLElement* transform_elem);

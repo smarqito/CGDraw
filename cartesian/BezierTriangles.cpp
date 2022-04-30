@@ -64,7 +64,7 @@ void BezierTriangles::setPatchPoint(int pos, vector<Point> points)
 Point BezierTriangles::getControlPoint(float u, float v)
 {
 	calculateU(u); // 1 x 4
-	calculateU(v); // 4 x 1
+	calculateV(v); // 4 x 1
 	_const.mul_matrix(_u_mpm, _u); // (1 x 4) x (4 x 4)  = 1 x 4 = _u_mpm
 	_u_mpm.mul_matrix(_v, _mpm_v); // (1 x 4) x (4 x 1)  = 1 x 1 = _mpm_v
 	return _mpm_v.getPoint(0);

@@ -114,7 +114,7 @@ float Matrix::getPoint(int absolute_index)
 
 void Matrix::transpose()
 {
-	float* a = new float[_m * _n]();
+	float* a = new float[_m * _n];
 
 	for (int i = 0; i < _n; i++)
 	{
