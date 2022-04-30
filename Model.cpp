@@ -124,7 +124,6 @@ char* Model::getFilename() {
 void Model::_draw() {
 	// to add texture
 	// to add color
-	//point* points = _points.get_points_ptr();
 	Point p;
 	for (int i = 0; i < _n_buffers; i++)
 	{
@@ -133,11 +132,5 @@ void Model::_draw() {
 		glDrawArrays(_type, 0, _total_points[i] * 3);
 
 	}
-	//glBegin(_type);
-	//for (int i = 0; i < this->size(); i++) {
-	//	p = points[i];
-	//	glVertex3d(p.x, p.y, p.z);
-	//}
-	////_points._draw();
-	//glEnd();
+
 }
