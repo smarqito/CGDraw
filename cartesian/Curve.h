@@ -50,7 +50,7 @@ public:
 	@param pos 1x3 matrix
 	@param deriv 1x3 matrix
 	*/
-	void getPoint(float gt, std::vector<int> control_index, Matrix pos, Matrix deriv);
+	void getPoint(float gt, Matrix pos, Matrix deriv);
 };
 
 #endif // !CURVE_H

@@ -1,4 +1,6 @@
 #include "Matrix.h"
+#include "Matrix.h"
+#include "Matrix.h"
 // default matrix definition
 
 static float CATMULL_MAT[16] = { -0.5f,  1.5f, -1.5f,  0.5f,
@@ -130,6 +132,49 @@ void Matrix::transpose()
 	
 	free(_mat);
 	_mat = a;
+}
+
+void Matrix::cross(Matrix b, Matrix out) 
+{
+	for (int i = 0; i < _m; i++) {
+		for (int j = 0; j < _n; j++)
+		{	
+			out.setPoint(i, j, getPoint((i + 1) % _n) * b.getPoint((i + 2) % _n) - getPoint((i + 2) % _n) * b.getPoint((i + 1) % _n));
+		}
+	}
+}
+
+void Matrix::normalize_lines()
+{
+	for (int i = 0; i < _m; i++)
+	{
+		float tmp = 0;
+		for (int j = 0; j < _n; j++)
+		{
+			tmp += getPoint(i, j) * getPoint(i,j);
+
+		}
+		tmp = sqrt(tmp);
+		for (int j = 0; j < _n; j++)
+		{
+			setPoint(i, j, getPoint(i, j) / tmp);
+		}
+	}
+}
+
+float* Matrix::to_array()
+{
+	float* new_matrix = (float *)malloc(sizeof(float)*(_m*_n));
+	int index = 0;
+	for (int i = 0; i < _m; i++)
+	{
+		for (int j = 0; j < _n; j++)
+		{
+			float p = getPoint(i, j);
+			new_matrix[index++] = p;
+		}
+	}
+	return new_matrix;
 }
 
 int Matrix::getM()

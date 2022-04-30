@@ -3,6 +3,8 @@
 #include "cartesian.h"
 #include <tinyxml2.h>
 #include <vector>
+#include <Curve.h>
+#include <RotMatrix.h>
 
 using namespace std;
 using namespace tinyxml2;
@@ -32,7 +34,7 @@ class Transform
 private:
 	XMLElement* _transform_elem;
 	vector<transformation> _transformations;
-	float yAnt[3];
+	Matrix _y_i = Matrix(1,3);
 public:
 	Transform();
 	Transform(XMLElement* transform_elem);

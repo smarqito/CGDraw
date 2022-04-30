@@ -72,9 +72,9 @@ void Curve::addControlPoint(std::vector<Point> points)
 	}
 }
 
-void Curve::getPoint(float gt, std::vector<int> control_index, Matrix pos, Matrix deriv)
+void Curve::getPoint(float gt, Matrix pos, Matrix deriv)
 {
-	int size = control_index.size();
+	int size = _control_points.size();
 	float t = gt * size; // real global t
 	int index = floor(t); // which segment
 	t = t - index; // where within segment
@@ -87,9 +87,9 @@ void Curve::getPoint(float gt, std::vector<int> control_index, Matrix pos, Matri
 	// populate _tmp matrix with current 4 control points
 	for (int j = 0; j < 4; j++)
 	{
-		_tmp.setPoint(j, 0, _control_points[control_index[i[j]]].x);
-		_tmp.setPoint(j, 1, _control_points[control_index[i[j]]].y);
-		_tmp.setPoint(j, 2, _control_points[control_index[i[j]]].z);
+		_tmp.setPoint(j, 0, _control_points[i[j]].x);
+		_tmp.setPoint(j, 1, _control_points[i[j]].y);
+		_tmp.setPoint(j, 2, _control_points[i[j]].z);
 		//_tmp.mat[3 * j + 1] = _control_points[control_index[i[j]]].y;
 		//_tmp.mat[3 * j + 2] = _control_points[control_index[i[j]]].z;
 	}
