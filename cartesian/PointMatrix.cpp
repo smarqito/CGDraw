@@ -1,4 +1,7 @@
 #include "PointMatrix.h"
+#include <iostream>
+
+using namespace std;
 
 PointMatrix::PointMatrix()
 {
@@ -23,7 +26,7 @@ bool PointMatrix::mul_matrix(Matrix b, PointMatrix out)
 	}
 	out._m = _m;
 	out._n = b.getN();
-	float tmp;
+	Point tmp;
 	for (int i = 0; i < _m; i++)
 	{
 		for (int j = 0; j < out._n; j++) {
@@ -32,10 +35,10 @@ bool PointMatrix::mul_matrix(Matrix b, PointMatrix out)
 			out._mat[i * out._n + j].z = 0;
 			for (int k = 0; k < _n; k++)
 			{
-				tmp = b.getPoint(i * out._n + k);
-				out._mat[i * out._n + j].x += tmp * _mat[k * out._n + j].x;
-				out._mat[i * out._n + j].y += tmp * _mat[k * out._n + j].y;
-				out._mat[i * out._n + j].z += tmp * _mat[k * out._n + j].z;
+				tmp = _mat[i * out._n + k];
+				out._mat[i * out._n + j].x += tmp.x * b.getPoint(k * out._n + j);
+				out._mat[i * out._n + j].y += tmp.y * b.getPoint(k * out._n + j);
+				out._mat[i * out._n + j].z += tmp.z * b.getPoint(k * out._n + j);
 			}
 		}
 	}

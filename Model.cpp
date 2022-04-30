@@ -131,6 +131,7 @@ void Model::_draw() {
 		glBindBuffer(GL_ARRAY_BUFFER, _buffer[i]);
 		glVertexPointer(3, GL_FLOAT, 0, 0);
 		glDrawArrays(_type, 0, _total_points[i] * 3);
+
 	}
 	//glBegin(_type);
 	//for (int i = 0; i < this->size(); i++) {

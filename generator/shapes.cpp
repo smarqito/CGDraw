@@ -304,6 +304,8 @@ t_points create_cone(float radius, float height, int slices, int stacks) {
 	return p_points;
 }
 
+
+
 t_points create_bezier(vector<vector<int>> patches, vector<Point> all_points, int level) {
 	float step = 1.0 / level;
 
