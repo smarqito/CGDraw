@@ -184,7 +184,7 @@ void Transform::_draw()
 
 				float time = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
 				_transformations[i].translate_rate += (time - _transformations[i].last_time) / float(_transformations[i].time); //calculte the new translate_rate
-				//_transformations[i].translate_rate -= 1 * floor(_transformations[i].translate_rate / 1); //normalize between 0 - 1 
+				_transformations[i].translate_rate -= 1 * floor(_transformations[i].translate_rate / 1); //normalize between 0 - 1 
 				_transformations[i].last_time = time; //update the last time
 			}
 			else {
