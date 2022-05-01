@@ -21,6 +21,19 @@ Transform::Transform()
 	_y_i.setPoint(2, 0);
 }
 
+Matrix Transform::_custom_matrix(XMLElement* matrix)
+{
+	XMLElement* elem = matrix->FirstChildElement("elem");
+	int m = matrix->IntAttribute("m");
+	int n = matrix->IntAttribute("n");
+	Matrix res(m, n);
+	for (int i = 0; elem != nullptr; i++, elem = elem->NextSiblingElement())
+	{
+		res.setPoint(i, elem->FloatText());
+	}
+	return res;
+}
+
 Transform::Transform(XMLElement* transform_elem)
 {
 	_transform_elem = transform_elem;
@@ -41,10 +54,13 @@ void Transform::_init()
 			// define is curve
 			t.curve = true;
 
-			//set curve type
+			// set curve type
 			int curveType = elem->IntAttribute("curve", CATMULL); // default is bezier
 			if (curveType == -1) {
-				// CARREGAR VALOR XML
+				// build a custom matrix to curve translation
+				XMLElement* matrix = elem->FirstChildElement("matrix");
+				Matrix m = _custom_matrix(matrix);
+				t._t_curve = TranslateCurve(m);
 			}
 			else {
 				t._t_curve = TranslateCurve((DefMat)curveType);
@@ -54,7 +70,7 @@ void Transform::_init()
 			t._time.setTime(elem->FindAttribute("time")->FloatValue());
 			t._t_curve.setAlign(elem->BoolAttribute("align"));
 
-			XMLElement* points = elem->FirstChildElement();
+			XMLElement* points = elem->FirstChildElement("point");
 			vector<Point> c_points;
 
 			while (points != nullptr) {

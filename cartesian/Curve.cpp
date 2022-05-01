@@ -1,4 +1,5 @@
 #include "Curve.h"
+#include "Curve.h"
 
 void Curve::calculate_t(float t) {
 	// calculate pos
@@ -11,6 +12,11 @@ void Curve::calculate_t(float t) {
 	_pos_d.setPoint(1, 2 * t);
 	_pos_d.setPoint(2, 1);
 	_pos_d.setPoint(3, 0);
+}
+
+Curve::Curve(Matrix m) : Curve()
+{
+	_m = m.clone();
 }
 
 void Curve::calculate(float t, Matrix pos, Matrix deriv)
@@ -29,7 +35,6 @@ void Curve::calculate(float t, Matrix pos, Matrix deriv)
 
 Curve::Curve()
 {
-	// _m is default Bezier
 	_pos_t = Matrix(1, 4);
 	_pos_d = Matrix(1, 4);
 	_tmp = Matrix(4, 3);

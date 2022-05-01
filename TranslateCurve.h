@@ -14,9 +14,11 @@ class TranslateCurve
 	Matrix _z = Matrix(1, 3);
 	RotMatrix _rot_matrix;
 	bool _align;
+	void _draw_curve();
 public:
 	TranslateCurve();
 	TranslateCurve(DefMat type);
+	TranslateCurve(Matrix m);
 	void addControlPoint(std::vector<Point> newPoints);
 	void setAlign(bool align);
 	void _draw(float time);
