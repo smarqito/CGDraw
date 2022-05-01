@@ -38,6 +38,7 @@ private:
 	XMLElement* _transform_elem;
 	vector<transformation> _transformations;
 	Matrix _y_i = Matrix(1,3);
+	Matrix _custom_matrix(XMLElement* matrix);
 public:
 	Transform();
 	Transform(XMLElement* transform_elem);

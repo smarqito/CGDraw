@@ -40,6 +40,7 @@ public:
 	@param curve_def 4x4 matrix
 	*/
 	Curve(float* curve_def); // must get 4x4 matrix
+	Curve(Matrix m);
 	void addControlPoint(float x, float y, float z);
 	void addControlPoint(float* v);
 	void addControlPoint(Point p);
