@@ -15,6 +15,7 @@ class TranslateCurve
 	RotMatrix _rot_matrix;
 	bool _align;
 	void _draw_curve();
+	void _draw_derivatives();
 public:
 	TranslateCurve();
 	TranslateCurve(DefMat type);

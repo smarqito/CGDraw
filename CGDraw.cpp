@@ -131,6 +131,24 @@ void processKeys(unsigned char c, int xx, int yy) {
 	case '-':
 		world.change_scale(-1);
 		break;
+	case 'u':
+		extern bool draw_curves;
+		if (draw_curves) {
+			draw_curves = false;
+		}
+		else {
+			draw_curves = true;
+		}
+		break;
+	case 'U':
+		extern bool draw_derivatives;
+		if (draw_derivatives) {
+			draw_derivatives = false;
+		}
+		else {
+			draw_derivatives = true;
+		}
+		break;
 	case 'p':
 		if (drawAxisB) {
 			drawAxisB = false;

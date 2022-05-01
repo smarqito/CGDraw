@@ -5,7 +5,7 @@
 #include <GL/glut.h>
 #endif
 #ifndef CAMERA_H
-#define CAAMERA_H
+#define CAMERA_H
 
 #include "cartesian/cartesian.h"
 #include <tinyxml2.h>

@@ -36,6 +36,9 @@ void TranslateCurve::_draw_curve()
 		glVertex3d(_pos.getPoint(0), _pos.getPoint(1), _pos.getPoint(2));
 	}
 	glEnd();	
+}
+void TranslateCurve::_draw_derivatives()
+{
 	glBegin(GL_LINES);
 	for (float i = 0; i < 1; i += 0.01)
 	{
@@ -44,12 +47,16 @@ void TranslateCurve::_draw_curve()
 		glVertex3f(_pos.getPoint(0) + _deriv.getPoint(0), _pos.getPoint(1) + _deriv.getPoint(1), _pos.getPoint(2) + _deriv.getPoint(2));
 	}
 	glEnd();
-
 }
 
+bool draw_curves = false;
+bool draw_derivatives = false;
 void TranslateCurve::_draw(float time)
 {
-	//_draw_curve();
+	if(draw_curves)
+		_draw_curve();
+	if(draw_derivatives)
+		_draw_derivatives();
 	_curve.getPoint(time, _pos, _deriv);
 	glTranslatef(_pos.getPoint(0), _pos.getPoint(1), _pos.getPoint(2));
 	if (_align) {
