@@ -124,7 +124,7 @@ char* Model::getFilename() {
 void Model::_draw() {
 	// to add texture
 	// to add color
-	Point p;
+	//Point p;
 	for (int i = 0; i < _n_buffers; i++)
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, _buffer[i]);

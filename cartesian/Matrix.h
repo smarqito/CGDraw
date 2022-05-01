@@ -13,6 +13,7 @@ enum DefMat
 
 class Matrix
 {
+protected:
 	float* _mat;
 	int _m;
 	int _n;
@@ -36,6 +37,7 @@ public:
 	/*
 	Multiply this.*/
 	Matrix mul_matrix(Matrix b);
+
 	/*
 	Set new value for point at line m, column n
 	@param m		lineno
@@ -59,6 +61,15 @@ public:
 	Transpose the matrix...
 	*/
 	void transpose();
+	void cross(Matrix b, Matrix out);
+	/*
+	Normalize Matrix considering each line as a vector 
+	*/
+	void normalize_lines();
+	/*
+	Return the pointer to the matrix (DOESN't COPY!!!)
+	*/
+	float* to_array();
 	int getM();
 	int getN();
 	Matrix clone();
