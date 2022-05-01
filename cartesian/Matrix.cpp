@@ -139,7 +139,7 @@ void Matrix::cross(Matrix b, Matrix out)
 	for (int i = 0; i < _m; i++) {
 		for (int j = 0; j < _n; j++)
 		{	
-			out.setPoint(i, j, getPoint((i + 1) % _n) * b.getPoint((i + 2) % _n) - getPoint((i + 2) % _n) * b.getPoint((i + 1) % _n));
+			out.setPoint(i, j, getPoint(i, (j + 1) % _n) * b.getPoint(i, (j + 2) % _n) - getPoint(i, (j + 2) % _n) * b.getPoint(i, (j + 1) % _n));
 		}
 	}
 }
@@ -164,17 +164,7 @@ void Matrix::normalize_lines()
 
 float* Matrix::to_array()
 {
-	float* new_matrix = (float *)malloc(sizeof(float)*(_m*_n));
-	int index = 0;
-	for (int i = 0; i < _m; i++)
-	{
-		for (int j = 0; j < _n; j++)
-		{
-			float p = getPoint(i, j);
-			new_matrix[index++] = p;
-		}
-	}
-	return new_matrix;
+	return _mat;
 }
 
 int Matrix::getM()

@@ -66,6 +66,9 @@ public:
 	Normalize Matrix considering each line as a vector 
 	*/
 	void normalize_lines();
+	/*
+	Return the pointer to the matrix (DOESN't COPY!!!)
+	*/
 	float* to_array();
 	int getM();
 	int getN();
