@@ -9,7 +9,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 include_directories(${PROJECT_SOURCE_DIR})
 
-add_executable(${PROJECT_NAME} CGDraw.cpp Model.cpp World.cpp Models.cpp Group.cpp Camera.cpp Lights.cpp Groups.cpp Transform.cpp)
+add_executable(${PROJECT_NAME} CGDraw.h CGDraw.h CGDraw.cpp Model.h Model.cpp World.h World.cpp Models.h Models.cpp Group.h Group.cpp Camera.h Camera.cpp Lights.h Lights.cpp Groups.h Groups.cpp Transform.h Transform.cpp "TranslateCurve.h" "TranslateCurve.cpp" "TimeControl.h" "TimeControl.cpp"  )
 
 # link cartesian
 add_subdirectory(cartesian)
@@ -52,8 +52,10 @@ else (WIN32)
 endif(WIN32)
 
 # GENERATOR EXECUTABLE
-add_executable(generator generator/writer.cpp generator/shapes.cpp)
-target_link_libraries(generator cartesian)
+add_executable(generator generator/shapes.h generator/shapes.cpp generator/writer.h generator/writer.cpp)
 target_link_libraries(generator tinyxml2::tinyxml2)
+target_link_libraries(generator cartesian)
+target_link_libraries(generator ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES})
+target_link_libraries(generator GLUT::GLUT)
 #target_link_libraries(generator m)
-target_include_directories(generator PUBLIC cartesian)
+#target_include_directories(generator PUBLIC cartesian)

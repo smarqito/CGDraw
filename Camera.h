@@ -23,10 +23,10 @@ enum CAMenum
 class Camera {
 
 private:
-	point _position;
-	point _lookat;
+	Point _position;
+	Point _lookat;
 	polar _lookat_p;
-	point _up;
+	Point _up;
 	float _scale;
 	perspective _projection;
 	XMLElement* _xmlElement;
@@ -36,29 +36,29 @@ public:
 
 	Camera(XMLElement* xmlElement);
 
-	Camera(point pos, point lookat, point up, perspective perspective);
+	Camera(Point pos, Point lookat, Point up, perspective perspective);
 
 	void _init();
 
-	void set_camera(point pos, point lookat, point up, perspective perspective);
+	void set_camera(Point pos, Point lookat, Point up, perspective perspective);
 
-	void set_camera_pos(point pos);
+	void set_camera_pos(Point pos);
 	void set_camera_pos(double x, double y, double z);
 
-	void set_camera_lookat(point lookat);
+	void set_camera_lookat(Point lookat);
 	void set_camera_lookat(double x, double y, double z);
 
-	void set_camera_up(point up);
+	void set_camera_up(Point up);
 	void set_camera_up(double x, double y, double z);
 
 	void set_camera_projection(perspective perp);
 	void set_camera_projection(double fov, double near, double far);
 
-	point get_camera_pos();
+	Point get_camera_pos();
 
-	point get_camera_lookat();
+	Point get_camera_lookat();
 
-	point get_camera_up();
+	Point get_camera_up();
 
 	perspective get_camera_projection();
 

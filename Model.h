@@ -26,8 +26,16 @@ private:
 	GLenum _type;
 	XMLElement* _xml_model;
 	string _model_path;
-	GLuint _buffer; // VBO buffer pointer
-	GLint _total_points; // hold total points to be drawn
+	GLuint* _buffer; // VBO buffers pointers
+	GLint* _total_points;
+	int _n_buffers;
+	//GLint _total_points; // hold total points to be drawn
+		/*
+	*/
+	void read_points_basic(XMLElement* x_root);
+	/*
+	*/
+	void read_points_patch(XMLElement* x_root);
 	//texture texture; // phase not 1
 	//color color; // phase not 1
 	void read_points();

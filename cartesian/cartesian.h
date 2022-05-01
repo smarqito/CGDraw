@@ -1,31 +1,31 @@
 ﻿#pragma once
 #include <stdlib.h>
 #include <list>
-
+#ifndef CARTESIAN_H
+#include "Point.h"
 /*
 * Estrutura de dados para classificar um ponto cartesiano
 * Pontos do eixo 3D, x, y e z
 */
-//struct point {
-//	double x, y, z;
-//};
+struct matrix {
+	float* mat;
+	int m;
+	int n;
+};
 
-class point {
-public:
-	double x, y, z;
-	point() {
-		x = 0;
-		y = 0;
-		z = 0;
-	}
+
+struct pmatrix {
+	Point* mat;
+	int m;
+	int n;
 };
 
 struct polar {
-	double r, a, b;
+	float r, a, b;
 };
 
 struct perspective {
-	double fov, nr, fr;
+	float fov, nr, fr;
 };
 
 /*
@@ -38,7 +38,7 @@ struct perspective {
 *	total  -> total de elementos que existem até ao momento
 */
 class t_points {
-	point* _points;
+	Point* _points;
 	int _pos;
 	int _total;
 	int _size;
@@ -48,32 +48,64 @@ public:
 	int size();
 	int total();
 	bool add_point(double x, double y, double z);
-	bool add_point(point p);
-	point get_point();
-	point get_point(int pos);
+	bool add_point(Point p);
+	Point get_point();
+	Point get_point(int pos);
 	void _draw();
-	point* get_points_ptr();
+	Point* get_points_ptr();
 };
 
 /*
 * Criar um ponto a partir de coordenadas polares
 */
-point polartocart(float r, float alpha, float beta);
-point polartocart(polar p);
+Point polartocart(float r, float alpha, float beta);
+Point polartocart(polar p);
 
-polar cart_to_polar(point p);
+polar cart_to_polar(Point p);
 
 polar cart_to_polar(double x, double y, double z);
 
-point sum_points(point a, point b);
+Point sum_points(Point a, Point b);
 
-void sum_points(point* a, point* b);
+void sum_points(Point* a, Point* b);
 
-point sub_points(point a, point b);
+Point sub_points(Point a, Point b);
 
-void sub_points(point* a, point* b);
+void sub_points(Point* a, Point* b);
 
 /*
 * Multiply a vector by a factor f (x,y,z) = (fx, fy, fz)
 */
-point scale_factor(point x, float factor);
+Point scale_factor(Point x, float factor);
+
+/*
+Equivalente a Out = AxB
+@param a matriz A
+@param b matriz B
+@param out Apontador para matriz resultado
+@return True if possible to multiply; False otherwise
+*/
+bool mul_matrix(matrix* a, matrix* b, matrix* out);
+/*
+*/
+bool mul_matrix(pmatrix* a, matrix* b, pmatrix* out);
+bool mul_matrix(matrix* a, pmatrix* b, pmatrix* out);
+
+matrix mul_matrix(matrix a, matrix b);
+
+/*
+Cross-product between a x b
+*/
+void cross(Point* a, Point* b, Point* res);
+
+/*
+Normaliza o ponto a
+*/
+void normalize(Point* a);
+
+/*
+Transpose matrix
+*/
+void transpose(matrix* a, matrix* res);
+
+#endif // !CARTESIAN_H

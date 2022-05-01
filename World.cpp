@@ -51,7 +51,7 @@ void World::_draw()
 
 string World::set_root_path()
 {
-	regex regexp("(.*/)?.*.xml");
+	regex regexp(R"((.*(/|\\))?.*.xml)");
 	smatch m;
 	string t = string(_path);
 	regex_search(t, m, regexp);
@@ -68,7 +68,7 @@ void World::_draw_lookAt() {
 	_camera._draw_lookAt();
 }
 
-void World::set_camera_pos(point pos) {
+void World::set_camera_pos(Point pos) {
 	_camera.set_camera_pos(pos);
 }
 void World::set_camera_pos(double x, double y, double z) {
@@ -83,7 +83,7 @@ void World::move_lookat(double alpha, double beta) {
 	_camera.move_lookat(alpha, beta);
 }
 
-void World::set_camera_lookat(point lookat) {
+void World::set_camera_lookat(Point lookat) {
 	_camera.set_camera_lookat(lookat);
 }
 void World::set_camera_lookat(double x, double y, double z) {
@@ -95,7 +95,7 @@ void World::change_scale(float newScale)
 	_camera.change_scale(newScale);
 }
 
-void World::set_camera_up(point up) {
+void World::set_camera_up(Point up) {
 	_camera.set_camera_up(up);
 }
 

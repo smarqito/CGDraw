@@ -109,7 +109,7 @@ void renderScene(void) {
 
 
 void processKeys(unsigned char c, int xx, int yy) {
-	point p;
+	Point p;
 	switch (c)
 	{
 	default:

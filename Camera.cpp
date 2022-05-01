@@ -12,7 +12,7 @@ Camera::Camera(XMLElement* xmlElement) {
 	_init();
 }
 
-Camera::Camera(point pos, point lookat, point up, perspective perspective) {
+Camera::Camera(Point pos, Point lookat, Point up, perspective perspective) {
 	_scale = 1;
 	set_camera(pos, lookat, up, perspective);
 }
@@ -43,14 +43,14 @@ void Camera::_init() {
 	set_camera_projection(x, y, z);
 }
 
-void Camera::set_camera(point pos, point lookat, point up, perspective perspective) {
+void Camera::set_camera(Point pos, Point lookat, Point up, perspective perspective) {
 	set_camera_pos(pos);
 	set_camera_lookat(lookat);
 	set_camera_up(up);
 	set_camera_projection(perspective);
 }
 
-void Camera::set_camera_pos(point pos) {
+void Camera::set_camera_pos(Point pos) {
 	set_camera_pos(pos.x, pos.y, pos.z);
 }
 
@@ -61,7 +61,7 @@ void Camera::set_camera_pos(double x, double y, double z)
 	_position.z = z;
 }
 
-void Camera::set_camera_lookat(point lookat) {
+void Camera::set_camera_lookat(Point lookat) {
 	set_camera_lookat(lookat.x, lookat.y, lookat.z);
 }
 
@@ -83,7 +83,7 @@ void Camera::set_camera_lookat(double x, double y, double z) {
 	_lookat_p.b = p.b;
 }
 
-void Camera::set_camera_up(point up) {
+void Camera::set_camera_up(Point up) {
 	set_camera_up(up.x, up.y, up.z);
 }
 
@@ -103,15 +103,15 @@ void Camera::set_camera_projection(double fov, double nr, double fr) {
 	_projection.fr = fr;
 }
 
-point Camera::get_camera_pos() {
+Point Camera::get_camera_pos() {
 	return _position;
 }
 
-point Camera::get_camera_lookat() {
+Point Camera::get_camera_lookat() {
 	return _lookat;
 }
 
-point Camera::get_camera_up() {
+Point Camera::get_camera_up() {
 	return _up;
 }
 
@@ -127,7 +127,7 @@ void Camera::change_scale(float newScale)
 // TODO
 void Camera::move_camera(CAMenum t)
 {
-	point p;
+	Point p;
 	switch (t)
 	{
 	case LEFT:
@@ -157,7 +157,7 @@ void Camera::move_lookat(double alpha, double beta)
 	_lookat_p.a += alpha;
 	//_lookat_p.b += beta;
 	_lookat_p.b = fmax(fmin(_lookat_p.b + beta, 1.5f), -1.5f);
-	point p = polartocart(_lookat_p);
+	Point p = polartocart(_lookat_p);
 	_lookat.x = p.x;
 	_lookat.y = p.y;
 	_lookat.z = p.z;

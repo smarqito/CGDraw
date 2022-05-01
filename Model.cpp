@@ -5,6 +5,7 @@
 Model::Model(XMLElement* xml_model)
 {
 	_xml_model = xml_model;
+	_n_buffers = 0;
 	_init();
 }
 
@@ -14,17 +15,11 @@ void Model::_init() {
 	read_points();
 }
 
-void Model::read_points()
+void Model::read_points_basic(XMLElement* x_root)
 {
 	vector<float> points;
-	XMLDocument doc;
-	doc.LoadFile(_model_path.c_str());
-	if (doc.Error()) {
-		throw doc.ErrorID();
-	}
-
-	XMLElement* x_root = doc.FirstChild()->ToElement();
-
+	_buffer = (GLuint*)malloc(sizeof(GLuint));
+	_total_points = (GLint*)malloc(sizeof(GLint));
 	_type = x_root->FindAttribute("type")->IntValue();
 	int size = x_root->FindAttribute("size")->IntValue();
 	//_points = t_points(size);
@@ -42,11 +37,72 @@ void Model::read_points()
 		points.push_back(z);
 		pPoint = pPoint->NextSiblingElement("point");
 	}
-	_total_points = points.size();
-	glGenBuffers(1, &_buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, _buffer);
+	_total_points[0] = points.size();
+	_n_buffers = 1;
+	glGenBuffers(1, _buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, _buffer[0]);
 	glBufferData(GL_ARRAY_BUFFER, points.size() * sizeof(float), points.data(), GL_STATIC_DRAW);
-//	build_vbo();
+
+}
+
+void Model::read_points_patch(XMLElement* x_root)
+{
+	_type = x_root->FindAttribute("type")->IntValue();
+	int size = x_root->FindAttribute("size")->IntValue();
+	_buffer = (GLuint*)malloc(sizeof(GLuint) * size);
+	_total_points = (GLint*)malloc(sizeof(GLint) * size);
+	_n_buffers = size;
+	glGenBuffers(size, _buffer);
+	vector<float> points;
+	XMLElement* pPatch = x_root->FirstChildElement("patch");
+	XMLElement* pPoint;
+	float x, y, z;
+	int n_points;
+	for (int i = 0; i < size && pPatch != NULL; i++)
+	{
+		pPoint = pPatch->FirstChildElement("point");
+		n_points = 0;
+		while (pPoint != NULL) {
+			x = pPoint->FindAttribute("x")->FloatValue();
+			y = pPoint->FindAttribute("y")->FloatValue();
+			z = pPoint->FindAttribute("z")->FloatValue();
+			//add_point(x, y, z);
+			points.push_back(x);
+			points.push_back(y);
+			points.push_back(z);
+			pPoint = pPoint->NextSiblingElement("point");
+			n_points++;
+		}
+		_total_points[i] = n_points;
+		glBindBuffer(GL_ARRAY_BUFFER, _buffer[i]);
+		glBufferData(
+			GL_ARRAY_BUFFER,
+			points.size() * sizeof(float),
+			points.data(),
+			GL_STATIC_DRAW
+		);
+		points.clear();
+		pPatch = pPatch->NextSiblingElement("patch");
+	}
+}
+
+void Model::read_points()
+{
+	XMLDocument doc;
+	doc.LoadFile(_model_path.c_str());
+	if (doc.Error()) {
+		throw doc.ErrorID();
+	}
+
+	XMLElement* x_root = doc.FirstChild()->ToElement();
+	if (x_root->BoolAttribute("patches"))
+	{
+		read_points_patch(x_root);
+	}
+	else
+	{
+		read_points_basic(x_root);
+	}
 }
 
 GLenum Model::getType() {
@@ -68,16 +124,13 @@ char* Model::getFilename() {
 void Model::_draw() {
 	// to add texture
 	// to add color
-	//point* points = _points.get_points_ptr();
-	point p;
-	glBindBuffer(GL_ARRAY_BUFFER, _buffer);
-	glVertexPointer(3, GL_FLOAT, 0, 0);
-	glDrawArrays(_type, 0, _total_points * 3);
-	//glBegin(_type);
-	//for (int i = 0; i < this->size(); i++) {
-	//	p = points[i];
-	//	glVertex3d(p.x, p.y, p.z);
-	//}
-	////_points._draw();
-	//glEnd();
+	//Point p;
+	for (int i = 0; i < _n_buffers; i++)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, _buffer[i]);
+		glVertexPointer(3, GL_FLOAT, 0, 0);
+		glDrawArrays(_type, 0, _total_points[i] * 3);
+
+	}
+
 }
