@@ -1,0 +1,114 @@
+\documentclass[runningheads]{llncs}
+\usepackage[newfloat]{minted}
+\setminted[cpp]{
+frame=lines,
+linenos,
+breaklines,
+fontsize=\footnotesize,
+framesep=2mm
+}
+\usepackage{caption}
+\usepackage{graphicx}
+\usepackage[portuguese]{babel}
+\usepackage{hyphenat}
+\usepackage{lscape}
+\usepackage{microtype} % melhora a formatação do texto para evitar overfull box, entre outros
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{subfiles}
+% to insert sourcecode
+\newenvironment{code}{\captionsetup{type=listing}}{}
+\SetupFloatingEnvironment{listing}{name=\underline{\textbf{CGDraw} Source Code}}
+
+\begin{document}
+%
+\title{Relatório Computação Grafica - Fase 3}
+\author{Marco Sousa\inst{1,2}\orcidID{62608} \and
+    José Malheiro\inst{1,2}\orcidID{93271} \and
+    Miguel Fernandes\inst{1,2}\orcidID{94269}}
+%
+\institute{Universidade do Minho\\
+    \and Licenciatura em Engenharia Informática, Braga, Portugal}
+%
+\maketitle              % typeset the header of the contribution
+%
+\begin{abstract}
+    No seguimento lógico da construção de um mundo gráfico virtual estático, vem a evolução para um modelo dinâmico, sendo todos os elementos envolventes definidos com a sua própria animação. Para tal foi necessário extender as transformações desenvolvidas na fase anterior, a rotação e a translação. 
+    Ambas devem poder ser realizadas com base num determinado tempo, sendo que a animação recomeça quando alcança o fim.
+    No caso da translação, deve ser permitido construir curvas utilizando as estratégias de \textit{Catmull-Rom}, \textit{Bezier} e \textit{Hermite}, a partir de um conjunto de pontos de controlo. 
+    Neste sentido, a transformação deve permitir mover um objeto de acordo com uma curva, ao longo de um determinado tempo.
+    Assim, alterou-se o modelo do sistema solar construído na fase anterior para incluir animações para todos os elementos, sendo feita a adição de um cometa que segue a trajetória de uma curva definida.
+    
+    Para o desenho do cometa foram utilizadas \textit{Bezier patches} para construir as suas superfícies, sendo passados os pontos de controlo para o desenho.
+    
+    \keywords{ OpenGL \and GLUT \and Figuras Geométricas \and 3D \and C++ \and Tesselation \and Bezier Curves \and Catmull-Rom Curves \and Bezier Patches}
+    \end{abstract}
+    %
+    %
+    %
+    \section{Introdução}
+    \subsection{Contextualização}
+    No seguimento da fase II do projeto da disciplina de Computação Gráfica da Licenciatura em Engenharia Informática da Universidade do Minho, foi proposta a aplicação de animações no esquema do sistema solar previamente definido, com a possibilidade de desenhar e movimentar objetos ao longo de curvas. 
+    Adicionalmente, deveria haver a inclusão de um novo elemento no modelo, um cometa, construído com base em \textit{bezier patches}, para ser animado segundo uma trajetória definida.
+    
+    \subsection{Breve Descrição do Enunciado Proposto}
+    
+    O cerne da fase III do projeto implica alterações ao nível do \textit{generator} e do \textit{engine} previamente definidos.
+    Deste modo, pretende-se:
+    \begin{itemize}
+        \item [\textit{generator}]{Adição de um novo tipo de modelo, com base em \textit{bezier patches}.}
+        \item [\textit{engine}]{Alteração das transformações para permitir a animação do esquema, através da integração do \textbf{tempo} a serem realizadas e de \textbf{curvas}.}
+    \end{itemize}
+    
+    No que toca ao \textit{generator}, o novo modelo deve criar um conjunto de pontos para desenhar os \textit{patches}, ou superfícies, dado um ficheiro \textit{.PATCH} e o nível de tesselação desejado.
+    O ficheiro \textit{.PATCH}, neste caso fornecido pela equipa docente, segue:
+    \begin{itemize}
+        \item [\textit{Número de patches}]{Número de superfícies do objeto a desenhar.}
+        \item [\textit{Patches}]{Os 16 pontos de controlo para cada \textit{patch}. Haverá tantas linhas como o número de patches em cima definido. Os pontos de cada superfície encontram-se na forma de índices relativamente à posição dos pontos entre sí no ficheiro.}
+        \item [\textit{Pontos}]{Os pontos usados na construção dos \textit{patches}. São da forma - $ x y z $.}
+    \end{itemize}
+    O nível de tesselação é utilizado para construir o objeto com um grau de definição concreto e a sua utilização varia o número de vértices finais a serem desenhados.
+    Novamente, as superfícies de um objeto com base neste modelo vão ser desenhadas a partir de triângulos, traduzindo-se no conceito de \textit{triângulos de bezier}.
+    
+    Relativamente à \textit{engine}, o trabalho nesta implica evoluir as transformações de \textbf{translação} e \textbf{rotação} previamente definidas:
+    \begin{itemize}
+        \item [\textit{Rotação}]{Permitir que uma rotação receba o tempo que demora a fazer um rotação de 360º.}
+        \item [\textit{Translação}]{Permitir serem passados os pontos de controlo para constituir a curva e o tempo que demora a percorre-la. O objeto a ser movido terá de seguir esta trajetória e pode ser dada a opção de ele estar alinhado com a curva.}
+    \end{itemize}
+    
+    A partir destas alterações apresentar todo o sistema solar como um modelo animado, os planetas, luas e Sol e incluir um novo elemento no modelo, um \textit{cometa}, que tem a sua própria trajetória.
+    
+    \section{Trabalho Realizado}
+    
+    Funcionalidades Implementadas:
+    
+    \begin{enumerate}
+        \item \textit{Generator}
+        \begin{enumerate}
+            \item Gerar triângulos para a construção de superfícies 3D a partir de pontos de controlo. (\ref{subsec:bezier_p})
+        \end{enumerate}
+        \item \textit{Engine}
+        \begin{enumerate}
+            \item Translação com base no tempo e em pontos de controlo, 
+            \begin{enumerate}
+                \item através de curvas de \textit{Catmull-Rom/Hermite/Bezier}. (\ref{subsub:transl})
+                \item através de uma matriz definida pelo utilizador.
+            \end{enumerate}
+            \item Rotação em torno de eixo especificado, com base no tempo. (\ref{subsub:rot})
+            \item \textit{VBOs} 
+            \begin{enumerate}
+                \item Renderização do mundo com recurso a \textit{VBOs}. (\ref{subsec:VBO})
+            \end{enumerate}
+        \end{enumerate}
+        \item Sistema Solar 
+        \begin{enumerate}
+            \item Transição de um modelo estático para dinâmico.(\ref{subsec:sistema_solar})
+        \end{enumerate}
+    \end{enumerate}
+    
+    \subfile{generator.tex}
+    \subfile{engine.tex}
+    \subfile{solar_system.tex}
+    \subfile{conclusoes.tex}
+
+    \end{document}
