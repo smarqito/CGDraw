@@ -184,6 +184,9 @@
 				<group>
 					<transform>
 						<rotate angle="-45" x="1" y="0.45" z="1" />
+                                                <rotate time="3" x="0" y="1" z="0" />
+                                                <rotate time="4" x="0.5" y="0" z="0" />
+                                                <rotate time="10" x="0" y="0" z="0.5" />
 					</transform>
 					<models>
 						<!-- Ring A -->
