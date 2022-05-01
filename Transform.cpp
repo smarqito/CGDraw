@@ -25,6 +25,7 @@ Transform::Transform(XMLElement* transform_elem)
 {
 	_transform_elem = transform_elem;
 	_init();
+	_y_i.setPoint(1, 1); // y0 = (0 1 0)
 }
 
 void Transform::_init()
@@ -33,24 +34,38 @@ void Transform::_init()
 	XMLElement* elem = _transform_elem->FirstChildElement();
 	while (elem != nullptr) {
 		transformation t;
-		t.last_time = 0.0;
-		t.curve = false;
+		//t.last_time = 0.0;
+		//t.curve = false;
 		nome = elem->Value();
-		if (strcmp(nome, "translate") == 0 && strcmp(elem->FirstAttribute()->Name(), "time") == 0) {
-
-			t.time = elem->FindAttribute("time")->FloatValue();
-			t.align = elem->FindAttribute("align")->BoolValue();
-			t.translate_rate = 0.0;
+		if (strcmp(nome, "translate") == 0 && elem->Attribute("time")) {
+			// define is curve
 			t.curve = true;
+
+			//set curve type
+			int curveType = elem->IntAttribute("curve", CATMULL); // default is bezier
+			if (curveType == -1) {
+				// CARREGAR VALOR XML
+			}
+			else {
+				t._t_curve = TranslateCurve((DefMat)curveType);
+			}
+
+			// set time control and align
+			t._time.setTime(elem->FindAttribute("time")->FloatValue());
+			t._t_curve.setAlign(elem->BoolAttribute("align"));
+
 			XMLElement* points = elem->FirstChildElement();
+			vector<Point> c_points;
+
 			while (points != nullptr) {
 				Point p;
 				p.x = points->FindAttribute("x")->FloatValue();
 				p.y = points->FindAttribute("y")->FloatValue();
 				p.z = points->FindAttribute("z")->FloatValue();
-				t.points.push_back(p);
+				c_points.push_back(p);
 				points = points->NextSiblingElement();
 			}
+			t._t_curve.addControlPoint(c_points);
 		}
 		else {
 
@@ -59,12 +74,12 @@ void Transform::_init()
 			t.p.z = elem->FindAttribute("z")->FloatValue();
 
 			if (strcmp(nome, "rotate") == 0) {
-				if (strcmp(elem->FirstAttribute()->Name(), "angle") == 0) {
-					t.a = elem->FindAttribute("angle")->FloatValue();
+				if (elem->Attribute("angle")) {
+					t.a = elem->FloatAttribute("angle");
 				}
 				else {
-					t.time = elem->FindAttribute("time")->FloatValue();
-					t.rotate_rate = 0.0;
+					t._time.setTime(elem->FloatAttribute("time"));
+					//t.rotate_rate = 0.0;
 					t.curve = true;
 				}
 			}
@@ -83,34 +98,9 @@ void Transform::_draw()
 		{
 		case TRANSLATE:
 			if (_transformations[i].curve) {
-				Curve curve(CATMULL);
-				curve.addControlPoint(_transformations[i].points);
-				Matrix pos(1, 3), deriv(1,3);
-
-				curve.getPoint(_transformations[i].translate_rate, pos, deriv);
-
-				glTranslatef(pos.getPoint(0), pos.getPoint(1), pos.getPoint(2));
-
-				if (_transformations[i].align) {
-					Matrix m(4, 4);
-					Matrix z(1, 3);
-					
-					deriv.cross(_y_i, z);
-					z.cross(deriv, _y_i);
-
-					deriv.normalize_lines();
-					_y_i.normalize_lines();
-					z.normalize_lines();
-
-					RotMatrix rot_matrix(deriv, _y_i, z);
-
-					glMultMatrixf(rot_matrix.to_array());
-				}
-
-				float time = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
-				_transformations[i].translate_rate += (time - _transformations[i].last_time) / float(_transformations[i].time); //calculte the new translate_rate
-				_transformations[i].translate_rate -= 1 * floor(_transformations[i].translate_rate / 1); //normalize between 0 - 1 
-				_transformations[i].last_time = time; //update the last time
+				
+				_transformations[i]._t_curve._draw(_transformations[i]._time.getRate());
+				_transformations[i]._time.updateRate();
 			}
 			else {
 				glTranslatef(_transformations[i].p.x, _transformations[i].p.y, _transformations[i].p.z);
@@ -118,12 +108,9 @@ void Transform::_draw()
 			break;
 		case ROTATE:
 			if (_transformations[i].curve) {
-				float time = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
-				_transformations[i].rotate_rate += (time - _transformations[i].last_time) / float(_transformations[i].time);//calculte the new rotate_rate
-				_transformations[i].rotate_rate -= 1 * floor(_transformations[i].rotate_rate / 1); //normalize between 0 - 1 
-				float angle = 360 * _transformations[i].rotate_rate; //calculate the new angle
+				_transformations[i]._time.updateRate();
+				float angle = 360 * _transformations[i]._time.getRate(); //calculate the new angle
 				glRotatef(angle, _transformations[i].p.x, _transformations[i].p.y, _transformations[i].p.z);
-				_transformations[i].last_time = time;
 			}
 			else {
 				glRotatef(_transformations[i].a, _transformations[i].p.x, _transformations[i].p.y, _transformations[i].p.z);
