@@ -1,5 +1,26 @@
 \documentclass[relatorio.tex]{subfiles}
 \begin{document}
 \section{Conclusões}
+Como consequência do esforço do grupo ao longo do projeto, a implementação de novas funcionalidades
+permanece facilitada dado à arquitetura desenvolvida, i.e. a modularidade do código 
+traduz-se na fácil inserção de novos módulos ou parâmetros sem afetar a estrutura final.
+A otimização de ambos programas (\textit{generator} e \textit{engine}) mantém-se um
+dos objetivos principais do grupo, pelo que esta organização estrutural do projeto é essencial.
+Não obstante todos os objetivos a atingir no desenvolvimento deste relatório, manteve-se 
+a certeza de que o consumo de memória não crescesse de modo incontrolável; algo que 
+ocorreu no decorrer da presente fase, nomeadamente no desenho de curvas.
 
+Analogamente às fases anteriores, foi possível implemetar todos os requisitos propostos 
+no enunciado, com a adição de alguns parâmetros extra.
+É de notar nesta fase:
+– Criação de um módulo para a construção de superfícies de \textit{Bezier}
+– Rotação com base num dado tempo
+– Translação por uma curva, dados o tempo e os pontos de controlo
+– Translação com base nos pontos de controlo definidos pelo utilizador, numa matriz
+– Transformação do sistema solar para um modelo dinâmico
+- Adição ao modelo de um cometa, que segue a sua própria trajetória, definida numa curva \textit{Catmull-Rom}
+
+Um dos pontos mencionados, na forma de trabalho futuro, era relativo à evolução dos \textit{VBOs}
+para permitirem o uso de índices. Na presente iteração permanece uma componente a adicionar, sendo
+de alto valor na procura de uma solução otimizada congruentemente.
 \end{document}
