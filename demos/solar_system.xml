@@ -250,5 +250,13 @@
 				<!-- generator bezier teapot.patch 10 bezier.3d -->
 			</models>
 		</group>
+		<group>
+			<transform>
+				<rotate time="100" x="0" y="1" z="0" />
+			</transform>
+			<models>
+				<model file="asteroids.3d" />
+			</models>
+		</group>
 	</group>
 </world>

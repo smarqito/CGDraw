@@ -42,4 +42,8 @@ t_points create_torus(float radius, float size, int slices, int stack);
 Create a vector of list of points that can be drawn with line loop
 */
 t_points create_bezier(vector<vector<int>> patches, vector<Point> points, int level);
+
+t_points create_sphere(int radius, int slices, int stacks, Point offset);
+
+t_points create_asteroids(double distMin, double distMax, int maxSize, int slices, int stacks, double alphaMax, double betaMax, int numAsteroids);
 #endif // !SHAPES_DRAW

@@ -49,6 +49,7 @@ public:
 	int total();
 	bool add_point(double x, double y, double z);
 	bool add_point(Point p);
+	bool add_points(t_points points);
 	Point get_point();
 	Point get_point(int pos);
 	void _draw();

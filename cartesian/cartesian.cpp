@@ -54,6 +54,14 @@ bool t_points::add_point(Point p) {
 	return add_point(p.x, p.y, p.z);
 }
 
+bool t_points::add_points(t_points points) {
+	for (int i = 0; i < points.total(); i++)
+	{
+		add_point(points.get_point(i));
+	}
+	return true;
+}
+
 Point t_points::get_point() {
 	return get_point(this->_pos++);
 }
