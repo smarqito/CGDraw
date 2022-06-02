@@ -9,15 +9,14 @@
 #include <GL/gl.h>
 #endif // !_GL_INCLUDE
 
-#include "Camera.h"
-#include "Lights.h"
-#include "Groups.h"
-#include "Group.h"
-
 #include <tinyxml2.h>
 #include <iostream>
 
-using namespace std;
+#include "Lights.h"
+#include "Camera.h"
+#include "Groups.h"
+#include "Group.h"
+
 using namespace tinyxml2;
 
 
@@ -27,7 +26,6 @@ private:
 	Camera _camera;
 	Groups _groups;
 	Lights _lights;
-
 public:
 	char* _path;
 	World();

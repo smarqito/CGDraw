@@ -8,12 +8,10 @@
 
 using namespace tinyxml2;
 
-using namespace std;
-
 class Models {
 
 private:
-	vector<Model> _models;
+	std::vector<Model> _models;
 	XMLElement* _xml_elem;
 
 public:

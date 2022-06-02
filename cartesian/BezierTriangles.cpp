@@ -53,7 +53,7 @@ void BezierTriangles::setPatchPoint(int pos, Point p)
 	_points.setPoint(pos, p);
 }
 
-void BezierTriangles::setPatchPoint(int pos, vector<Point> points)
+void BezierTriangles::setPatchPoint(int pos, std::vector<Point> points)
 {
 	for (int i = 0; i < points.size(); i++)
 	{

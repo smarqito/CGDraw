@@ -7,7 +7,6 @@
 #include <string>
 #include <iterator>
 
-using namespace std;
 using namespace tinyxml2;
 
 //Inicializar classe world
@@ -222,7 +221,6 @@ void init() {
 	//  OpenGL settings
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-
 }
 
 int main(int argc, char** argv) {

@@ -71,7 +71,7 @@ void Transform::_init()
 			t._t_curve.setAlign(elem->BoolAttribute("align"));
 
 			XMLElement* points = elem->FirstChildElement("point");
-			vector<Point> c_points;
+			std::vector<Point> c_points;
 
 			while (points != nullptr) {
 				Point p;

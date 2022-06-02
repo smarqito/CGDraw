@@ -1,7 +1,6 @@
 #include "Camera.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
-using namespace std;
 Camera::Camera() {
 	_scale = 1;
 }
@@ -121,7 +120,7 @@ perspective Camera::get_camera_projection() {
 
 void Camera::change_scale(float newScale)
 {
-	_scale = max(_scale + newScale, 0.1f);
+	_scale = std::max(_scale + newScale, 0.1f);
 }
 
 // TODO

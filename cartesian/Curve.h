@@ -5,7 +5,6 @@
 #ifndef CURVE_H
 #include "cartesian.h"
 #include "Matrix.h"
-using namespace std;
 
 /*
 Class that's able to generate curves based on
@@ -18,7 +17,7 @@ class Curve
 {
 private:
 	Matrix _m; // 4x4 : catmull, bezier, ...
-	vector<Point> _control_points;
+	std::vector<Point> _control_points;
 	// add new instance var for patches (???)
 	// matrix application as constexpr
 	Matrix _tmp;		// size 4 x 3
@@ -44,7 +43,7 @@ public:
 	void addControlPoint(float x, float y, float z);
 	void addControlPoint(float* v);
 	void addControlPoint(Point p);
-	void addControlPoint(vector<Point> points);
+	void addControlPoint(std::vector<Point> points);
 	/*
 	Calculate the point using gt segment
 	@param gt
