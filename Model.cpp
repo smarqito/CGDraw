@@ -1,6 +1,7 @@
 #include "Model.h"
 #include "CGDraw.h"
 #include "Common.h"
+#include "ModelTexture.h"
 
 Model::Model(XMLElement* xml_model)
 {
@@ -103,6 +104,10 @@ void Model::read_points()
 	{
 		read_points_basic(x_root);
 	}
+	XMLElement* textures;
+	if ((textures = x_root->FirstChildElement("textures")) != NULL) {
+		_texture = ModelTexture(_xml_model->FirstChildElement("texture"), textures);
+	}
 }
 
 GLenum Model::getType() {
@@ -130,6 +135,8 @@ void Model::_draw() {
 		glBindBuffer(GL_ARRAY_BUFFER, _buffer[i]);
 		glVertexPointer(3, GL_FLOAT, 0, 0);
 		glDrawArrays(_type, 0, _total_points[i] * 3);
+
+		_texture.draw();
 
 	}
 
