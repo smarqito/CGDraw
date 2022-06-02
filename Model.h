@@ -9,6 +9,7 @@
 #include <GL/gl.h>
 #endif // !_GL_INCLUDE
 
+#include "Normals.h"
 #include "Texture.h"
 #include "generator/shapes.h"
 #include "cartesian/cartesian.h"
@@ -31,6 +32,7 @@ private:
 	GLint* _total_points;
 	int _n_buffers;
 	Texture _texture;
+	Normals _normals;
 	//GLint _total_points; // hold total points to be drawn
 		/*
 	*/

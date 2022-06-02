@@ -136,6 +136,7 @@ void Model::_draw() {
 		glVertexPointer(3, GL_FLOAT, 0, 0);
 		glDrawArrays(_type, 0, _total_points[i] * 3);
 
+		_normals._draw();
 		_texture.draw();
 
 	}

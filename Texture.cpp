@@ -41,8 +41,8 @@ Texture::Texture()
 
 Texture::Texture(XMLElement* xml_elem)
 {
-	std::string t = string(file_path);
-	setPath(t + string(xml_elem->FindAttribute("file")->Value()));
+	std::string t = std::string(file_path);
+	setPath(t + std::string(xml_elem->FindAttribute("file")->Value()));
 	img = loadTexture();
 }
 
