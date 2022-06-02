@@ -1,8 +1,6 @@
 #include "PointMatrix.h"
 #include <iostream>
 
-using namespace std;
-
 PointMatrix::PointMatrix()
 {
 }

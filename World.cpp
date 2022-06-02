@@ -2,9 +2,8 @@
 #include <regex>
 #include <string>
 #include "Common.h"
-using namespace std;
 
-string file_path;
+std::string file_path;
 
 
 World::World()
@@ -39,6 +38,11 @@ void World::_init() {
 	if (pGroup == nullptr) {
 		cout << "Invalid Group XML Element";
 		throw 0x1;
+	}
+
+	XMLElement* pLights = pRootElement->FirstChildElement("lights");
+	if (pLights != nullptr) {
+		_lights = Lights(pLights);
 	}
 
 	_groups = Groups(pGroup);

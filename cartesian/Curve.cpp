@@ -1,5 +1,4 @@
 #include "Curve.h"
-#include "Curve.h"
 
 void Curve::calculate_t(float t) {
 	// calculate pos

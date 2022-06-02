@@ -7,7 +7,6 @@
 #include <RotMatrix.h>
 #include "TranslateCurve.h"
 
-using namespace std;
 using namespace tinyxml2;
 
 enum type
@@ -19,7 +18,7 @@ enum type
 
 struct transformation {
 	Point p; // transformation x, y, z
-	vector<Point> points;
+	std::vector<Point> points;
 	float time; //the number of seconds to run the whole curve
 	bool align; //aligned with the curve
 	float a; // angle (use in rotate)
@@ -36,7 +35,7 @@ class Transform
 {
 private:
 	XMLElement* _transform_elem;
-	vector<transformation> _transformations;
+	std::vector<transformation> _transformations;
 	Matrix _y_i = Matrix(1,3);
 	Matrix _custom_matrix(XMLElement* matrix);
 public:

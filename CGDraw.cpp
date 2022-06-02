@@ -7,7 +7,6 @@
 #include <string>
 #include <iterator>
 
-using namespace std;
 using namespace tinyxml2;
 
 //Inicializar classe world

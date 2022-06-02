@@ -6,7 +6,6 @@
 #include <tinyxml2.h>
 #include "Transform.h"
 
-using namespace std;
 using namespace tinyxml2;
 
 class Group {
@@ -14,7 +13,7 @@ class Group {
 private:
 	Transform _transform;
 	Models _model;
-	vector<Group> _groups;
+	std::vector<Group> _groups;
 	XMLElement* _xml_elem;
 
 public:

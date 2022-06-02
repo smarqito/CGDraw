@@ -30,7 +30,7 @@ public:
 	void setPatchPoint(int pos, float x, float y, float z);
 	void setPatchPoint(int pos, float* v);
 	void setPatchPoint(int pos, Point p);
-	void setPatchPoint(int pos, vector<Point> points);
+	void setPatchPoint(int pos, std::vector<Point> points);
 	Point getControlPoint(float u, float v);
 	
 };

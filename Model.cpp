@@ -11,8 +11,8 @@ Model::Model(XMLElement* xml_model)
 }
 
 void Model::_init() {
-	string t = string(file_path);
-	_model_path = t + string(_xml_model->FindAttribute("file")->Value());
+	std::string t = std::string(file_path);
+	_model_path = t + std::string(_xml_model->FindAttribute("file")->Value());
 	read_points();
 
 	XMLElement* colorElem;
@@ -59,7 +59,7 @@ void Model::read_points_patch(XMLElement* x_root)
 	_total_points = (GLint*)malloc(sizeof(GLint) * size);
 	_n_buffers = size;
 	glGenBuffers(size, _buffer);
-	vector<float> points;
+	std::vector<float> points;
 	XMLElement* pPatch = x_root->FirstChildElement("patch");
 	XMLElement* pPoint;
 	float x, y, z;

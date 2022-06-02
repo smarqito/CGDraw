@@ -19,7 +19,6 @@
 #include <vector>
 
 
-using namespace std;
 using namespace tinyxml2;
 
 class Model {
