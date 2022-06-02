@@ -342,3 +342,70 @@ t_points create_bezier(vector<vector<int>> patches, vector<Point> all_points, in
 	}
 	return res;
 }
+
+t_points create_sphere(int radius, int slices, int stacks, Point offset) {
+	t_points p_points(6 * stacks * slices);
+
+	float sst = M_PI / stacks;
+	float ssl = 2 * M_PI / slices;
+	float beta = M_PI / 2;
+	float alpha = 0;
+
+	for (int i = 0; i < stacks; i++)
+	{
+		for (int j = 0; j < slices; j++)
+		{
+			Point a = polartocart(radius, alpha, beta);
+			a.x += offset.x; a.y += offset.y; a.z += offset.z;
+			Point b = polartocart(radius, alpha, beta - sst);
+			b.x += offset.x; b.y += offset.y; b.z += offset.z;
+			Point c = polartocart(radius, alpha + ssl, beta - sst);
+			c.x += offset.x; c.y += offset.y; c.z += offset.z;
+			Point d = polartocart(radius, alpha + ssl, beta);
+			d.x += offset.x; d.y += offset.y; d.z += offset.z;
+
+			if (i == stacks - 1) {
+				p_points.add_point(a);
+				p_points.add_point(c);
+				p_points.add_point(d);
+			}
+			else if (i == 0) {
+				p_points.add_point(a);
+				p_points.add_point(b);
+				p_points.add_point(c);
+			}
+			else {
+				p_points.add_point(a);
+				p_points.add_point(b);
+				p_points.add_point(c);
+				p_points.add_point(a);
+				p_points.add_point(c);
+				p_points.add_point(d);
+
+			}
+
+			alpha += ssl;
+		}
+		beta -= sst;
+		alpha = 0;
+	}
+	return p_points;
+}
+
+t_points create_asteroids(double distMin, double distMax, int maxSize, int slices, int stacks, double alphaMax, double betaMax, int numAsteroids) {
+	t_points p_points(numAsteroids * 6 * stacks * slices);
+	srand(1);
+	for (int i = 0; i < numAsteroids; i++) {
+		int raio = distMin + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (distMax - distMin)));
+		double alpha = static_cast <float> (rand()) / (static_cast <float>(RAND_MAX / alphaMax)) * M_PI / 180;
+		double beta = (-betaMax + static_cast <float> (rand()) / (static_cast <float>(RAND_MAX / (2 * betaMax)))) * M_PI / 180;
+		
+		Point p = polartocart(raio, alpha, beta);
+
+		int size = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / maxSize));
+		t_points res = create_sphere(size, slices, stacks, p);
+		p_points.add_points(res);
+
+	}
+	return p_points;
+}

@@ -207,6 +207,24 @@ int main(int argc, const char** argv) {
 		write_xml(argv[4], GL_TRIANGLES, res);
 
 	}
+	else if (strcmp(argv[1], "asteroids") == 0) {
+		if (argc < 11) {
+			cout << "Insufficient Args.Example: ./generator asteroids distMin distMax maxSize slices stacks alphaMax betaMax numAsteroids asteroids.3d";
+			return 1;
+		}
+		double distMin = std::stod(argv[2]);
+		double distMax = std::stod(argv[3]);
+		int maxSize = std::atoi(argv[4]);
+		int slices = std::atoi(argv[5]);
+		int stacks = std::atoi(argv[6]);
+		double alphaMax = std::stod(argv[7]);
+		double betaMax = std::stod(argv[8]);
+		int numAsteroids = std::atoi(argv[9]);
+
+		points = create_asteroids(distMin, distMax, maxSize, slices, stacks, alphaMax, betaMax, numAsteroids);
+
+		write_xml(argv[10], GL_TRIANGLES, points);
+	}
 	else {
 		cout << "Geometric Figures: sphere | cone | box | plane";
 	}
