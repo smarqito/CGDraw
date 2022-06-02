@@ -1,0 +1,109 @@
+\documentclass[relatorio.tex]{subfiles}
+
+\begin{document}
+    
+\subsection{Modelo do Sistema Solar} \label{subsec:sistema_solar}
+
+O sistema solar estático anteriormente contruído 
+foi atualizado, implementando o movimento de rotação do Sol 
+e dos Planetas à sua volta, bem como dos seus satélites naturais. 
+
+\subsubsection{Movimento de Translação}
+O movimento de translação(de cada planeta à volta do Sol) foi feito com a primitiva 
+\textit{rotate} com um vetor unitário centrado na origem, que representa o centro do Sol, a apontar para $y=1$.
+
+Neste sentido,
+\begin{code}
+\captionof{listing}{Movimento de Translação da Terra.}
+\label{code:translate_terra}
+\begin{minted}{xml}
+<transform>
+    <rotate time="36.5" x="0" y="1" z="0" />
+</transform>
+\end{minted}
+\end{code}
+
+\subsubsection{Movimento de Rotação}
+O movimento de rotação(de cada planeta à sua volta), também é feito com o \textit{rotate} 
+porém com o vetor centrado no próprio astro, na mesma a apontar para $y=1$. Os satélites naturais de 
+Terra e Marte, possuem também movimento de rotação e de translação sobre o planeta em que orbitam, 
+sendo estes feitos de forma análoga ao movimento dos planetas. 
+É importante realçar que para tornar o sistema solar o mais perto da realidade, todos os tempos
+dos movimentos utilizados tem por base os valores reais, aplicando apenas uma escala nestes com 
+o intuito de melhorar a experiência visual do sistema solar.
+
+Deste modo, a escala usada:
+\begin{eqnarray} 
+    TempoRot_{x_{modelo}} = (\frac{TempoRot{x_{real}}}{(10*60*24)}) secs \\
+    TempoTransl_{x_{modelo}} = (\frac{TempoTransl{x_{real}}}{(60*24)}) secs 
+\end{eqnarray}
+\dots sendo os valores em segundos.
+
+\subsubsection{Cometa}
+No que toca ao movimento do cometa, o grupo inspirou-se no movimento traçado pela trajetória do cometa \textit{Halley},
+uma vez que é o mais conhecido do sistema solar. 
+Para representar a sua órbita \textbf{elíptica}, foram escolhidos 4 pontos que definem um \textbf{losango} e o centro
+deste foi escolhido de maneira a tentar respeitar o seu movimento, 
+que num período de tempo está muito próximo do Sol e depois permanece afastado durante muito tempo. 
+Desta forma, na \textit{demo-scene} foi utilizada a translação com os 4 pontos que definem uma curva 
+\textit{Catmull-Rom}, que é precedida por um \textit{rotate} com um ângulo de $17.7graus$, de maneira a aproximar
+a trajetória da rota real do cometa. 
+Rota esta que será seguida por um teapot desenhado com base nos
+\textit{Bezier patches} fornecidos pela equipa docente.
+
+Assim, os pontos usados:
+\begin{code}
+\captionof{listing}{Pontos usados para trajetória do cometa.}
+\label{code:cometa_curva}
+\begin{minted}{xml}
+<transform>
+<rotate angle="17.7" x="1" y="0" z="0" />
+<translate time = "60" align="True" >
+        <point x = "0" y = "0" z = "1400" />
+        <point x = "-3000" y = "0" z = "-4400" />
+        <point x = "0" y = "0" z = "-10200" />
+        <point x = "3000" y = "0" z = "-4400" />
+</translate>
+<scale x="30" y="30" z="30" />
+</transform>
+\end{minted}
+\end{code}
+\dots onde é possível verificar os 4 pontos de controlo usados para construir a curva de \textit{Catmull-Rom}, 
+bem como a rotação para obter o ângulo desejado.
+Neste caso, o parâmetro \textit{Align} encontra-se a \textit{True}, pelo que o cometa encontra-se alinhado 
+com a curva na sua trajetória.
+
+\subsubsection{Anéis de Saturno}
+Uma animação para o anéis de Saturno foi adicionada, para apresentar o \textbf{aninhamento de transformações}.
+Neste caso, são apresentadas como três rotações para permitir os anéis rodarem à volta do planeta.
+Do modo como a engine encontra-se desenvolvida, as transformações vão ser aplicadas 
+pela ordem que aparecem, sendo permitida esta dinâmica; no caso as rotações estão a ser efetuadas por
+tempos e ao longo de vetores diferentes.
+
+O excerto do ficheiro \textit{.XML} do sistema solar:
+\begin{code}
+\captionof{listing}{Rotação dos anéis de Saturno}
+\label{code:saturno_aneis}
+\begin{minted}{xml}
+<group>
+    <transform>
+        <rotate angle="-45" x="1" y="0.45" z="1" />
+        <rotate time="3" x="0" y="1" z="0" />
+        <rotate time="4" x="0.5" y="0" z="0" />
+        <rotate time="10" x="0" y="0" z="0.5" />
+    </transform>
+    <models>
+        <!-- Ring A -->
+        <model file="ring_a.3d" />
+        <!--generator torus 179 10 15 5 ring_a.3d -->
+        <!-- Ring B -->
+        <model file="ring_b.3d" />
+        <!-- generator torus 199 10 15 5 ring_b.3d -->
+    </models>
+</group>
+\end{minted}
+\end{code}
+\dots sendo que, neste caso, as transformações são aplicadas aos dois \textbf{tórus}, pelo 
+que ambos rodam do mesmo modo. 
+
+\end{document}

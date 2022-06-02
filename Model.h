@@ -13,6 +13,7 @@
 #include "Texture.h"
 #include "generator/shapes.h"
 #include "cartesian/cartesian.h"
+#include "Color.h"
 #include <string>
 #include <tinyxml2.h>
 #include <vector>
@@ -31,6 +32,7 @@ private:
 	GLuint* _buffer; // VBO buffers pointers
 	GLint* _total_points;
 	int _n_buffers;
+	Color _color;
 	Texture _texture;
 	Normals _normals;
 	//GLint _total_points; // hold total points to be drawn
