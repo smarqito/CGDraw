@@ -7,7 +7,7 @@ ModelTexture::ModelTexture()
 
 ModelTexture::ModelTexture(XMLElement* pontos, XMLElement* texture) : Texture(texture)
 {
-	vector<float> coords;
+	std::vector<float> coords;
 	XMLElement* pPoint = texture->FirstChildElement("ponto");
 
 	double x, y;

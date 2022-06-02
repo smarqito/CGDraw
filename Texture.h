@@ -8,8 +8,6 @@
 #include <IL/il.h>
 
 using namespace tinyxml2;
-using namespace std;
-
 
 class Texture
 {
@@ -17,14 +15,14 @@ private:
 	int img;
 	unsigned int iw;
 	unsigned int ih;
-	string tex_path;
+	std::string tex_path;
 
 	GLuint loadTexture();
 public:
 	Texture();
 	Texture(XMLElement* xml_elem);
-	void setPath(string path);
-	string getPath();
+	void setPath(std::string path);
+	std::string getPath();
 	int getImg();
 	void draw();
 };

@@ -41,12 +41,12 @@ Texture::Texture()
 
 Texture::Texture(XMLElement* xml_elem)
 {
-	string t = string(file_path);
+	std::string t = string(file_path);
 	setPath(t + string(xml_elem->FindAttribute("file")->Value()));
 	img = loadTexture();
 }
 
-string Texture::getPath()
+std::string Texture::getPath()
 {
 	return tex_path;
 }
@@ -60,7 +60,7 @@ void Texture::draw()
 {
 }
 
-void Texture::setPath(string path)
+void Texture::setPath(std::string path)
 {
 	tex_path = path;
 }

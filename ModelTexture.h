@@ -6,8 +6,6 @@
 #include <vector>
 #include <Texture.h>
 
-
-using namespace std;
 using namespace tinyxml2;
 
 class ModelTexture : public Texture
