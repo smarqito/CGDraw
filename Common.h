@@ -3,7 +3,7 @@
 #define COMMON_H
 #include <string>
 
-extern string file_path;
+extern std::string file_path;
 
 #endif // !COMMON_H
 

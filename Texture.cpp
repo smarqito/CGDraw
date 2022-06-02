@@ -1,5 +1,6 @@
 #include "Texture.h"
 #include "Common.h"
+#include <IL/il.h>
 
 GLuint Texture::loadTexture()
 {
@@ -54,10 +55,6 @@ std::string Texture::getPath()
 int Texture::getImg()
 {
 	return img;
-}
-
-void Texture::draw()
-{
 }
 
 void Texture::setPath(std::string path)

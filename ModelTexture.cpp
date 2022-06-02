@@ -27,7 +27,7 @@ ModelTexture::ModelTexture(XMLElement* pontos, XMLElement* texture) : Texture(te
 void ModelTexture::_draw()
 {
 	glBindTexture(GL_TEXTURE_2D, getImg());
-	glBindBuffer(GL_ARRAY_BUFFER, vboPointer);
+	glBindBuffer(GL_ARRAY_BUFFER, vboPointer[0]);
 	glTexCoordPointer(2, GL_FLOAT, 0, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }

@@ -109,9 +109,15 @@ void Model::read_points()
 	{
 		read_points_basic(x_root);
 	}
+
 	XMLElement* textures;
 	if ((textures = x_root->FirstChildElement("textures")) != NULL) {
 		_texture = ModelTexture(_xml_model->FirstChildElement("texture"), textures);
+	}
+
+	XMLElement* normals = x_root->FirstChildElement("normals");
+	if (normals != NULL) {
+		_normals = Normals(normals);
 	}
 }
 

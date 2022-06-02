@@ -14,7 +14,7 @@ add_executable(${PROJECT_NAME} CGDraw.h CGDraw.h CGDraw.cpp Model.h Model.cpp Wo
 # link cartesian
 add_subdirectory(cartesian)
 
-# vcpkg install [freeglut, glew, tinyxml2]
+# vcpkg install [freeglut, glew, tinyxml2, devil]
 
 #add OpenGL
 find_package(OpenGL REQUIRED)
@@ -36,6 +36,10 @@ find_package(GLEW REQUIRED)
 include_directories(${GLEW_INCLUDE_DIRS})
 link_libraries(${GLEW_LIBRARIES})
 
+#add Devil
+find_package(DEVIL REQUIRED)
+include_directories(${IL_INCLUDE_DIR})
+link_libraries(${IL_LIBRARIES})
 
 target_include_directories(CGDraw PUBLIC cartesian)
 
@@ -44,6 +48,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC GLUT::GLUT)
 target_link_libraries(${PROJECT_NAME} PUBLIC GLEW::GLEW)
 target_link_libraries(${PROJECT_NAME} PUBLIC tinyxml2::tinyxml2)
 target_link_libraries(${PROJECT_NAME} PUBLIC cartesian)
+target_link_libraries(${PROJECT_NAME} PUBLIC DevIL::IL)
 
 if(WIN32)
 	set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})

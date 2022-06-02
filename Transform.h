@@ -1,5 +1,10 @@
 #pragma once
+#ifndef _GL_INCLUDE
+#define _GL_INCLUDE
+#include <GL/glew.h>
 #include <GL/glut.h>
+#include <GL/gl.h>
+#endif // !_GL_INCLUDE
 #include "cartesian.h"
 #include <tinyxml2.h>
 #include <vector>

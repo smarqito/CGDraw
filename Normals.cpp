@@ -2,6 +2,7 @@
 
 Normals::Normals()
 {
+	_buffer = NULL;
 }
 
 Normals::Normals(XMLElement* xml_elem)
@@ -30,6 +31,8 @@ void Normals::init()
 
 void Normals::_draw()
 {
-	glBindBuffer(GL_ARRAY_BUFFER, _buffer);
-	glNormalPointer(GL_FLOAT, 0, 0);
+	if (_buffer) {
+		glBindBuffer(GL_ARRAY_BUFFER, _buffer[0]);
+		glNormalPointer(GL_FLOAT, 0, 0);
+	}
 }

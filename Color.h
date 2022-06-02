@@ -1,9 +1,10 @@
 #pragma once
-#ifdef __APPLE__
-#include <GLUT/glut.h>
-#else
+#ifndef _GL_INCLUDE
+#define _GL_INCLUDE
+#include <GL/glew.h>
 #include <GL/glut.h>
-#endif
+#include <GL/gl.h>
+#endif // !_GL_INCLUDE
 #ifndef COLOR_H
 #define COLOR_H
 
