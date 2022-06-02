@@ -14,6 +14,11 @@ void Model::_init() {
 	string t = string(file_path);
 	_model_path = t + string(_xml_model->FindAttribute("file")->Value());
 	read_points();
+
+	XMLElement* colorElem;
+	if ((colorElem = _xml_model->FirstChildElement("color")) != NULL) {
+		_color = Color(colorElem);
+	}
 }
 
 void Model::read_points_basic(XMLElement* x_root)
@@ -127,8 +132,9 @@ char* Model::getFilename() {
 //}
 
 void Model::_draw() {
+	// Drawing color first
+	_color._draw();
 	// to add texture
-	// to add color
 	//Point p;
 	for (int i = 0; i < _n_buffers; i++)
 	{
