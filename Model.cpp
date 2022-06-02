@@ -1,6 +1,7 @@
 #include "Model.h"
 #include "CGDraw.h"
 #include "Common.h"
+#include "ModelTexture.h"
 
 Model::Model(XMLElement* xml_model)
 {
@@ -13,6 +14,11 @@ void Model::_init() {
 	std::string t = std::string(file_path);
 	_model_path = t + std::string(_xml_model->FindAttribute("file")->Value());
 	read_points();
+
+	XMLElement* colorElem;
+	if ((colorElem = _xml_model->FirstChildElement("color")) != NULL) {
+		_color = Color(colorElem);
+	}
 }
 
 void Model::read_points_basic(XMLElement* x_root)
@@ -103,6 +109,10 @@ void Model::read_points()
 	{
 		read_points_basic(x_root);
 	}
+	XMLElement* textures;
+	if ((textures = x_root->FirstChildElement("textures")) != NULL) {
+		_texture = ModelTexture(_xml_model->FirstChildElement("texture"), textures);
+	}
 }
 
 GLenum Model::getType() {
@@ -122,14 +132,18 @@ char* Model::getFilename() {
 //}
 
 void Model::_draw() {
+	// Drawing color first
+	_color._draw();
 	// to add texture
-	// to add color
 	//Point p;
 	for (int i = 0; i < _n_buffers; i++)
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, _buffer[i]);
 		glVertexPointer(3, GL_FLOAT, 0, 0);
 		glDrawArrays(_type, 0, _total_points[i] * 3);
+
+		_normals._draw();
+		_texture.draw();
 
 	}
 

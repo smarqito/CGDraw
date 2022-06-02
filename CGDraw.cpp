@@ -221,6 +221,8 @@ void init() {
 	//  OpenGL settings
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
+	glEnable(GL_TEXTURE_2D);
+
 }
 
 int main(int argc, char** argv) {
