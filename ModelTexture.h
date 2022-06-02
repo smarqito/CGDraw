@@ -1,4 +1,6 @@
 #pragma once
+#ifndef MODELTEXTURE_H
+#define MODELTEXTURE_H
 #include <GL/glut.h>
 #include <tinyxml2.h>
 #include <vector>
@@ -17,3 +19,5 @@ public:
 	ModelTexture(XMLElement* pontos, XMLElement* texture);
 	void _draw();
 };
+
+#endif
