@@ -376,6 +376,8 @@ t_points create_torus(float radius, float size, int slices, int stack) {
 
 t_points create_cone(float radius, float height, int slices, int stacks) {
 	t_points p_points(6 * slices * stacks + 3 * slices);
+	t_points p_normals(6 * slices * stacks + 3 * slices);
+	std::vector<float> p_textures;
 
 	float step = (2 * M_PI) / slices;
 	float alpha = 0;
@@ -400,9 +402,17 @@ t_points create_cone(float radius, float height, int slices, int stacks) {
 			p_points.add_point(b.x, b.y + y, b.z); //b
 			p_points.add_point(c.x, c.y + y, c.z); //c
 
+			p_normals.add_point(cos(beta) * sin(alpha), sin(beta), cos(beta) * cos(alpha));
+			p_normals.add_point(cos(beta) * sin(alpha), sin(beta), cos(beta) * cos(alpha));
+			p_normals.add_point(cos(beta) * sin(alpha + step), sin(beta), cos(beta) * cos(alpha + step));
+
 			p_points.add_point(b.x, b.y + y, b.z); //b
 			p_points.add_point(d.x, d.y + y, d.z); //d
 			p_points.add_point(c.x, c.y + y, c.z); //c
+
+			p_normals.add_point(cos(beta) * sin(alpha), sin(beta), cos(beta) * cos(alpha));
+			p_normals.add_point(cos(beta) * sin(alpha + step), sin(beta), cos(beta) * cos(alpha + step));
+			p_normals.add_point(cos(beta) * sin(alpha + step), sin(beta), cos(beta) * cos(alpha + step));
 
 			alpha += step;
 		}
@@ -417,6 +427,14 @@ t_points create_cone(float radius, float height, int slices, int stacks) {
 		p_points.add_point(x, y, z);
 		p_points.add_point(x + b.x, y + b.y, z + b.z);
 		p_points.add_point(x + c.x, y + c.y, z + c.z);
+
+		p_normals.add_point(0,-1,0);
+		p_normals.add_point(0,-1,0);
+		p_normals.add_point(0,-1,0);
+
+		p_textures.push_back(0.5);p_textures.push_back(0.5);
+		p_textures.push_back(0.5 + cos(alpha));p_textures.push_back(0.5 + sin(alpha));
+		p_textures.push_back(0.5 + cos(alpha - step));p_textures.push_back(0.5 + sin(alpha - step));
 
 		alpha += step;
 	}
@@ -433,8 +451,10 @@ t_points create_bezier(std::vector<std::vector<int>> patches, std::vector<Point>
 	BezierTriangles p(4, 4, bezier);
 
 	t_points res(patches.size() * level * level * 6);
+	t_points normals(patches.size() * level * level * 6);
+	std::vector<float> textures;
 	std::vector<int> indices;
-	Point u0v0, u0v1, u1v0, u1v1;
+	Point u0v0, u0v1, u1v0, u1v1, d_u0v0, d_u0v1, d_u1v0, d_u1v1;
 	for (int i = 0; i < patches.size(); i++) {
 		// add patch points
 		for (int j = 0; j < patches[i].size(); j++)
@@ -444,6 +464,7 @@ t_points create_bezier(std::vector<std::vector<int>> patches, std::vector<Point>
 		p.preCalculus();
 		for (float u = 0; u < 1; u += step)
 		{
+			Point v1, v2, n;
 			for (float v = 0; v < 1; v += step)
 			{
 				u0v0 = p.getControlPoint(u, v);
@@ -451,12 +472,32 @@ t_points create_bezier(std::vector<std::vector<int>> patches, std::vector<Point>
 				u0v1 = p.getControlPoint(u, v + step);
 				u1v1 = p.getControlPoint(u + step, v + step);
 
+				d_u0v0 = p.getNormal(u, v);
+				d_u1v0 = p.getNormal(u + step, v);
+				d_u0v1 = p.getNormal(u, v + step);
+				d_u1v1 = p.getNormal(u + step, v + step);
+
 				res.add_point(u0v0);
 				res.add_point(u0v1);
 				res.add_point(u1v0);
 				res.add_point(u1v0);
 				res.add_point(u0v1);
 				res.add_point(u1v1);
+
+				normals.add_point(d_u0v0);
+				normals.add_point(d_u0v1);
+				normals.add_point(d_u1v0);
+				normals.add_point(d_u1v0);
+				normals.add_point(d_u0v1);
+				normals.add_point(d_u1v1);
+
+				textures.push_back(u);textures.push_back(v);
+				textures.push_back(u);textures.push_back(v + step);
+				textures.push_back(u + step);textures.push_back(v);
+				textures.push_back(u + step);textures.push_back(v);
+				textures.push_back(u);textures.push_back(v + step);
+				textures.push_back(u + step);textures.push_back(v + step);
+
 			}
 		}
 	}
