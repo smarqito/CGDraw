@@ -22,10 +22,49 @@ void write_point(XMLDocument* xml, XMLElement* elem, Point point) {
 	elem->InsertEndChild(ponto);
 }
 
+void write_point(XMLDocument* xml, XMLElement* elem, float x, float y) {
+	XMLElement* ponto = xml->NewElement("point");
+	ponto->SetAttribute("x", x);
+	ponto->SetAttribute("y", y);
+	elem->InsertEndChild(ponto);
+}
+
 
 /*
 * Função para escrever todo o ficheiro xml, relativo a uma figura gemométrica
 */
+void write_xml(const char* filepath, GLenum type, t_points all_points, t_points all_normals, std::vector<float> texCoords) {
+	XMLDocument xml;
+	int size = all_points.total();
+
+	XMLElement* pRoot = xml.NewElement("model");
+	xml.InsertFirstChild(pRoot);
+
+	pRoot->SetAttribute("type", type);
+	pRoot->SetAttribute("size", size);
+
+	for (int i = 0; i < size; i++)
+	{
+		write_point(&xml, all_points.get_point(i));
+	}
+
+	XMLElement* pNormals = xml.NewElement("normals");
+	pRoot->InsertEndChild(pNormals);
+	for (int i = 0; i < size; i++)
+	{
+		write_point(&xml, pNormals, all_normals.get_point(i));
+	}
+
+	XMLElement* pTextures = xml.NewElement("texture");
+	pRoot->InsertEndChild(pTextures);
+	for (int i = 0; i < size; i += 2)
+	{
+		write_point(&xml, pTextures, texCoords[i], texCoords[i+1]);
+	}
+
+	xml.SaveFile(filepath);
+}
+
 void write_xml(const char* filepath, GLenum type, t_points all_points) {
 	XMLDocument xml;
 	int size = all_points.total();
@@ -103,9 +142,9 @@ int main(int argc, const char** argv) {
 		float units = std::stof(argv[2]);
 		int divisions = std::atoi(argv[3]);
 
-		points = create_box(units, divisions);
+		std::tuple<t_points, t_points, std::vector<float>> p = create_box(units, divisions);
 
-		write_xml(argv[4], GL_TRIANGLES, points);
+		write_xml(argv[4], GL_TRIANGLES,  get<0>(p), get<1>(p), get<2>(p));
 
 	}
 	else if (strcmp(argv[1], "cone") == 0) {
@@ -133,9 +172,9 @@ int main(int argc, const char** argv) {
 		float length = std::stof(argv[2]);
 		int divisions = std::atoi(argv[3]);
 
-		points = create_plane(length, divisions);
+		std::tuple<t_points, t_points, std::vector<float>> p = create_plane(length, divisions);
 
-		write_xml(argv[4], GL_TRIANGLES, points);
+		write_xml(argv[4], GL_TRIANGLES, get<0>(p), get<1>(p), get<2>(p));
 
 	}
 	else if (strcmp(argv[1], "cylinder") == 0) {

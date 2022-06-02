@@ -1,123 +1,243 @@
 #include "shapes.h"
 
-t_points create_plane(float length, int divisions) {
+std::tuple<t_points, t_points, std::vector<float>> create_plane(float length, int divisions) {
 	t_points p_points(6 * pow(divisions, 2));
+	t_points p_normals(6 * pow(divisions, 2));
+	std::vector<float> p_textures;
 
-	float x = length / 2;
-	float z = length / 2;
+	float x = - length / 2;
+	float z = - length / 2;
 	float step = length / divisions;
+	float stepTex = 1.0 / divisions;
 
 	for (int i = 0; i < divisions; i++) {
 		for (int j = 0; j < divisions; j++) {
 			p_points.add_point(x, 0, z);
-			p_points.add_point(x, 0, z - step);
-			p_points.add_point(x - step, 0, z);
+			p_points.add_point(x, 0, z + step);
+			p_points.add_point(x + step, 0, z);
 
-			p_points.add_point(x - step, 0, z);
-			p_points.add_point(x, 0, z - step);
-			p_points.add_point(x - step, 0, z - step);
+			p_normals.add_point(0,1,0);
+			p_normals.add_point(0,1,0);
+			p_normals.add_point(0,1,0);
 
-			z -= step;
+			p_textures.push_back(j * stepTex); p_textures.push_back(j * stepTex);
+			p_textures.push_back(j * stepTex); p_textures.push_back((j * stepTex) + stepTex);
+			p_textures.push_back((j * stepTex) + stepTex); p_textures.push_back(j * stepTex);
+
+			p_points.add_point(x + step, 0, z);
+			p_points.add_point(x, 0, z + step);
+			p_points.add_point(x + step, 0, z + step);
+
+			p_normals.add_point(0, 1, 0);
+			p_normals.add_point(0, 1, 0);
+			p_normals.add_point(0, 1, 0);
+
+			p_textures.push_back((j * stepTex) + stepTex); p_textures.push_back(j * stepTex);
+			p_textures.push_back(j * stepTex); p_textures.push_back((j * stepTex) + stepTex);
+			p_textures.push_back((j * stepTex) + stepTex); p_textures.push_back((j * stepTex) + stepTex);
+
+			z += step;
 		}
-		x -= step;
-		z = length / 2; //volta ao valor inicial
+		x += step;
+		z = - length / 2; //volta ao valor inicial
 	}
-
-	return p_points;
+	std::tuple<t_points, t_points, std::vector<float>> res(p_points, p_normals, p_textures);
+	return res;
 }
 
 
-t_points create_box(float units, int divisions) {
+std::tuple<t_points, t_points, std::vector<float>> create_box(float units, int divisions) {
 	t_points p_points(3 * pow(divisions, 2) * 12);
+	t_points p_normals(3 * pow(divisions, 2) * 12);
+	std::vector<float> p_textures;
 
-	float z = units / 2;
-	float x = units / 2;
+	float z = - units / 2;
+	float x = - units / 2;
+	float y = units / 2;
 
 	float step = units / divisions;
+	float stepTex = 1.0 / divisions;
 	for (int i = 0; i < divisions; i++) {
 		for (int j = 0; j < divisions; j++) {
 
 			//face inferior
-			p_points.add_point(x, -units / 2, z);
-			p_points.add_point(x - step, -units / 2, z);
-			p_points.add_point(x, -units / 2, z - step);
+			p_points.add_point(x, -y, z);
+			p_points.add_point(x + step, -y, z);
+			p_points.add_point(x, -y, z + step);
 
-			p_points.add_point(x - step, -units / 2, z);
-			p_points.add_point(x - step, -units / 2, z - step);
-			p_points.add_point(x, -units / 2, z - step);
+			p_normals.add_point(0, -1, 0);
+			p_normals.add_point(0, -1, 0);
+			p_normals.add_point(0, -1, 0);
+
+			p_textures.push_back((j * stepTex)); p_textures.push_back((j * stepTex));
+			p_textures.push_back((j * stepTex) + stepTex); p_textures.push_back((j * stepTex));
+			p_textures.push_back((j * stepTex)); p_textures.push_back((j * stepTex) + stepTex);
+
+			p_points.add_point(x + step, -y, z);
+			p_points.add_point(x + step, -y, z + step);
+			p_points.add_point(x, -y, z + step);
+
+			p_normals.add_point(0, -1, 0);
+			p_normals.add_point(0, -1, 0);
+			p_normals.add_point(0, -1, 0);
+
+			p_textures.push_back((j * stepTex) + stepTex); p_textures.push_back((j * stepTex));
+			p_textures.push_back((j * stepTex) + stepTex); p_textures.push_back((j * stepTex) + stepTex);
+			p_textures.push_back((j * stepTex)); p_textures.push_back((j * stepTex) + stepTex);
 
 			//face superior
 
-			p_points.add_point(x, units / 2, z);
-			p_points.add_point(x, units / 2, z - step);
-			p_points.add_point(x - step, units / 2, z);
+			p_points.add_point(x, y, z);
+			p_points.add_point(x, y, z + step);
+			p_points.add_point(x + step, y, z);
 
-			p_points.add_point(x - step, units / 2, z);
-			p_points.add_point(x, units / 2, z - step);
-			p_points.add_point(x - step, units / 2, z - step);
+			p_normals.add_point(0, 1, 0);
+			p_normals.add_point(0, 1, 0);
+			p_normals.add_point(0, 1, 0);
 
-			z -= step;
+			p_textures.push_back(j * stepTex); p_textures.push_back(j * stepTex);
+			p_textures.push_back(j * stepTex); p_textures.push_back((j * stepTex) + stepTex);
+			p_textures.push_back((j * stepTex) + stepTex); p_textures.push_back(j * stepTex);
+
+			p_points.add_point(x + step, y, z);
+			p_points.add_point(x, y, z + step);
+			p_points.add_point(x + step, y, z + step);
+			
+			p_normals.add_point(0, 1, 0);
+			p_normals.add_point(0, 1, 0);
+			p_normals.add_point(0, 1, 0);
+
+			p_textures.push_back((j * stepTex) + stepTex); p_textures.push_back(j * stepTex);
+			p_textures.push_back(j * stepTex); p_textures.push_back((j * stepTex) + stepTex);
+			p_textures.push_back((j * stepTex) + stepTex); p_textures.push_back((j * stepTex) + stepTex);
+
+			z += step;
 		}
-		x -= step;
-		z = units / 2; //volta ao valor inicial
+		x += step;
+		z = - units / 2; //volta ao valor inicial
 	}
 
 	x = units / 2;
-	float y = units / 2;
+	y = - units / 2;
 	for (int i = 0; i < divisions; i++) {
 		for (int j = 0; j < divisions; j++) {
 
 			//face lateral X positivo
 			p_points.add_point(x, y, z);
-			p_points.add_point(x, y - step, z);
-			p_points.add_point(x, y, z - step);
+			p_points.add_point(x, y + step, z);
+			p_points.add_point(x, y, z + step);
 
-			p_points.add_point(x, y - step, z);
-			p_points.add_point(x, y - step, z - step);
-			p_points.add_point(x, y, z - step);
+			p_normals.add_point(1, 0, 0);
+			p_normals.add_point(1, 0, 0);
+			p_normals.add_point(1, 0, 0);
+
+			p_textures.push_back(j * stepTex); p_textures.push_back(j * stepTex);
+			p_textures.push_back((j * stepTex) + stepTex); p_textures.push_back(j * stepTex);
+			p_textures.push_back(j * stepTex); p_textures.push_back((j * stepTex) + stepTex);
+
+			p_points.add_point(x, y + step, z);
+			p_points.add_point(x, y + step, z + step);
+			p_points.add_point(x, y, z + step);
+
+			p_normals.add_point(1, 0, 0);
+			p_normals.add_point(1, 0, 0);
+			p_normals.add_point(1, 0, 0);
+
+			p_textures.push_back((j * stepTex) + stepTex); p_textures.push_back(j * stepTex);
+			p_textures.push_back((j * stepTex) + stepTex); p_textures.push_back((j * stepTex) + stepTex);
+			p_textures.push_back(j * stepTex); p_textures.push_back((j * stepTex) + stepTex);
 
 			//face lateral X negativo
-			p_points.add_point(-x, y - step, z);
+			p_points.add_point(-x, y + step, z);
 			p_points.add_point(-x, y, z);
-			p_points.add_point(-x, y, z - step);
+			p_points.add_point(-x, y, z + step);
 
-			p_points.add_point(-x, y - step, z - step);
-			p_points.add_point(-x, y - step, z);
-			p_points.add_point(-x, y, z - step);
+			p_normals.add_point(-1, 0, 0);
+			p_normals.add_point(-1, 0, 0);
+			p_normals.add_point(-1, 0, 0);
 
-			y -= step;
+			p_textures.push_back((j* stepTex) + stepTex); p_textures.push_back(j* stepTex);
+			p_textures.push_back(j* stepTex); p_textures.push_back(j* stepTex);
+			p_textures.push_back(j* stepTex); p_textures.push_back((j* stepTex) + stepTex);
+
+			p_points.add_point(-x, y + step, z + step);
+			p_points.add_point(-x, y + step, z);
+			p_points.add_point(-x, y, z + step);
+
+			p_normals.add_point(-1, 0, 0);
+			p_normals.add_point(-1, 0, 0);
+			p_normals.add_point(-1, 0, 0);
+
+			p_textures.push_back((j* stepTex) + stepTex); p_textures.push_back((j* stepTex) + stepTex);
+			p_textures.push_back((j* stepTex) + stepTex); p_textures.push_back(j* stepTex);
+			p_textures.push_back(j* stepTex); p_textures.push_back((j* stepTex) + stepTex);
+
+			y += step;
 		}
-		z -= step;
-		y = units / 2; //volta ao valor inicial
+		z += step;
+		y = - units / 2; //volta ao valor inicial
 	}
 	z = units / 2;
-	y = units / 2;
+	x = -units / 2;
 	for (int i = 0; i < divisions; i++) {
 		for (int j = 0; j < divisions; j++) {
-			//face lateral Y positivo
+			//face lateral Z positivo
 			p_points.add_point(x, y, z);
-			p_points.add_point(x - step, y, z);
-			p_points.add_point(x, y - step, z);
+			p_points.add_point(x + step, y, z);
+			p_points.add_point(x, y + step, z);
 
-			p_points.add_point(x, y - step, z);
-			p_points.add_point(x - step, y, z);
-			p_points.add_point(x - step, y - step, z);
+			p_normals.add_point(0, 0, 1);
+			p_normals.add_point(0, 0, 1);
+			p_normals.add_point(0, 0, 1);
 
-			//face lateral Y negativo
+			p_textures.push_back(i* stepTex); p_textures.push_back(i* stepTex);
+			p_textures.push_back((i* stepTex) + stepTex); p_textures.push_back(i* stepTex);
+			p_textures.push_back(i* stepTex); p_textures.push_back((i* stepTex) + stepTex);
+
+			p_points.add_point(x, y + step, z);
+			p_points.add_point(x + step, y, z);
+			p_points.add_point(x + step, y + step, z);
+
+			p_normals.add_point(1, 0, 0);
+			p_normals.add_point(1, 0, 0);
+			p_normals.add_point(1, 0, 0);
+
+			p_textures.push_back((i* stepTex) + stepTex); p_textures.push_back(i* stepTex);
+			p_textures.push_back(i* stepTex); p_textures.push_back((i* stepTex) + stepTex);
+			p_textures.push_back((i* stepTex) + stepTex); p_textures.push_back((i* stepTex) + stepTex);
+
+			//face lateral Z negativo
 			p_points.add_point(x, y, -z);
-			p_points.add_point(x, y - step, -z);
-			p_points.add_point(x - step, y, -z);
+			p_points.add_point(x, y + step, -z);
+			p_points.add_point(x + step, y, -z);
 
-			p_points.add_point(x, y - step, -z);
-			p_points.add_point(x - step, y - step, -z);
-			p_points.add_point(x - step, y, -z);
-			y -= step;
+			p_normals.add_point(0, 0, -1);
+			p_normals.add_point(0, 0, -1);
+			p_normals.add_point(0, 0, -1);
+
+			p_textures.push_back(j* stepTex); p_textures.push_back(j* stepTex);
+			p_textures.push_back((j* stepTex)); p_textures.push_back((j* stepTex) + stepTex);
+			p_textures.push_back((j* stepTex) + stepTex); p_textures.push_back((j* stepTex));
+
+			p_points.add_point(x, y + step, -z);
+			p_points.add_point(x + step, y + step, -z);
+			p_points.add_point(x + step, y, -z);
+
+			p_normals.add_point(0, 0, -1);
+			p_normals.add_point(0, 0, -1);
+			p_normals.add_point(0, 0, -1);
+
+			p_textures.push_back(j* stepTex); p_textures.push_back((j* stepTex)+stepTex);
+			p_textures.push_back((j* stepTex)+stepTex); p_textures.push_back((j* stepTex)+stepTex);
+			p_textures.push_back((j* stepTex)+stepTex); p_textures.push_back((j* stepTex));
+
+			y += step;
 		}
-		x -= step;
-		y = units / 2; //volta ao valor inicial
+		x += step;
+		y = - units / 2; //volta ao valor inicial
 	}
-
-	return p_points;
+	std::tuple<t_points, t_points, std::vector<float>> res(p_points, p_normals, p_textures);
+	return res;
 }
 
 t_points create_sphere(int radius, int slices, int stacks) {
@@ -306,14 +426,14 @@ t_points create_cone(float radius, float height, int slices, int stacks) {
 
 
 
-t_points create_bezier(vector<vector<int>> patches, vector<Point> all_points, int level) {
+t_points create_bezier(std::vector<std::vector<int>> patches, std::vector<Point> all_points, int level) {
 	float step = 1.0 / level;
 
 	Matrix bezier(BEZIER);
 	BezierTriangles p(4, 4, bezier);
 
 	t_points res(patches.size() * level * level * 6);
-	vector<int> indices;
+	std::vector<int> indices;
 	Point u0v0, u0v1, u1v0, u1v1;
 	for (int i = 0; i < patches.size(); i++) {
 		// add patch points
