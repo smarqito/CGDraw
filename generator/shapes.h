@@ -40,7 +40,7 @@ std::tuple<t_points, t_points, std::vector<float>> create_torus(float radius, fl
 /*
 Create a vector of list of points that can be drawn with line loop
 */
-t_points create_bezier(std::vector<std::vector<int>> patches, std::vector<Point> points, int level);
+std::tuple<t_points, t_points, std::vector<float>> create_bezier(std::vector<std::vector<int>> patches, std::vector<Point> points, int level);
 
 std::tuple<t_points, t_points, std::vector<float>>  create_sphere(int radius, int slices, int stacks, Point offset);
 

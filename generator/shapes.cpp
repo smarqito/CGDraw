@@ -364,16 +364,16 @@ std::tuple<t_points, t_points, std::vector<float>> create_cylinder(int radius, i
 		p_normals.add_point(0, -1, 0);
 		p_normals.add_point(0, -1, 0);
 
+		p_textures.push_back(0.5 + 0.5 * cos(alpha + ssl)); p_textures.push_back(0.5 + 0.5 * sin(alpha + ssl));
+		p_textures.push_back(0.5 + 0.5 * cos(alpha)); p_textures.push_back(0.5 + 0.5 * sin(alpha));
 		p_textures.push_back(0.5); p_textures.push_back(0.5);
-		p_textures.push_back(0.5 + 0.5 * cos(alpha)); p_textures.push_back(0.5 + 0.5 *  sin(alpha));
-		p_textures.push_back(0.5 + 0.5 * cos(alpha - ssl)); p_textures.push_back(0.5 + 0.5 *  sin(alpha + ssl));
 
 		alpha += ssl;
 	}
 	alpha = 0;
 
-	float step_x = 1 / slices;
-	float step_y = 1 / stacks;
+	float step_x = 1.0 / slices;
+	float step_y = 1.0 / stacks;
 	for (int i = 0; i < stacks; i++) {
 		for (int j = 0; j < slices; j++)
 		{
@@ -519,9 +519,9 @@ std::tuple<t_points, t_points, std::vector<float>> create_cone(float radius, flo
 			p_normals.add_point(cos(beta) * sin(alpha), sin(beta), cos(beta) * cos(alpha));
 			p_normals.add_point(cos(beta) * sin(alpha + step), sin(beta), cos(beta) * cos(alpha + step));
 
-			p_textures.push_back(j*xStep);p_textures.push_back(i * yStep);
+			p_textures.push_back(j * xStep);p_textures.push_back(i*yStep);
 			p_textures.push_back(j * xStep);p_textures.push_back((i + 1) * yStep);
-			p_textures.push_back((j + 1) * xStep);p_textures.push_back(i * yStep);
+			p_textures.push_back((j+1) * xStep);p_textures.push_back(i *yStep);
 
 			p_points.add_point(b.x, b.y + y, b.z); //b
 			p_points.add_point(d.x, d.y + y, d.z); //d
@@ -532,8 +532,8 @@ std::tuple<t_points, t_points, std::vector<float>> create_cone(float radius, flo
 			p_normals.add_point(cos(beta) * sin(alpha + step), sin(beta), cos(beta) * cos(alpha + step));
 
 			p_textures.push_back(j * xStep);p_textures.push_back((i + 1) * yStep);
+			p_textures.push_back((j + 1) * xStep);p_textures.push_back((i+1) * yStep);
 			p_textures.push_back((j + 1) * xStep);p_textures.push_back(i * yStep);
-			p_textures.push_back((j + 1) * xStep);p_textures.push_back((i + 1) * yStep);
 
 			alpha += step;
 		}
@@ -566,7 +566,7 @@ std::tuple<t_points, t_points, std::vector<float>> create_cone(float radius, flo
 
 
 
-t_points create_bezier(std::vector<std::vector<int>> patches, std::vector<Point> all_points, int level) {
+std::tuple<t_points, t_points, std::vector<float>> create_bezier(std::vector<std::vector<int>> patches, std::vector<Point> all_points, int level) {
 	float step = 1.0 / level;
 
 	Matrix bezier(BEZIER);
@@ -623,7 +623,8 @@ t_points create_bezier(std::vector<std::vector<int>> patches, std::vector<Point>
 			}
 		}
 	}
-	return res;
+	std::tuple<t_points, t_points, std::vector<float>> result(res, normals, textures);
+	return result;
 }
 
 std::tuple<t_points, t_points, std::vector<float>> create_sphere(int radius, int slices, int stacks, Point offset) {

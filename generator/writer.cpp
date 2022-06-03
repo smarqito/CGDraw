@@ -242,8 +242,8 @@ int main(int argc, const char** argv) {
 			_points.push_back(p);
 		}
 		file.close();
-		t_points res = create_bezier(v, _points, stod(argv[3]));
-		write_xml(argv[4], GL_TRIANGLES, res);
+		std::tuple<t_points, t_points, std::vector<float>> p = create_bezier(v, _points, stod(argv[3]));
+		write_xml(argv[4], GL_TRIANGLES, get<0>(p), get<1>(p), get<2>(p));
 
 	}
 	else if (strcmp(argv[1], "asteroids") == 0) {
