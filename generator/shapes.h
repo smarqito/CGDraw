@@ -44,5 +44,5 @@ std::tuple<t_points, t_points, std::vector<float>> create_bezier(std::vector<std
 
 std::tuple<t_points, t_points, std::vector<float>>  create_sphere(int radius, int slices, int stacks, Point offset);
 
-std::tuple<t_points, t_points, std::vector<float>>* create_asteroids(double distMin, double distMax, int maxSize, int slices, int stacks, double alphaMax, double betaMax, int numAsteroids);
+std::tuple<t_points, t_points, std::vector<float>> create_asteroids(double distMin, double distMax, int maxSize, int slices, int stacks, double alphaMax, double betaMax, int numAsteroids);
 #endif // !SHAPES_DRAW
