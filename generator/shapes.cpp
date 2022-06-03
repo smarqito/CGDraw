@@ -412,8 +412,10 @@ std::tuple<t_points, t_points, std::vector<float>> create_cylinder(int radius, i
 	return res;
 }
 
-t_points create_torus(float radius, float size, int slices, int stack) {
+std::tuple<t_points, t_points, std::vector<float>> create_torus(float radius, float size, int slices, int stack) {
 	t_points p_points(12 * slices * stack + 2 * slices);
+	t_points p_normals(12 * slices * stack + 2 * slices);
+	std::vector<float> p_textures;
 
 	float ssl = (2 * M_PI) / slices;
 	float sst = M_PI / stack;
@@ -431,6 +433,15 @@ t_points create_torus(float radius, float size, int slices, int stack) {
 			Point b1 = polartocart(size, alpha + ssl, beta);
 			Point b2 = polartocart(size, alpha + ssl, beta + sst);
 
+			Point norm_a1 = a1;
+			normalize(&norm_a1);
+			Point norm_a2 = a2;
+			normalize(&norm_a2);
+			Point norm_b1 = b1;
+			normalize(&norm_b1);
+			Point norm_b2 = b2;
+			normalize(&norm_b2);
+
 			p_points.add_point(sum_points(a, a1));
 			p_points.add_point(sum_points(b, b1));
 			p_points.add_point(sum_points(b, b2));
@@ -447,12 +458,29 @@ t_points create_torus(float radius, float size, int slices, int stack) {
 			p_points.add_point(sub_points(b, b2));
 			p_points.add_point(sub_points(a, a2));
 
+			p_normals.add_point(norm_a1);
+			p_normals.add_point(norm_b1);
+			p_normals.add_point(norm_b2);
+
+			p_normals.add_point(norm_a1);
+			p_normals.add_point(norm_b2);
+			p_normals.add_point(norm_a2);
+
+			p_normals.add_point(norm_a1);
+			p_normals.add_point(norm_b1);
+			p_normals.add_point(norm_b2);
+
+			p_normals.add_point(norm_a1);
+			p_normals.add_point(norm_b2);
+			p_normals.add_point(norm_a2);
+			
 			beta += sst;
 		}
 		alpha += ssl;
 		beta = -M_PI / 2;
 	}
-	return p_points;
+	std::tuple<t_points, t_points, std::vector<float>> res(p_points, p_normals, p_textures);
+	return res;
 }
 
 std::tuple<t_points, t_points, std::vector<float>> create_cone(float radius, float height, int slices, int stacks) {
@@ -684,11 +712,17 @@ std::tuple<t_points, t_points, std::vector<float>> create_sphere(int radius, int
 		alpha = 0;
 	}
 	std::tuple<t_points, t_points, std::vector<float>> res(p_points, p_normals, p_textures);
-	return res
+	return res;
 }
 
-t_points create_asteroids(double distMin, double distMax, int maxSize, int slices, int stacks, double alphaMax, double betaMax, int numAsteroids) {
-	t_points p_points(numAsteroids * 6 * stacks * slices);
+std::tuple<t_points, t_points, std::vector<float>>* create_asteroids(double distMin, double distMax, int maxSize, int slices, int stacks, double alphaMax, double betaMax, int numAsteroids) {
+	std::tuple<t_points, t_points, std::vector<float>> *tuples;
+	
+	tuples = (std::tuple<t_points, t_points, std::vector<float>> *) 
+		malloc(
+			sizeof(std::tuple<t_points, t_points, std::vector<float>>) * numAsteroids * 6 * stacks * slices
+		);
+
 	srand(1);
 	for (int i = 0; i < numAsteroids; i++) {
 		int raio = distMin + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (distMax - distMin)));
@@ -698,9 +732,9 @@ t_points create_asteroids(double distMin, double distMax, int maxSize, int slice
 		Point p = polartocart(raio, alpha, beta);
 
 		int size = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / maxSize));
-		t_points res = create_sphere(size, slices, stacks, p);
-		p_points.add_points(res);
+		std::tuple<t_points, t_points, std::vector<float>> res = create_sphere(size, slices, stacks, p);
+		tuples[i] = res;
 
 	}
-	return p_points;
+	return tuples;
 }
