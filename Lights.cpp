@@ -12,7 +12,7 @@ Lights::Lights(XMLElement* xml)
 
 void Lights::init()
 {
-	float amb[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	float amb[4] = { 1.f, 1.f, 1.f, 1.0f };
 	glEnable(GL_LIGHTING);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
 
