@@ -23,7 +23,7 @@ std::tuple<t_points, t_points, std::vector<float>> create_box(float units, int d
 /*
 * Função que cria um array de pontos para construir o cone
 */
-t_points create_cone(float radius, float height, int slices, int stacks);
+std::tuple<t_points, t_points, std::vector<float>> create_cone(float radius, float height, int slices, int stacks);
 
 /*
 * Função que cria um array de pontos para construir a esfera

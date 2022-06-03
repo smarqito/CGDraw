@@ -374,7 +374,7 @@ t_points create_torus(float radius, float size, int slices, int stack) {
 	return p_points;
 }
 
-t_points create_cone(float radius, float height, int slices, int stacks) {
+std::tuple<t_points, t_points, std::vector<float>> create_cone(float radius, float height, int slices, int stacks) {
 	t_points p_points(6 * slices * stacks + 3 * slices);
 	t_points p_normals(6 * slices * stacks + 3 * slices);
 	std::vector<float> p_textures;
@@ -388,6 +388,9 @@ t_points create_cone(float radius, float height, int slices, int stacks) {
 	int x = 0, y = height, z = 0;
 	float r = 0;
 	beta = -beta;
+
+	float xStep = 1.0 / slices;
+	float yStep = 1.0 / stacks;
 	for (int i = 0; i < stacks; i++)
 	{
 		alpha = 0;
@@ -406,6 +409,10 @@ t_points create_cone(float radius, float height, int slices, int stacks) {
 			p_normals.add_point(cos(beta) * sin(alpha), sin(beta), cos(beta) * cos(alpha));
 			p_normals.add_point(cos(beta) * sin(alpha + step), sin(beta), cos(beta) * cos(alpha + step));
 
+			p_textures.push_back(j*xStep);p_textures.push_back(i * yStep);
+			p_textures.push_back(j * xStep);p_textures.push_back((i + 1) * yStep);
+			p_textures.push_back((j + 1) * xStep);p_textures.push_back(i * yStep);
+
 			p_points.add_point(b.x, b.y + y, b.z); //b
 			p_points.add_point(d.x, d.y + y, d.z); //d
 			p_points.add_point(c.x, c.y + y, c.z); //c
@@ -413,6 +420,10 @@ t_points create_cone(float radius, float height, int slices, int stacks) {
 			p_normals.add_point(cos(beta) * sin(alpha), sin(beta), cos(beta) * cos(alpha));
 			p_normals.add_point(cos(beta) * sin(alpha + step), sin(beta), cos(beta) * cos(alpha + step));
 			p_normals.add_point(cos(beta) * sin(alpha + step), sin(beta), cos(beta) * cos(alpha + step));
+
+			p_textures.push_back(j * xStep);p_textures.push_back((i + 1) * yStep);
+			p_textures.push_back((j + 1) * xStep);p_textures.push_back(i * yStep);
+			p_textures.push_back((j + 1) * xStep);p_textures.push_back((i + 1) * yStep);
 
 			alpha += step;
 		}
@@ -439,7 +450,8 @@ t_points create_cone(float radius, float height, int slices, int stacks) {
 		alpha += step;
 	}
 
-	return p_points;
+	std::tuple<t_points, t_points, std::vector<float>> res(p_points, p_normals, p_textures);
+	return res;
 }
 
 
