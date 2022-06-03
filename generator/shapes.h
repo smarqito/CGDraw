@@ -28,12 +28,12 @@ std::tuple<t_points, t_points, std::vector<float>> create_cone(float radius, flo
 /*
 * Função que cria um array de pontos para construir a esfera
 */
-t_points create_sphere(int radius, int slices, int stacks);
+std::tuple<t_points, t_points, std::vector<float>> create_sphere(int radius, int slices, int stacks);
 
 /*
 * Função que cria um array de pontos para construir o cilindro
 */
-t_points create_cylinder(int radius, int height, int slices, int stacks);
+std::tuple<t_points, t_points, std::vector<float>> create_cylinder(int radius, int height, int slices, int stacks);
 
 t_points create_torus(float radius, float size, int slices, int stack);
 
@@ -42,7 +42,7 @@ Create a vector of list of points that can be drawn with line loop
 */
 t_points create_bezier(std::vector<std::vector<int>> patches, std::vector<Point> points, int level);
 
-t_points create_sphere(int radius, int slices, int stacks, Point offset);
+std::tuple<t_points, t_points, std::vector<float>>  create_sphere(int radius, int slices, int stacks, Point offset);
 
 t_points create_asteroids(double distMin, double distMax, int maxSize, int slices, int stacks, double alphaMax, double betaMax, int numAsteroids);
 #endif // !SHAPES_DRAW
