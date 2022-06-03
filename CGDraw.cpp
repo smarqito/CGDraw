@@ -75,7 +75,7 @@ void renderInfo(void) {
 	glPushMatrix();
 	gluOrtho2D(0, 800, 0, 800);
 	glRasterPos2i(10, 0);
-	string menu = "Ola";
+	std::string menu = "Ola";
 	for (int i = 0; i < menu.length(); i++)
 	{
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, menu[i]);
@@ -228,7 +228,7 @@ void init() {
 int main(int argc, char** argv) {
 
 	if (argc != 2) {
-		cout << "./CGDraw world.xml";
+		std::cout << "./CGDraw world.xml";
 	}
 
 	// init GLUT and the window

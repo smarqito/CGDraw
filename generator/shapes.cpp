@@ -684,7 +684,7 @@ std::tuple<t_points, t_points, std::vector<float>> create_sphere(int radius, int
 		alpha = 0;
 	}
 	std::tuple<t_points, t_points, std::vector<float>> res(p_points, p_normals, p_textures);
-	return res
+	return res;
 }
 
 t_points create_asteroids(double distMin, double distMax, int maxSize, int slices, int stacks, double alphaMax, double betaMax, int numAsteroids) {

@@ -14,14 +14,17 @@ Normals::Normals(XMLElement* xml_elem)
 void Normals::init()
 {
 	std::vector<float> normals;
+	_buffer = (GLuint*)malloc(sizeof(GLuint));
 	XMLElement* pPoint = _xml_element->FirstChildElement("ponto");
 
-	double x, y;
+	double x, y, z;
 	while (pPoint != NULL) {
 		x = pPoint->FindAttribute("x")->DoubleValue();
 		y = pPoint->FindAttribute("y")->DoubleValue();
+		z = pPoint->FindAttribute("z")->DoubleValue();
 		normals.push_back(x);
 		normals.push_back(y);
+		normals.push_back(z);
 		pPoint = pPoint->NextSiblingElement("ponto");
 	}
 	glGenBuffers(1, _buffer);

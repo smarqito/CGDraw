@@ -37,7 +37,7 @@ Color::Color(XMLElement* xml)
 		float r = pEmissive->FindAttribute("R")->FloatValue();
 		float g = pEmissive->FindAttribute("G")->FloatValue();
 		float b = pEmissive->FindAttribute("B")->FloatValue();
-		setDiffuse(r, g, b);
+		setEmissive(r, g, b);
 	}
 
 	if ((valueShine = xml->FirstChildElement("shininess")) != nullptr) {
