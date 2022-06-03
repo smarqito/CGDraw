@@ -12,7 +12,7 @@ class Light
 public:
 	int _light_no;
 	Light(int light_no);
-	void _draw(){ };
+	virtual void _draw(){ };
 	void setLightNo(int number);
 	int getLightNo();
 

@@ -14,9 +14,10 @@ void Lights::init()
 {
 	glEnable(GL_LIGHTING);
 	XMLElement* light = _xml_elem->FirstChildElement("light");
-	int lightno = GL_LIGHT0;
+	int lightno = GL_LIGHT0, no = 0;
 	const char* type;
-	while (lightno < GL_MAX_LIGHTS && light != NULL) {
+	int X = GL_MAX_LIGHTS;
+	while (no < GL_MAX_LIGHTS && light != NULL) {
 		type = light->FindAttribute("type")->Value();
 		glEnable(lightno);
 
@@ -35,6 +36,7 @@ void Lights::init()
 
 		light = light->NextSiblingElement("light");
 		lightno++;
+		no++;
 	}
 
 }
@@ -43,6 +45,7 @@ void Lights::_draw()
 {
 	for (unsigned int i = 0; i < _lights.size(); i++)
 	{
-		_lights[i]._draw();
+		Light* l = &(_lights[i]);
+		l->_draw();
 	}
 }

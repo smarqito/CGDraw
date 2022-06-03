@@ -50,14 +50,14 @@ void write_xml(const char* filepath, GLenum type, t_points all_points, t_points 
 
 	XMLElement* pNormals = xml.NewElement("normals");
 	pRoot->InsertEndChild(pNormals);
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < all_normals.total(); i++)
 	{
 		write_point(&xml, pNormals, all_normals.get_point(i));
 	}
 
 	XMLElement* pTextures = xml.NewElement("texture");
 	pRoot->InsertEndChild(pTextures);
-	for (int i = 0; i < size; i += 2)
+	for (int i = 0; i < texCoords.size(); i += 2)
 	{
 		write_point(&xml, pTextures, texCoords[i], texCoords[i+1]);
 	}
@@ -203,9 +203,9 @@ int main(int argc, const char** argv) {
 		int slices = std::atoi(argv[4]);
 		int stacks = std::atoi(argv[5]);
 
-		points = create_torus(radius, height, slices, stacks);
+		std::tuple<t_points, t_points, std::vector<float>> p = create_torus(radius, height, slices, stacks);
 
-		write_xml(argv[6], GL_TRIANGLES, points);
+		write_xml(argv[6], GL_TRIANGLES, get<0>(p), get<1>(p), get<2>(p));
 	}
 	else if (strcmp(argv[1], "bezier") == 0) {
 		if (argc < 5) {
@@ -260,7 +260,7 @@ int main(int argc, const char** argv) {
 		double betaMax = std::stod(argv[8]);
 		int numAsteroids = std::atoi(argv[9]);
 
-		points = create_asteroids(distMin, distMax, maxSize, slices, stacks, alphaMax, betaMax, numAsteroids);
+		std::tuple<t_points, t_points, std::vector<float>>* p = create_asteroids(distMin, distMax, maxSize, slices, stacks, alphaMax, betaMax, numAsteroids);
 
 		write_xml(argv[10], GL_TRIANGLES, points);
 	}

@@ -8,7 +8,8 @@ ModelTexture::ModelTexture()
 ModelTexture::ModelTexture(XMLElement* pontos, XMLElement* texture) : Texture(texture)
 {
 	std::vector<float> coords;
-	XMLElement* pPoint = texture->FirstChildElement("ponto");
+	vboPointer = (GLuint*)malloc(sizeof(GLuint));
+	XMLElement* pPoint = pontos->FirstChildElement("point");
 
 	double x, y;
 	while (pPoint != NULL) {
@@ -16,7 +17,7 @@ ModelTexture::ModelTexture(XMLElement* pontos, XMLElement* texture) : Texture(te
 		y = pPoint->FindAttribute("y")->DoubleValue();
 		coords.push_back(x);
 		coords.push_back(y);
-		pPoint = pPoint->NextSiblingElement("ponto");
+		pPoint = pPoint->NextSiblingElement("point");
 	}
 	glGenBuffers(1, vboPointer);
 	glBindBuffer(GL_ARRAY_BUFFER, vboPointer[0]);

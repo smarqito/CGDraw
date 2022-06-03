@@ -12,6 +12,8 @@
 
 #include <tinyxml2.h>
 #include <vector>
+#include <iostream>
+#include <typeinfo>
 
 using namespace tinyxml2;
 

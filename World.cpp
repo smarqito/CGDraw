@@ -50,6 +50,7 @@ void World::_init() {
 
 void World::_draw()
 {
+	_lights._draw();
 	_groups._draw();
 }
 
