@@ -352,8 +352,8 @@ std::tuple<t_points, t_points, std::vector<float>> create_cylinder(int radius, i
 		p_normals.add_point(0, 1, 0);
 
 		p_textures.push_back(0.5); p_textures.push_back(0.5);
-		p_textures.push_back(0.5 + cos(alpha)); p_textures.push_back(0.5 + sin(alpha));
-		p_textures.push_back(0.5 + cos(alpha + ssl)); p_textures.push_back(0.5 + sin(alpha + ssl));
+		p_textures.push_back(0.5 + 0.5 * cos(alpha)); p_textures.push_back(0.5 + 0.5 * sin(alpha));
+		p_textures.push_back(0.5 + 0.5 * cos(alpha + ssl)); p_textures.push_back(0.5 + 0.5 * sin(alpha + ssl));
 
 		p_points.add_point(x + b.x, y - b.y - height, z + b.z);
 		p_points.add_point(x + a.x, y - height + a.y, z + a.z);
@@ -364,8 +364,8 @@ std::tuple<t_points, t_points, std::vector<float>> create_cylinder(int radius, i
 		p_normals.add_point(0, -1, 0);
 
 		p_textures.push_back(0.5); p_textures.push_back(0.5);
-		p_textures.push_back(0.5 + cos(alpha)); p_textures.push_back(0.5 + sin(alpha));
-		p_textures.push_back(0.5 + cos(alpha - ssl)); p_textures.push_back(0.5 + sin(alpha + ssl));
+		p_textures.push_back(0.5 + 0.5 * cos(alpha)); p_textures.push_back(0.5 + 0.5 *  sin(alpha));
+		p_textures.push_back(0.5 + 0.5 * cos(alpha - ssl)); p_textures.push_back(0.5 + 0.5 *  sin(alpha + ssl));
 
 		alpha += ssl;
 	}
@@ -525,8 +525,8 @@ std::tuple<t_points, t_points, std::vector<float>> create_cone(float radius, flo
 		p_normals.add_point(0,-1,0);
 
 		p_textures.push_back(0.5);p_textures.push_back(0.5);
-		p_textures.push_back(0.5 + cos(alpha));p_textures.push_back(0.5 + sin(alpha));
-		p_textures.push_back(0.5 + cos(alpha - step));p_textures.push_back(0.5 + sin(alpha - step));
+		p_textures.push_back(0.5 + 0.5 * cos(alpha));p_textures.push_back(0.5 + 0.5 * sin(alpha));
+		p_textures.push_back(0.5 + 0.5 * cos(alpha - step));p_textures.push_back(0.5 + 0.5 * sin(alpha - step));
 
 		alpha += step;
 	}
