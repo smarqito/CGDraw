@@ -42,7 +42,7 @@ public:
 	*/
 	void _init();
 
-	string set_root_path();
+	std::string set_root_path();
 
 	/*
 	* Função para iniciar o processo de desenho da figura geométrica

@@ -23,7 +23,7 @@ void Model::_init() {
 
 void Model::read_points_basic(XMLElement* x_root)
 {
-	vector<float> points;
+	std::vector<float> points;
 	_buffer = (GLuint*)malloc(sizeof(GLuint));
 	_total_points = (GLint*)malloc(sizeof(GLint));
 	_type = x_root->FindAttribute("type")->IntValue();
@@ -110,15 +110,16 @@ void Model::read_points()
 		read_points_basic(x_root);
 	}
 
+	XMLElement* normals = x_root->FirstChildElement("normals");
+	if (normals != NULL) {
+		_normals = Normals(normals);
+	}
+
 	XMLElement* textures;
 	if ((textures = x_root->FirstChildElement("textures")) != NULL) {
 		_texture = ModelTexture(_xml_model->FirstChildElement("texture"), textures);
 	}
 
-	XMLElement* normals = x_root->FirstChildElement("normals");
-	if (normals != NULL) {
-		_normals = Normals(normals);
-	}
 }
 
 GLenum Model::getType() {

@@ -9,7 +9,7 @@ using namespace tinyxml2;
 class Groups {
 
 private:
-	vector<Group> _groups;
+	std::vector<Group> _groups;
 	XMLElement* _xml_group; // first group elem
 
 public:

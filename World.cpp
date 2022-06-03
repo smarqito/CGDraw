@@ -23,20 +23,20 @@ void World::_init() {
 	XMLNode* pRootElement = doc.FirstChild();
 
 	if (pRootElement == nullptr) {
-		cout << "Invalid World Root XML Element";
+		std::cout << "Invalid World Root XML Element";
 		throw 0x1;
 	}
 
 	XMLElement* pCamera = pRootElement->FirstChildElement("camera");
 	if (pCamera == nullptr) {
-		cout << "Invalid Camara XML Element";
+		std::cout << "Invalid Camara XML Element";
 		throw 0x1;
 	}
 
 	_camera = Camera(pCamera);
 	XMLElement* pGroup = pRootElement->FirstChildElement("group");
 	if (pGroup == nullptr) {
-		cout << "Invalid Group XML Element";
+		std::cout << "Invalid Group XML Element";
 		throw 0x1;
 	}
 
@@ -53,13 +53,13 @@ void World::_draw()
 	_groups._draw();
 }
 
-string World::set_root_path()
+std::string World::set_root_path()
 {
-	regex regexp(R"((.*(/|\\))?.*.xml)");
-	smatch m;
-	string t = string(_path);
+	std::regex regexp(R"((.*(/|\\))?.*.xml)");
+	std::smatch m;
+	std::string t = std::string(_path);
 	regex_search(t, m, regexp);
-	cout << m[1];
+	std::cout << m[1];
 	file_path = m[1];
 	return m[1];
 }
