@@ -128,9 +128,9 @@ int main(int argc, const char** argv) {
 		int slices = std::atoi(argv[3]);
 		int stacks = std::atoi(argv[4]);
 
-		points = create_sphere(radius, slices, stacks);
+		std::tuple<t_points, t_points, std::vector<float>> p = create_sphere(radius, slices, stacks);
 
-		write_xml(argv[5], GL_TRIANGLES, points);
+		write_xml(argv[5], GL_TRIANGLES, get<0>(p), get<1>(p), get<2>(p));
 
 	}
 	else if (strcmp(argv[1], "box") == 0) {
@@ -188,9 +188,9 @@ int main(int argc, const char** argv) {
 		int slices = std::atoi(argv[4]);
 		int stacks = std::atoi(argv[5]);
 
-		points = create_cylinder(radius, height, slices, stacks);
+		std::tuple<t_points, t_points, std::vector<float>> p = create_cylinder(radius, height, slices, stacks);
 
-		write_xml(argv[6], GL_TRIANGLES, points);
+		write_xml(argv[6], GL_TRIANGLES, get<0>(p), get<1>(p), get<2>(p));
 	}
 	else if (strcmp(argv[1], "torus") == 0) {
 		if (argc < 7) {
