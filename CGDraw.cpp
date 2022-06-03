@@ -223,6 +223,7 @@ void init() {
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	//  OpenGL settings
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_RESCALE_NORMAL);
@@ -254,8 +255,8 @@ int main(int argc, char** argv) {
 	glutMotionFunc(handleMouseMotion);
 
 	// init
-	init();
 	glewInit();
+	init();
 	// init world from xml
 	world = World(argv[1]);
 

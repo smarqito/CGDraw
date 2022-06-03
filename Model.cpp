@@ -144,9 +144,10 @@ void Model::_draw() {
 	//Point p;
 	for (int i = 0; i < _n_buffers; i++)
 	{
+		_color._draw();
+
 		glBindBuffer(GL_ARRAY_BUFFER, _buffer[i]);
 		glVertexPointer(3, GL_FLOAT, 0, 0);
-		_color._draw();
 
 		_normals._draw();
 		_texture->_draw();

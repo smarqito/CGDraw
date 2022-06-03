@@ -16,10 +16,10 @@ using namespace tinyxml2;
 class Color
 {
 private:
-	float _diffuse[3] = {200.f,200.f,200.f};
-	float _ambient[3] = {50.f,50.f,50.f};
-	float _specular[3] = {0.f,0.f,0.f};
-	float _emissive[3] = {0.f,0.f,0.f};
+	float _diffuse[4] = {200.f,200.f,200.f, 0.f};
+	float _ambient[4] = {50.f,50.f,50.f, 0.f};
+	float _specular[4] = {0.f,0.f,0.f, 0.f};
+	float _emissive[4] = {0.f,0.f,0.f, 0.f};
 	float _shininess = 0.f;
 
 public:
