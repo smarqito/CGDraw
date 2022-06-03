@@ -8,12 +8,28 @@ void BezierTriangles::calculateU(float u)
 	_u.setPoint(3, 1);
 }
 
+void BezierTriangles::calculateDerivativeU(float u)
+{
+	_u.setPoint(0, 3 * u * u);
+	_u.setPoint(1, 2 * u);
+	_u.setPoint(2, 1);
+	_u.setPoint(3, 0);
+}
+
 void BezierTriangles::calculateV(float v)
 {
 	_v.setPoint(0, v * v * v);
 	_v.setPoint(1, v * v);
 	_v.setPoint(2, v);
 	_v.setPoint(3, 1);
+}
+
+void BezierTriangles::calculateDerivativeV(float v)
+{
+	_v.setPoint(0, 3 * v * v);
+	_v.setPoint(1, 2 * v);
+	_v.setPoint(2, 1);
+	_v.setPoint(3, 0);
 }
 
 BezierTriangles::BezierTriangles(int m, int n, Matrix transf)
@@ -68,5 +84,26 @@ Point BezierTriangles::getControlPoint(float u, float v)
 	_const.mul_matrix(_u_mpm, _u); // (1 x 4) x (4 x 4)  = 1 x 4 = _u_mpm
 	_u_mpm.mul_matrix(_v, _mpm_v); // (1 x 4) x (4 x 1)  = 1 x 1 = _mpm_v
 	return _mpm_v.getPoint(0);
+
+}
+
+Point BezierTriangles::getNormal(float u, float v)
+{
+	calculateDerivativeU(u); // 1 x 4
+	calculateV(v); // 4 x 1
+	_const.mul_matrix(_u_mpm, _u); // (1 x 4) x (4 x 4)  = 1 x 4 = _u_mpm
+	_u_mpm.mul_matrix(_v, _mpm_v); // (1 x 4) x (4 x 1)  = 1 x 1 = _mpm_v
+	Point vector_u = _mpm_v.getPoint(0);
+
+	calculateU(u); // 1 x 4
+	calculateDerivativeV(v); // 4 x 1
+	_const.mul_matrix(_u_mpm, _u); // (1 x 4) x (4 x 4)  = 1 x 4 = _u_mpm
+	_u_mpm.mul_matrix(_v, _mpm_v); // (1 x 4) x (4 x 1)  = 1 x 1 = _mpm_v
+	Point vector_v = _mpm_v.getPoint(0);
+
+	Point n;
+	cross(&vector_v, &vector_u, &n);
+	normalize(&n);
+	return n;
 
 }

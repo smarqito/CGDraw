@@ -15,6 +15,8 @@ private:
 	Matrix _v;				// 4 x 1
 	void calculateU(float u);
 	void calculateV(float v);
+	void calculateDerivativeU(float u);
+	void calculateDerivativeV(float v);
 public:
 	/*
 	Instantiate P matrix with m x n size
@@ -32,5 +34,5 @@ public:
 	void setPatchPoint(int pos, Point p);
 	void setPatchPoint(int pos, std::vector<Point> points);
 	Point getControlPoint(float u, float v);
-	
+	Point getNormal(float u, float v);
 };
