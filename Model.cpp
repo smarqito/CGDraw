@@ -116,8 +116,8 @@ void Model::read_points()
 	}
 
 	XMLElement* textures;
-	if ((textures = x_root->FirstChildElement("textures")) != NULL) {
-		_texture = ModelTexture(_xml_model->FirstChildElement("texture"), textures);
+	if ((textures = _xml_model->FirstChildElement("texture")) != NULL) {
+		_texture = new ModelTexture(x_root->FirstChildElement("texture"), textures);
 	}
 
 }
@@ -140,17 +140,20 @@ char* Model::getFilename() {
 
 void Model::_draw() {
 	// Drawing color first
-	_color._draw();
 	// to add texture
 	//Point p;
 	for (int i = 0; i < _n_buffers; i++)
 	{
+		_color._draw();
+
 		glBindBuffer(GL_ARRAY_BUFFER, _buffer[i]);
 		glVertexPointer(3, GL_FLOAT, 0, 0);
-		glDrawArrays(_type, 0, _total_points[i] * 3);
 
 		_normals._draw();
-		_texture.draw();
+		_texture->_draw();
+
+		glDrawArrays(_type, 0, _total_points[i] * 3);
+		glBindTexture(GL_TEXTURE_2D, 0);
 
 	}
 

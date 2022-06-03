@@ -26,6 +26,6 @@ public:
 	void setPath(std::string path);
 	std::string getPath();
 	int getImg();
-	void draw() { };
+	virtual void _draw() = 0;
 };
 #endif

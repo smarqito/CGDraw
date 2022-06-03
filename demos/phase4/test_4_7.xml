@@ -1,4 +1,4 @@
-<world> <>
+<world>
     <camera>  -0.740200, 1.182951, 1.376347
 	    <position x="-0.740200" y="1.182951" z="1.376347" />
 	    <lookAt x="0" y="0" z="0" />
@@ -48,7 +48,7 @@
 			<transform> 
 				<translate x = "-0.5" y = "0" z = "0.5" />
 				<scale x="0.1" y="0.1" z="0.1" />
-				<rotate angle=-90 x="1" y="0" z="0" />
+				<rotate angle="-90" x="1" y="0" z="0" />
 			</transform>
 			<models> 
 				<model file="bezier_nt.3d" > <!-- generator patch teapot.patch 10 bezier_nt.3d -->

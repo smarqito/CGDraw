@@ -1,8 +1,8 @@
 #include "writer.h"
 
-// ---------------------------- Funções Auxiliares -------------------------------------
+// ---------------------------- FunÃ§Ãµes Auxiliares -------------------------------------
 /*
-* Função criada para escrever no documento xml um ponto
+* FunÃ§Ã£o criada para escrever no documento xml um ponto
 */
 void write_point(XMLDocument* xml, Point point) {
 	XMLNode* root = xml->FirstChild();
@@ -31,7 +31,7 @@ void write_point(XMLDocument* xml, XMLElement* elem, float x, float y) {
 
 
 /*
-* Função para escrever todo o ficheiro xml, relativo a uma figura gemométrica
+* FunÃ§Ã£o para escrever todo o ficheiro xml, relativo a uma figura gemomÃ©trica
 */
 void write_xml(const char* filepath, GLenum type, t_points all_points, t_points all_normals, std::vector<float> texCoords) {
 	XMLDocument xml;
@@ -50,14 +50,14 @@ void write_xml(const char* filepath, GLenum type, t_points all_points, t_points 
 
 	XMLElement* pNormals = xml.NewElement("normals");
 	pRoot->InsertEndChild(pNormals);
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < all_normals.total(); i++)
 	{
 		write_point(&xml, pNormals, all_normals.get_point(i));
 	}
 
 	XMLElement* pTextures = xml.NewElement("texture");
 	pRoot->InsertEndChild(pTextures);
-	for (int i = 0; i < size; i += 2)
+	for (int i = 0; i < texCoords.size(); i += 2)
 	{
 		write_point(&xml, pTextures, texCoords[i], texCoords[i+1]);
 	}
@@ -242,9 +242,9 @@ int main(int argc, const char** argv) {
 			_points.push_back(p);
 		}
 		file.close();
-		std::tuple<t_points, t_points, std::vector<float>> res = create_bezier(v, _points, stod(argv[3]));
-		write_xml(argv[4], GL_TRIANGLES, get<0>(res), get<1>(res), get<2>(res));
 
+		std::tuple<t_points, t_points, std::vector<float>> p = create_bezier(v, _points, stod(argv[3]));
+		write_xml(argv[4], GL_TRIANGLES, get<0>(p), get<1>(p), get<2>(p));
 	}
 	else if (strcmp(argv[1], "asteroids") == 0) {
 		if (argc < 11) {
@@ -260,7 +260,7 @@ int main(int argc, const char** argv) {
 		double betaMax = std::stod(argv[8]);
 		int numAsteroids = std::atoi(argv[9]);
 
-		std::tuple<t_points, t_points, std::vector<float>> p = create_asteroids(distMin, distMax, maxSize, slices, stacks, alphaMax, betaMax, numAsteroids);
+		std::tuple<t_points, t_points, std::vector<float>>* p = create_asteroids(distMin, distMax, maxSize, slices, stacks, alphaMax, betaMax, numAsteroids);
 
 		write_xml(argv[10], GL_TRIANGLES, get<0>(p), get<1>(p), get<2>(p));
 	}

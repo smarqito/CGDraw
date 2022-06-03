@@ -72,6 +72,11 @@ void World::_draw_lookAt() {
 	_camera._draw_lookAt();
 }
 
+void World::_draw_lights()
+{
+	_lights._draw();
+}
+
 void World::set_camera_pos(Point pos) {
 	_camera.set_camera_pos(pos);
 }

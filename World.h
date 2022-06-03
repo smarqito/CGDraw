@@ -55,6 +55,8 @@ public:
 
 	void _draw_lookAt();
 
+	void _draw_lights();
+
 	// Não há nenhuma restrição para a posição a receber 
 	void set_camera_pos(Point pos);
 

@@ -15,7 +15,7 @@ void Normals::init()
 {
 	std::vector<float> normals;
 	_buffer = (GLuint*)malloc(sizeof(GLuint));
-	XMLElement* pPoint = _xml_element->FirstChildElement("ponto");
+	XMLElement* pPoint = _xml_element->FirstChildElement("point");
 
 	double x, y, z;
 	while (pPoint != NULL) {
@@ -25,7 +25,7 @@ void Normals::init()
 		normals.push_back(x);
 		normals.push_back(y);
 		normals.push_back(z);
-		pPoint = pPoint->NextSiblingElement("ponto");
+		pPoint = pPoint->NextSiblingElement("point");
 	}
 	glGenBuffers(1, _buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, _buffer[0]);

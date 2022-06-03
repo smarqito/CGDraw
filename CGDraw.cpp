@@ -86,11 +86,12 @@ void renderInfo(void) {
 void renderScene(void) {
 
 	// clear buffers
+	glClearColor(0.f, 0.f, 0.f, 0.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//glPolygonMode(GL_FRONT, GL_LINE);
 	// set the camera
 	glLoadIdentity();
-
+	world._draw_lights();
 	// set lookat world
 	world._draw_lookAt();
 
@@ -218,10 +219,14 @@ void handleMouseMotion(int x, int y) {
 
 void init() {
 	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	//  OpenGL settings
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_RESCALE_NORMAL);
 
 }
 
@@ -250,8 +255,8 @@ int main(int argc, char** argv) {
 	glutMotionFunc(handleMouseMotion);
 
 	// init
-	init();
 	glewInit();
+	init();
 	// init world from xml
 	world = World(argv[1]);
 
