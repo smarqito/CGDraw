@@ -21,7 +21,7 @@ class Lights
 {
 private:
 	XMLElement* _xml_elem;
-	std::vector<Light> _lights;
+	std::vector<Light*> _lights;
 public:
 	Lights();
 	Lights(XMLElement* xml);

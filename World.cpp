@@ -50,7 +50,6 @@ void World::_init() {
 
 void World::_draw()
 {
-	_lights._draw();
 	_groups._draw();
 }
 
@@ -71,6 +70,11 @@ void World::_draw_projection(double ratio) {
 
 void World::_draw_lookAt() {
 	_camera._draw_lookAt();
+}
+
+void World::_draw_lights()
+{
+	_lights._draw();
 }
 
 void World::set_camera_pos(Point pos) {
