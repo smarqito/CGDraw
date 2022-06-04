@@ -458,8 +458,8 @@ std::tuple<t_points, t_points, std::vector<float>> create_torus(float radius, fl
 	float beta = -M_PI / 2;
 	float x = 0, y = 0, z = 0;
 
-	float step_x = 1 / stack;
-	float step_y = 1 / slices;
+	float step_x = 1.0 / stack;
+	float step_y = 1.0 / slices;
 
 	for (int j = 0; j < slices; j++) {
 		for (int i = 0; i < stack; i++) {
