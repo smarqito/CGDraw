@@ -564,18 +564,22 @@ std::tuple<t_points, t_points, std::vector<float>> create_cone(float radius, flo
 			p_points.add_point(b.x, b.y + y, b.z); //b
 			p_points.add_point(c.x, c.y + y, c.z); //c
 
-			Point v_ba = sub_points(a, b);
+			Point v_ab = sub_points(b, a);
 			Point centro_b = Point(0,b.y, 0);
-			Point v_bcentro = sub_points(centro_b, b);
+			Point v_centrob = sub_points(b, centro_b);
+			Point t1;
+			cross(&v_ab, &v_centrob,  &t1);
 			Point n_a;
-			cross(&v_ba, &v_bcentro,  &n_a);
+			cross(&t1, &v_ab, &n_a);
 			normalize(&n_a);
 
-			Point v_dc = sub_points(c, d);
+			Point v_cd = sub_points(d, c);
 			Point centro_d = Point(0, d.y, 0);
-			Point v_dcentro = sub_points(centro_d, d);
+			Point v_centrod = sub_points(d, centro_d);
+			Point t2;
+			cross(&v_cd, &centro_d, &t2);
 			Point n_c;
-			cross(&v_dc, &v_dcentro,  &n_c);
+			cross(&v_cd, &t2,  &n_c);
 			normalize(&n_c);
 
 			p_normals.add_point(n_a);
