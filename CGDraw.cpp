@@ -91,9 +91,9 @@ void renderScene(void) {
 	//glPolygonMode(GL_FRONT, GL_LINE);
 	// set the camera
 	glLoadIdentity();
-	world._draw_lights();
 	// set lookat world
 	world._draw_lookAt();
+	world._draw_lights();
 
 	// draw world loaded
 	world._draw();
