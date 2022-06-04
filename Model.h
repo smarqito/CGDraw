@@ -32,7 +32,7 @@ private:
 	GLint* _total_points;
 	int _n_buffers;
 	Color _color;
-	Texture* _texture;
+	Texture* _texture = NULL;
 	Normals _normals;
 	//GLint _total_points; // hold total points to be drawn
 		/*
