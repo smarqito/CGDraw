@@ -1,8 +1,8 @@
 #include "writer.h"
 
-// ---------------------------- Funções Auxiliares -------------------------------------
+// ---------------------------- FunÃ§Ãµes Auxiliares -------------------------------------
 /*
-* Função criada para escrever no documento xml um ponto
+* FunÃ§Ã£o criada para escrever no documento xml um ponto
 */
 void write_point(XMLDocument* xml, Point point) {
 	XMLNode* root = xml->FirstChild();
@@ -31,7 +31,7 @@ void write_point(XMLDocument* xml, XMLElement* elem, float x, float y) {
 
 
 /*
-* Função para escrever todo o ficheiro xml, relativo a uma figura gemométrica
+* FunÃ§Ã£o para escrever todo o ficheiro xml, relativo a uma figura gemomÃ©trica
 */
 void write_xml(const char* filepath, GLenum type, t_points all_points, t_points all_normals, std::vector<float> texCoords) {
 	XMLDocument xml;
@@ -65,23 +65,23 @@ void write_xml(const char* filepath, GLenum type, t_points all_points, t_points 
 	xml.SaveFile(filepath);
 }
 
-void write_xml(const char* filepath, GLenum type, t_points all_points) {
-	XMLDocument xml;
-	int size = all_points.total();
-
-	XMLElement* pRoot = xml.NewElement("model");
-	xml.InsertFirstChild(pRoot);
-
-	pRoot->SetAttribute("type", type);
-	pRoot->SetAttribute("size", size);
-
-	for (int i = 0; i < size; i++)
-	{
-		write_point(&xml, all_points.get_point(i));
-	}
-
-	xml.SaveFile(filepath);
-}
+//void write_xml(const char* filepath, GLenum type, t_points all_points) {
+//	XMLDocument xml;
+//	int size = all_points.total();
+//
+//	XMLElement* pRoot = xml.NewElement("model");
+//	xml.InsertFirstChild(pRoot);
+//
+//	pRoot->SetAttribute("type", type);
+//	pRoot->SetAttribute("size", size);
+//
+//	for (int i = 0; i < size; i++)
+//	{
+//		write_point(&xml, all_points.get_point(i));
+//	}
+//
+//	xml.SaveFile(filepath);
+//}
 
 void write_xml_patch(const char* filepath, GLenum type, vector<t_points> all_points) {
 	XMLDocument xml;
@@ -194,7 +194,7 @@ int main(int argc, const char** argv) {
 	}
 	else if (strcmp(argv[1], "torus") == 0) {
 		if (argc < 7) {
-			cout << "Insufficient Args.Example: ./generator cylinder radius size slices stacks cylinder.3d";
+			cout << "Insufficient Args.Example: ./generator torus radius size slices stacks torus.3d";
 			return 1;
 		}
 
@@ -242,9 +242,9 @@ int main(int argc, const char** argv) {
 			_points.push_back(p);
 		}
 		file.close();
-		t_points res = create_bezier(v, _points, stod(argv[3]));
-		write_xml(argv[4], GL_TRIANGLES, res);
 
+		std::tuple<t_points, t_points, std::vector<float>> p = create_bezier(v, _points, stod(argv[3]));
+		write_xml(argv[4], GL_TRIANGLES, get<0>(p), get<1>(p), get<2>(p));
 	}
 	else if (strcmp(argv[1], "asteroids") == 0) {
 		if (argc < 11) {
@@ -260,9 +260,9 @@ int main(int argc, const char** argv) {
 		double betaMax = std::stod(argv[8]);
 		int numAsteroids = std::atoi(argv[9]);
 
-		std::tuple<t_points, t_points, std::vector<float>>* p = create_asteroids(distMin, distMax, maxSize, slices, stacks, alphaMax, betaMax, numAsteroids);
+		std::tuple<t_points, t_points, std::vector<float>> p = create_asteroids(distMin, distMax, maxSize, slices, stacks, alphaMax, betaMax, numAsteroids);
 
-		write_xml(argv[10], GL_TRIANGLES, points);
+		write_xml(argv[10], GL_TRIANGLES, get<0>(p), get<1>(p), get<2>(p));
 	}
 	else {
 		cout << "Geometric Figures: sphere | cone | box | plane";
