@@ -260,7 +260,7 @@ int main(int argc, const char** argv) {
 		double betaMax = std::stod(argv[8]);
 		int numAsteroids = std::atoi(argv[9]);
 
-		std::tuple<t_points, t_points, std::vector<float>>* p = create_asteroids(distMin, distMax, maxSize, slices, stacks, alphaMax, betaMax, numAsteroids);
+		std::tuple<t_points, t_points, std::vector<float>> p = create_asteroids(distMin, distMax, maxSize, slices, stacks, alphaMax, betaMax, numAsteroids);
 
 		write_xml(argv[10], GL_TRIANGLES, get<0>(p), get<1>(p), get<2>(p));
 	}

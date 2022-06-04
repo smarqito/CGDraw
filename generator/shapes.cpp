@@ -5,8 +5,8 @@ std::tuple<t_points, t_points, std::vector<float>> create_plane(float length, in
 	t_points p_normals(6 * pow(divisions, 2));
 	std::vector<float> p_textures;
 
-	float x = - length / 2;
-	float z = - length / 2;
+	float x = -length / 2;
+	float z = -length / 2;
 	float step = length / divisions;
 	float stepTex = 1.0 / divisions;
 
@@ -16,9 +16,9 @@ std::tuple<t_points, t_points, std::vector<float>> create_plane(float length, in
 			p_points.add_point(x, 0, z + step);
 			p_points.add_point(x + step, 0, z);
 
-			p_normals.add_point(0,1,0);
-			p_normals.add_point(0,1,0);
-			p_normals.add_point(0,1,0);
+			p_normals.add_point(0, 1, 0);
+			p_normals.add_point(0, 1, 0);
+			p_normals.add_point(0, 1, 0);
 
 			p_textures.push_back(j * stepTex); p_textures.push_back(j * stepTex);
 			p_textures.push_back(j * stepTex); p_textures.push_back((j * stepTex) + stepTex);
@@ -39,7 +39,7 @@ std::tuple<t_points, t_points, std::vector<float>> create_plane(float length, in
 			z += step;
 		}
 		x += step;
-		z = - length / 2; //volta ao valor inicial
+		z = -length / 2; //volta ao valor inicial
 	}
 	std::tuple<t_points, t_points, std::vector<float>> res(p_points, p_normals, p_textures);
 	return res;
@@ -51,8 +51,8 @@ std::tuple<t_points, t_points, std::vector<float>> create_box(float units, int d
 	t_points p_normals(3 * pow(divisions, 2) * 12);
 	std::vector<float> p_textures;
 
-	float z = - units / 2;
-	float x = - units / 2;
+	float z = -units / 2;
+	float x = -units / 2;
 	float y = units / 2;
 
 	float step = units / divisions;
@@ -102,7 +102,7 @@ std::tuple<t_points, t_points, std::vector<float>> create_box(float units, int d
 			p_points.add_point(x + step, y, z);
 			p_points.add_point(x, y, z + step);
 			p_points.add_point(x + step, y, z + step);
-			
+
 			p_normals.add_point(0, 1, 0);
 			p_normals.add_point(0, 1, 0);
 			p_normals.add_point(0, 1, 0);
@@ -114,11 +114,11 @@ std::tuple<t_points, t_points, std::vector<float>> create_box(float units, int d
 			z += step;
 		}
 		x += step;
-		z = - units / 2; //volta ao valor inicial
+		z = -units / 2; //volta ao valor inicial
 	}
 
 	x = units / 2;
-	y = - units / 2;
+	y = -units / 2;
 	for (int i = 0; i < divisions; i++) {
 		for (int j = 0; j < divisions; j++) {
 
@@ -156,9 +156,9 @@ std::tuple<t_points, t_points, std::vector<float>> create_box(float units, int d
 			p_normals.add_point(-1, 0, 0);
 			p_normals.add_point(-1, 0, 0);
 
-			p_textures.push_back((i* stepTex) + stepTex); p_textures.push_back(j* stepTex);
-			p_textures.push_back(i* stepTex); p_textures.push_back(j* stepTex);
-			p_textures.push_back(i* stepTex); p_textures.push_back((j* stepTex) + stepTex);
+			p_textures.push_back((i * stepTex) + stepTex); p_textures.push_back(j * stepTex);
+			p_textures.push_back(i * stepTex); p_textures.push_back(j * stepTex);
+			p_textures.push_back(i * stepTex); p_textures.push_back((j * stepTex) + stepTex);
 
 			p_points.add_point(-x, y + step, z + step);
 			p_points.add_point(-x, y + step, z);
@@ -168,13 +168,13 @@ std::tuple<t_points, t_points, std::vector<float>> create_box(float units, int d
 			p_normals.add_point(-1, 0, 0);
 			p_normals.add_point(-1, 0, 0);
 
-			p_textures.push_back((i* stepTex) + stepTex); p_textures.push_back((j* stepTex) + stepTex);
-			p_textures.push_back((i* stepTex) + stepTex); p_textures.push_back(j* stepTex);
-			p_textures.push_back(i* stepTex); p_textures.push_back((j* stepTex) + stepTex);
+			p_textures.push_back((i * stepTex) + stepTex); p_textures.push_back((j * stepTex) + stepTex);
+			p_textures.push_back((i * stepTex) + stepTex); p_textures.push_back(j * stepTex);
+			p_textures.push_back(i * stepTex); p_textures.push_back((j * stepTex) + stepTex);
 
 			z += step;
 		}
-		z = - units / 2; //volta ao valor inicial
+		z = -units / 2; //volta ao valor inicial
 		y += step;
 	}
 	z = units / 2;
@@ -191,9 +191,9 @@ std::tuple<t_points, t_points, std::vector<float>> create_box(float units, int d
 			p_normals.add_point(0, 0, 1);
 			p_normals.add_point(0, 0, 1);
 
-			p_textures.push_back(i* stepTex); p_textures.push_back(j* stepTex);
-			p_textures.push_back((i* stepTex) + stepTex); p_textures.push_back(j* stepTex);
-			p_textures.push_back(i* stepTex); p_textures.push_back((j* stepTex) + stepTex);
+			p_textures.push_back(i * stepTex); p_textures.push_back(j * stepTex);
+			p_textures.push_back((i * stepTex) + stepTex); p_textures.push_back(j * stepTex);
+			p_textures.push_back(i * stepTex); p_textures.push_back((j * stepTex) + stepTex);
 
 			p_points.add_point(x, y + step, z);
 			p_points.add_point(x + step, y, z);
@@ -203,9 +203,9 @@ std::tuple<t_points, t_points, std::vector<float>> create_box(float units, int d
 			p_normals.add_point(1, 0, 0);
 			p_normals.add_point(1, 0, 0);
 
-			p_textures.push_back(i* stepTex); p_textures.push_back((j* stepTex) + stepTex);
-			p_textures.push_back((i* stepTex) + stepTex); p_textures.push_back(j* stepTex);
-			p_textures.push_back((i* stepTex) + stepTex); p_textures.push_back((j* stepTex) + stepTex);
+			p_textures.push_back(i * stepTex); p_textures.push_back((j * stepTex) + stepTex);
+			p_textures.push_back((i * stepTex) + stepTex); p_textures.push_back(j * stepTex);
+			p_textures.push_back((i * stepTex) + stepTex); p_textures.push_back((j * stepTex) + stepTex);
 
 			//face lateral Z negativo
 			p_points.add_point(x, y, -z);
@@ -216,9 +216,9 @@ std::tuple<t_points, t_points, std::vector<float>> create_box(float units, int d
 			p_normals.add_point(0, 0, -1);
 			p_normals.add_point(0, 0, -1);
 
-			p_textures.push_back(i * stepTex); p_textures.push_back(j* stepTex);
-			p_textures.push_back((i * stepTex)); p_textures.push_back((j* stepTex) + stepTex);
-			p_textures.push_back((i* stepTex) + stepTex); p_textures.push_back((j* stepTex));
+			p_textures.push_back(i * stepTex); p_textures.push_back(j * stepTex);
+			p_textures.push_back((i * stepTex)); p_textures.push_back((j * stepTex) + stepTex);
+			p_textures.push_back((i * stepTex) + stepTex); p_textures.push_back((j * stepTex));
 
 			p_points.add_point(x, y + step, -z);
 			p_points.add_point(x + step, y + step, -z);
@@ -228,14 +228,14 @@ std::tuple<t_points, t_points, std::vector<float>> create_box(float units, int d
 			p_normals.add_point(0, 0, -1);
 			p_normals.add_point(0, 0, -1);
 
-			p_textures.push_back(i* stepTex); p_textures.push_back((j* stepTex)+stepTex);
-			p_textures.push_back((i* stepTex)+stepTex); p_textures.push_back((j* stepTex)+stepTex);
-			p_textures.push_back((i* stepTex)+stepTex); p_textures.push_back((j* stepTex));
+			p_textures.push_back(i * stepTex); p_textures.push_back((j * stepTex) + stepTex);
+			p_textures.push_back((i * stepTex) + stepTex); p_textures.push_back((j * stepTex) + stepTex);
+			p_textures.push_back((i * stepTex) + stepTex); p_textures.push_back((j * stepTex));
 
 			y += step;
 		}
 		x += step;
-		y = - units / 2; //volta ao valor inicial
+		y = -units / 2; //volta ao valor inicial
 	}
 	std::tuple<t_points, t_points, std::vector<float>> res(p_points, p_normals, p_textures);
 	return res;
@@ -251,8 +251,8 @@ std::tuple<t_points, t_points, std::vector<float>> create_sphere(int radius, int
 	float beta = M_PI / 2;
 	float alpha = 0;
 
-	float tex_step_x = 1 / slices;
-	float tex_step_y = 1 / stacks;
+	float tex_step_x = 1.0 / slices;
+	float tex_step_y = 1.0 / stacks;
 
 	for (int i = 0; i < stacks; i++)
 	{
@@ -276,9 +276,9 @@ std::tuple<t_points, t_points, std::vector<float>> create_sphere(int radius, int
 				p_normals.add_point(c);
 				p_normals.add_point(d);
 
-				p_textures.push_back(j * tex_step_x); p_textures.push_back(1 - (i * tex_step_y));
-				p_textures.push_back(0.5f); p_textures.push_back(0.f);
-				p_textures.push_back((j + 1) * tex_step_x); p_textures.push_back(1 - (i * tex_step_y));
+				p_textures.push_back(0.5 + j * tex_step_x); p_textures.push_back(tex_step_y);
+				p_textures.push_back(0.5); p_textures.push_back(0.0);
+				p_textures.push_back(0.5 + (j + 1) * tex_step_x); p_textures.push_back(tex_step_y);
 
 			}
 			else if (i == 0) {
@@ -288,15 +288,15 @@ std::tuple<t_points, t_points, std::vector<float>> create_sphere(int radius, int
 
 				normalize(&a);
 				normalize(&b);
-				normalize(&d);
+				normalize(&c);
 
 				p_normals.add_point(a);
 				p_normals.add_point(b);
-				p_normals.add_point(d);
+				p_normals.add_point(c);
 
-				p_textures.push_back(0.5f); p_textures.push_back(1.0f);
-				p_textures.push_back(j * tex_step_x); p_textures.push_back(1 - ((i+1) * tex_step_y));
-				p_textures.push_back((j+1)*tex_step_x); p_textures.push_back(1 - ((i+1) * tex_step_y));
+				p_textures.push_back(0.5); p_textures.push_back(1.0);
+				p_textures.push_back(0.5 + j * tex_step_x); p_textures.push_back(1 - tex_step_y);
+				p_textures.push_back(0.5 + (j + 1) * tex_step_x); p_textures.push_back(1 - tex_step_y);
 
 			}
 			else {
@@ -319,12 +319,12 @@ std::tuple<t_points, t_points, std::vector<float>> create_sphere(int radius, int
 				p_normals.add_point(c);
 				p_normals.add_point(d);
 
-				p_textures.push_back(j * tex_step_x); p_textures.push_back(i * tex_step_y);
-				p_textures.push_back(j * tex_step_x); p_textures.push_back((i+1) * tex_step_y);
-				p_textures.push_back((j+1) * tex_step_x); p_textures.push_back((i + 1) * tex_step_y);
-				p_textures.push_back(j * tex_step_x); p_textures.push_back(i * tex_step_y);
-				p_textures.push_back((j + 1) * tex_step_x); p_textures.push_back((i + 1) * tex_step_y);
-				p_textures.push_back(j * tex_step_x); p_textures.push_back((i + 1) * tex_step_y);
+				p_textures.push_back(j * tex_step_x); p_textures.push_back(1 - i * tex_step_y);
+				p_textures.push_back(j * tex_step_x); p_textures.push_back(1 - (i + 1) * tex_step_y);
+				p_textures.push_back((j + 1) * tex_step_x); p_textures.push_back(1 - (i + 1) * tex_step_y);
+				p_textures.push_back(j * tex_step_x); p_textures.push_back(1 - i * tex_step_y);
+				p_textures.push_back((j + 1) * tex_step_x); p_textures.push_back(1 - (i + 1) * tex_step_y);
+				p_textures.push_back(j * tex_step_x); p_textures.push_back(1 - i * tex_step_y);
 			}
 
 			alpha += ssl;
@@ -391,11 +391,11 @@ std::tuple<t_points, t_points, std::vector<float>> create_cylinder(int radius, i
 			p_points.add_point(b.x, y + b.y, b.z);
 			p_points.add_point(a.x, y + a.y, a.z);
 
-			p_normals.add_point(sin(alpha + ssl), 0, cos(alpha+ssl));
-			p_normals.add_point(sin(alpha + ssl), 0, cos(alpha+ssl));
+			p_normals.add_point(sin(alpha + ssl), 0, cos(alpha + ssl));
+			p_normals.add_point(sin(alpha + ssl), 0, cos(alpha + ssl));
 			p_normals.add_point(sin(alpha), 0, cos(alpha));
 
-			p_textures.push_back(1-((j+1) * step_x)); p_textures.push_back(1-((i+1) * step_y));
+			p_textures.push_back(1 - ((j + 1) * step_x)); p_textures.push_back(1 - ((i + 1) * step_y));
 			p_textures.push_back(1 - ((j + 1) * step_x)); p_textures.push_back(1 - (i * step_y));
 			p_textures.push_back(1 - (j * step_x)); p_textures.push_back(1 - (i * step_y));
 
@@ -405,7 +405,7 @@ std::tuple<t_points, t_points, std::vector<float>> create_cylinder(int radius, i
 
 			p_normals.add_point(sin(alpha), 0, cos(alpha));
 			p_normals.add_point(sin(alpha), 0, cos(alpha));
-			p_normals.add_point(sin(alpha+ssl), 0, cos(alpha+ssl));
+			p_normals.add_point(sin(alpha + ssl), 0, cos(alpha + ssl));
 
 			p_textures.push_back(1 - (j * step_x)); p_textures.push_back(1 - (i * step_y));
 			p_textures.push_back(1 - (j * step_x)); p_textures.push_back(1 - ((i + 1) * step_y));
@@ -480,7 +480,7 @@ std::tuple<t_points, t_points, std::vector<float>> create_torus(float radius, fl
 			p_normals.add_point(a1);
 			p_normals.add_point(b2);
 			p_normals.add_point(a2);
-			
+
 			/*p_textures.push_back(i*step_x); p_textures.push_back(j*step_y);
 			p_textures.push_back(i*step_x); p_textures.push_back((j+1)*step_y);
 			p_textures.push_back((i+1)*step_x); p_textures.push_back((j + 1) * step_y);
@@ -541,9 +541,9 @@ std::tuple<t_points, t_points, std::vector<float>> create_cone(float radius, flo
 			p_normals.add_point(cos(beta) * sin(alpha), sin(beta), cos(beta) * cos(alpha));
 			p_normals.add_point(cos(beta) * sin(alpha + step), sin(beta), cos(beta) * cos(alpha + step));
 
-			p_textures.push_back(j * xStep);p_textures.push_back(i*yStep);
-			p_textures.push_back(j * xStep);p_textures.push_back((i + 1) * yStep);
-			p_textures.push_back((j+1) * xStep);p_textures.push_back(i *yStep);
+			p_textures.push_back(j * xStep); p_textures.push_back(i * yStep);
+			p_textures.push_back(j * xStep); p_textures.push_back((i + 1) * yStep);
+			p_textures.push_back((j + 1) * xStep); p_textures.push_back(i * yStep);
 
 			p_points.add_point(b.x, b.y + y, b.z); //b
 			p_points.add_point(d.x, d.y + y, d.z); //d
@@ -553,9 +553,9 @@ std::tuple<t_points, t_points, std::vector<float>> create_cone(float radius, flo
 			p_normals.add_point(cos(beta) * sin(alpha + step), sin(beta), cos(beta) * cos(alpha + step));
 			p_normals.add_point(cos(beta) * sin(alpha + step), sin(beta), cos(beta) * cos(alpha + step));
 
-			p_textures.push_back(j * xStep);p_textures.push_back((i + 1) * yStep);
-			p_textures.push_back((j + 1) * xStep);p_textures.push_back((i+1) * yStep);
-			p_textures.push_back((j + 1) * xStep);p_textures.push_back(i * yStep);
+			p_textures.push_back(j * xStep); p_textures.push_back((i + 1) * yStep);
+			p_textures.push_back((j + 1) * xStep); p_textures.push_back((i + 1) * yStep);
+			p_textures.push_back((j + 1) * xStep); p_textures.push_back(i * yStep);
 
 			alpha += step;
 		}
@@ -571,13 +571,13 @@ std::tuple<t_points, t_points, std::vector<float>> create_cone(float radius, flo
 		p_points.add_point(x + b.x, y + b.y, z + b.z);
 		p_points.add_point(x + c.x, y + c.y, z + c.z);
 
-		p_normals.add_point(0,-1,0);
-		p_normals.add_point(0,-1,0);
-		p_normals.add_point(0,-1,0);
+		p_normals.add_point(0, -1, 0);
+		p_normals.add_point(0, -1, 0);
+		p_normals.add_point(0, -1, 0);
 
-		p_textures.push_back(0.5);p_textures.push_back(0.5);
-		p_textures.push_back(0.5 + 0.5 * cos(alpha));p_textures.push_back(0.5 + 0.5 * sin(alpha));
-		p_textures.push_back(0.5 + 0.5 * cos(alpha - step));p_textures.push_back(0.5 + 0.5 * sin(alpha - step));
+		p_textures.push_back(0.5); p_textures.push_back(0.5);
+		p_textures.push_back(0.5 + 0.5 * cos(alpha)); p_textures.push_back(0.5 + 0.5 * sin(alpha));
+		p_textures.push_back(0.5 + 0.5 * cos(alpha - step)); p_textures.push_back(0.5 + 0.5 * sin(alpha - step));
 
 		alpha += step;
 	}
@@ -635,12 +635,12 @@ std::tuple<t_points, t_points, std::vector<float>> create_bezier(std::vector<std
 				normals.add_point(d_u0v1);
 				normals.add_point(d_u1v1);
 
-				textures.push_back(u);textures.push_back(v);
-				textures.push_back(u);textures.push_back(v + step);
-				textures.push_back(u + step);textures.push_back(v);
-				textures.push_back(u + step);textures.push_back(v);
-				textures.push_back(u);textures.push_back(v + step);
-				textures.push_back(u + step);textures.push_back(v + step);
+				textures.push_back(u); textures.push_back(v);
+				textures.push_back(u); textures.push_back(v + step);
+				textures.push_back(u + step); textures.push_back(v);
+				textures.push_back(u + step); textures.push_back(v);
+				textures.push_back(u); textures.push_back(v + step);
+				textures.push_back(u + step); textures.push_back(v + step);
 
 			}
 		}
@@ -653,7 +653,7 @@ std::tuple<t_points, t_points, std::vector<float>> create_bezier(std::vector<std
 std::tuple<t_points, t_points, std::vector<float>> create_sphere(int radius, int slices, int stacks, Point offset) {
 	t_points p_points(6 * stacks * slices);
 	t_points p_normals(6 * stacks * slices);
-	std::vector<float> p_textures; 
+	std::vector<float> p_textures;
 
 	float sst = M_PI / stacks;
 	float ssl = 2 * M_PI / slices;
@@ -692,9 +692,9 @@ std::tuple<t_points, t_points, std::vector<float>> create_sphere(int radius, int
 				p_normals.add_point(norm_c);
 				p_normals.add_point(norm_d);
 
-				p_textures.push_back(j * tex_step_x); p_textures.push_back(1 - (i * tex_step_y));
-				p_textures.push_back(0.5f); p_textures.push_back(0.f);
-				p_textures.push_back((j + 1) * tex_step_x); p_textures.push_back(1 - (i * tex_step_y));
+				p_textures.push_back(0.5 + j * tex_step_x); p_textures.push_back(tex_step_y);
+				p_textures.push_back(0.5); p_textures.push_back(0.0);
+				p_textures.push_back(0.5 + (j + 1) * tex_step_x); p_textures.push_back(tex_step_y);
 			}
 			else if (i == 0) {
 				p_points.add_point(a);
@@ -712,9 +712,9 @@ std::tuple<t_points, t_points, std::vector<float>> create_sphere(int radius, int
 				p_normals.add_point(norm_b);
 				p_normals.add_point(norm_c);
 
-				p_textures.push_back(0.5f); p_textures.push_back(1.0f);
-				p_textures.push_back(j * tex_step_x); p_textures.push_back(1 - ((i + 1) * tex_step_y));
-				p_textures.push_back((j + 1) * tex_step_x); p_textures.push_back(1 - ((i + 1) * tex_step_y));
+				p_textures.push_back(0.5); p_textures.push_back(1.0);
+				p_textures.push_back(0.5 + j * tex_step_x); p_textures.push_back(1 - tex_step_y);
+				p_textures.push_back(0.5 + (j + 1) * tex_step_x); p_textures.push_back(1 - tex_step_y);
 			}
 			else {
 				p_points.add_point(a);
@@ -740,12 +740,12 @@ std::tuple<t_points, t_points, std::vector<float>> create_sphere(int radius, int
 				p_normals.add_point(norm_c);
 				p_normals.add_point(norm_d);
 
-				p_textures.push_back(j * tex_step_x); p_textures.push_back(i * tex_step_y);
-				p_textures.push_back(j * tex_step_x); p_textures.push_back((i + 1) * tex_step_y);
-				p_textures.push_back((j + 1) * tex_step_x); p_textures.push_back((i + 1) * tex_step_y);
-				p_textures.push_back(j * tex_step_x); p_textures.push_back(i * tex_step_y);
-				p_textures.push_back((j + 1) * tex_step_x); p_textures.push_back((i + 1) * tex_step_y);
-				p_textures.push_back(j * tex_step_x); p_textures.push_back((i + 1) * tex_step_y);
+				p_textures.push_back(j * tex_step_x); p_textures.push_back(1 - i * tex_step_y);
+				p_textures.push_back(j * tex_step_x); p_textures.push_back(1 - (i + 1) * tex_step_y);
+				p_textures.push_back((j + 1) * tex_step_x); p_textures.push_back(1 - (i + 1) * tex_step_y);
+				p_textures.push_back(j * tex_step_x); p_textures.push_back(1 - i * tex_step_y);
+				p_textures.push_back((j + 1) * tex_step_x); p_textures.push_back(1 - (i + 1) * tex_step_y);
+				p_textures.push_back(j * tex_step_x); p_textures.push_back(1 - i * tex_step_y);
 
 			}
 
@@ -768,7 +768,7 @@ std::tuple<t_points, t_points, std::vector<float>> create_asteroids(double distM
 		int raio = distMin + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (distMax - distMin)));
 		double alpha = static_cast <float> (rand()) / (static_cast <float>(RAND_MAX / alphaMax)) * M_PI / 180;
 		double beta = (-betaMax + static_cast <float> (rand()) / (static_cast <float>(RAND_MAX / (2 * betaMax)))) * M_PI / 180;
-		
+
 		Point p = polartocart(raio, alpha, beta);
 
 		int size = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / maxSize));
