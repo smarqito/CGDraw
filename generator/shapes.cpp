@@ -790,7 +790,7 @@ std::tuple<t_points, t_points, std::vector<float>> create_sphere(int radius, int
 				p_textures.push_back((j + 1.0) * tex_step_x); p_textures.push_back(1 - (i + 1) * tex_step_y);
 				p_textures.push_back(j * tex_step_x); p_textures.push_back(1.0 - i * tex_step_y);
 				p_textures.push_back((j + 1.0) * tex_step_x); p_textures.push_back(1.0 - (i + 1.0) * tex_step_y);
-				p_textures.push_back(j * tex_step_x); p_textures.push_back(1.0 - i * tex_step_y);
+				p_textures.push_back((j + 1.0) * tex_step_x); p_textures.push_back(1.0 - i * tex_step_y);
 
 			}
 
