@@ -12,9 +12,13 @@ Lights::Lights(XMLElement* xml)
 
 void Lights::init()
 {
-	float amb[4] = { 1.f, 1.f, 1.f, 1.0f };
+	float amb[4] = {1.f, 1.f, 1.f, 1.0f};
 	glEnable(GL_LIGHTING);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
+
+	GLfloat dark[4] = { 0.2, 0.2, 0.2, 1.0 };
+	GLfloat white[4] = { 1.0, 1.0, 1.0, 1.0 };
+	float black[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 	XMLElement* light = _xml_elem->FirstChildElement("light");
 	int lightno = 0x0000;
@@ -23,6 +27,10 @@ void Lights::init()
 
 		type = light->FindAttribute("type")->Value();
 		glEnable(lightno + GL_LIGHT0);
+
+		glLightfv(lightno + GL_LIGHT0, GL_AMBIENT, dark);
+		glLightfv(lightno + GL_LIGHT0, GL_DIFFUSE, white);
+		glLightfv(lightno + GL_LIGHT0, GL_SPECULAR, white);
 
 		if (strcmp(type, "point") == 0) {
 			_lights.push_back(new PointLight(lightno + GL_LIGHT0, light));

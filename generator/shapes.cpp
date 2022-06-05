@@ -705,8 +705,8 @@ std::tuple<t_points, t_points, std::vector<float>> create_sphere(int radius, int
 	float beta = M_PI / 2;
 	float alpha = 0;
 
-	float tex_step_x = 1 / slices;
-	float tex_step_y = 1 / stacks;
+	float tex_step_x = 1.0 / slices;
+	float tex_step_y = 1.0 / stacks;
 
 	for (int i = 0; i < stacks; i++)
 	{
