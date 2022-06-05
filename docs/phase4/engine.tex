@@ -18,7 +18,36 @@ responsável pela leitura das normais presentes no ficheiro .3d criado pelo \tex
 \end{landscape}
 
 \subsection{Luzes}
+Para tratar das diferentes tipos diferentes de luzes foram criadas foram criadas
+três subclasses da classe abstrata \textit{Light}:
+\begin{itemize}
+    \item \textit{DirectionalLight}
+    \item \textit{PointLight}
+    \item \textit{Spotlight}
+\end{itemize}
 
+Em que a classe abstrata tem como argumento o número da luz, e as subclasses os
+parâmetros necessários para a sua ativação.
+
+A classe \textit{Lights} que é classe agregadora de todas as luzes do modelo e a
+responsável por processar o elemento \textit{lights} do ficheiro XML\dots
+
+Todas as luzes são inicializadas com os valores \textit{default} de luz ambiente,
+difusa e especular semelhantes à \textbf{LIGHT0}.
+Apenas difere na luz ambiente, pois utiliza-se um valor diferente de $0$ 
+para haver alguma luminosidade da parte de trás dos objetos, obtendo uma 
+melhor simulação da realidade.
+
+No seguimento da ativação das luzes, tornou-se necessário a ativação das normais com
+recurso a \textbf{VBO}s.
+
+Assim, com recurso a uma classe criada para o efeito, designada \textbf{Normals},
+foi possível instituir a utilização de normais em cada modelo.
+A estratégia utilizada consistiu em ler o ficheiro XML, gerar um \textit{buffer}
+na gráfica, efetuar o seu binding e popular com pontos.
+Posteriormente, ao realizar o \textbf{rendering}, efetua-se a verificação se existe
+alguma textura associada ao modelo e, caso exista, é executado o método \textit{\_draw}
+da classe \textit{Normals}.
 
 \subsection{Cores}
 A classe \textit{Color} tem como argumentos as 5 componentes da luz,
@@ -30,8 +59,8 @@ no enunciado do trabalho.
 Com base no ficheiro XML recebido, os argumentos são atualizados com os valores 
 recebidos.
 
-Na função \textit{_draw} é onde é feita a atribuição das cores com o auxilio das funções
-do \textit{glMaterialfv} e \textit{glMateriali}.
+Na função \textit{\_draw} é feito o \textit{rendering} das cores com o auxilio das funções
+\textit{glMaterialfv} e \textit{glMateriali}.
 
 \subsection{Texturas}
 Para tratar das Texturas foram criadas 2 classes, uma superclasse

@@ -1,28 +1,27 @@
 \documentclass[relatorio.tex]{subfiles}
 \begin{document}
 \section{Conclusões}
-Como consequência do esforço do grupo ao longo do projeto, a implementação de novas funcionalidades
-permanece facilitada dado à arquitetura desenvolvida, i.e. a modularidade do código 
-traduz-se na fácil inserção de novos módulos ou parâmetros sem afetar a estrutura final.
-A otimização de ambos programas (\textit{generator} e \textit{engine}) mantém-se um
-dos objetivos principais do grupo, pelo que esta organização estrutural do projeto é essencial.
-Não obstante todos os objetivos a atingir no desenvolvimento deste relatório, manteve-se 
-a certeza de que o consumo de memória não crescesse de modo incontrolável; algo que 
-ocorreu no decorrer da presente fase, nomeadamente no desenho de curvas.
+Esforço que permaneceu até a última fase do projeto, o grupo atualizou
+ambos os programas, \textit{generator} e \textit{engine},
+seguindo a arquitetura inicialmente estabelecida.
+Deste modo, verifica-se a coesão das decisões tomadas inicialmente,
+sendo apenas notável a evolução do projeto com a adição de novos elementos.
 
-Analogamente às fases anteriores, foi possível implemetar todos os requisitos propostos 
-no enunciado, com a adição de alguns parâmetros extra.
+Não obstante as primitivas objetivo definidas em fases anteriores, nomeadamente
+relativas ao uso de memória e na organização, foi o desejo do grupo 
+aplicar todo o seu conhecimento agregado no decorrer do ano letivo.
+
 É de notar nesta fase:
 \begin{itemize}
-    \item Criação de um módulo para a construção de superfícies de \textit{Bezier}.
-    \item Rotação com base num dado tempo.
-    \item Translação por uma curva, dados o tempo e os pontos de controlo.
-    \item Translação com base nos pontos de controlo definidos pelo utilizador, numa matriz.
-    \item Transformação do sistema solar para um modelo dinâmico.
-    \item Adição ao modelo de um cometa, que segue a sua própria trajetória, definida numa curva \textit{Catmull-Rom}.
+    \item Criação dos vetores normais a cada vértice das figuras geométricas.
+    \item Criação das coordenadas de texturas respetivas.
+    \item Atualização do sistema solar, para um modelo texturado e com iluminação.
 \end{itemize}
 
-Um dos pontos mencionados, na forma de trabalho futuro, era relativo à evolução dos \textit{VBOs}
-para permitirem o uso de índices. Na presente iteração permanece uma componente a adicionar, sendo
-de alto valor na procura de uma solução otimizada congruentemente.
+No seguimento do trabalho desenvolvido, o grupo pretendia acrescentar algumas funcionalidades,
+nomeadamente a utilização de índices, acréscimo de algumas \textit{demos} mais elaboradas,
+melhoria da interação do utilizador com o sistema (apresentação de um menu, possibilidade de 
+carregar em múltiplas teclas em simultâneo), entre outros.
+Não obstante, a equipa docente ter flexibilizado a entrega do trabalho, 
+tais funcionalidades adicionais não foram cumpridos por falta de disponibilidade do grupo.
 \end{document}
