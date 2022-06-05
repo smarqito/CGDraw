@@ -78,7 +78,7 @@ Deste modo, apresenta:
 O cálculo das normais na esfera é feito com base na seguinte proprieada
 geométrica:
 Se p é um vértice da esfera:
-$ p = (raio * sin(\alpha) * cos(\beta), sin(\beta), raio * cos(\alpha) * cos(\beta))$
+$ p = (raio * sin(\alpha) * cos(\beta), raio * sin(\beta), raio * cos(\alpha) * cos(\beta))$
 e como a esfera está centrada no ponto (0, 0, 0), o vetor normal é obtido através
 da normalização do vetor n, que é igual a p - (0, 0, 0).
 
@@ -103,7 +103,18 @@ $ p = (raio * sin(\alpha), y, raio * cos(\alpha))$
 então:
 $ n = (sin(\alpha), 0, cos(\alpha))$
 
-% \subsubsection{\textit{Torus}}
+\subsubsection{\textit{Torus}}
+As normais do \textit{torus} são calculadas de uma forma muito similar à das esferas,
+tendo os pontos:
+
+$ c = (raio * sin(\alpha) * cos(\beta), raio * sin(\beta), raio * cos(\alpha) * cos(\beta))$
+
+$ p = (tamanho * sin(\alpha) * cos(\beta), tamanho * sin(\beta), tamanho * cos(\alpha) * cos(\beta))$
+
+em que raio é o a distância do centro(0, 0, 0) ao centro do \textit{torus} e o tamanho é o raio interno
+do \textit{torus}, então sabemos que $c + p$ e $c - p$ são vértice do \textit{torus} com normais inversas. 
+Desta forma, é possível concluir que a normal destes vértices são obtidas, respetivamente, pela normalização 
+do vetor obtido a partir subtração do ponto $p$ pelo ponto $c$ e da subtração do ponto $c$ pelo ponto $p$.
 
 \subsection{Cálculo das Coordenadas de textura} \label{subsec:texCoord}
 Foi necessário, para a implementação das texturas no modelo,
@@ -178,7 +189,8 @@ A estratégia utilizada no cilindro foi a mesma que no cone, sendo
 as texturas das duas bases do cilindro obtidas da mesma forma que
 a base do cone e o mesmo para as coordenadass de texturas da face lateral.
 
-% \subsubsection{\textit{Torus}}
+%\subsubsection{\textit{Torus}}
+
 
 \subsection{\textit{Writer}} \label{subsec:writer}
 
