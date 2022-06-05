@@ -19,10 +19,19 @@ responsável pela leitura das normais presentes no ficheiro .3d criado pelo \tex
 
 \subsection{Luzes}
 
+
 \subsection{Cores}
 A classe \textit{Color} tem como argumentos as 5 componentes da luz,
 que são inicializadas por defeito com os valores passados pela equipa docente
 no enunciado do trabalho. 
+
+\inputminted[firstline=19, lastline=25]{cpp}{../../Color.h}
+
+Com base no ficheiro XML recebido, os argumentos são atualizados com os valores 
+recebidos.
+
+Na função \textit{_draw} é onde é feita a atribuição das cores com o auxilio das funções
+do \textit{glMaterialfv} e \textit{glMateriali}.
 
 \subsection{Texturas}
 Para tratar das Texturas foram criadas 2 classes, uma superclasse
@@ -32,10 +41,10 @@ Na classe \textit{Texture} é onde é feito o processamento da imagem com a text
 a partir da função \textit{loadTexture}. Esta utiliza como parâmetros de
 \textit{wrap} o \textit{repeat} tanto em S como em T. De maneira a obter
 uma textura com melhor qualidade e ainda melhorar o desempenho foi utilizado
-o \textit{MipMapping}, fazendo proveito da primitiva \textit{linear} tanto para a 
-escolha do \textit{pixel} como também da textura e assim evitar obter um resultado pixelizado.
+o \textit{MipMapping}, fazendo proveito da primitiva \textit{linear} para a 
+escolha do \textit{pixel} e da \textit{nearest} para a escolha da textura.
 
 A classe \textit{ModelTexture} por sua vez é responsável por processar as coordenadas de texturas
-recebidas no ficheiro ".3d", colocando-as no \textit{buffer}.
+recebidas no ficheiro ".3d", colocando-as no \textit{buffer vboPointer}.
 
 \end{document}
