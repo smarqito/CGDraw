@@ -21,8 +21,6 @@ número total de \textbf{vetores} do objeto.
 para cada um vértice, corresponde ao número de 
 vértices do objeto.
 
-Deste modo, para cada figura geométrica:
-
 \subsubsection{\textit{Plane}}
 
 Um plano, ou \textit{plane}, é constituído por dois quadriláteros,
@@ -35,8 +33,8 @@ têm a mesma normal.}
 
 Pelo que:
 \begin{eqnarray}
-    v1 \epsilon plano_{1} \\
-    v2\epsilon plano_{1} \implies normal_{v1} = normal_{v2}
+    v1\ \epsilon\ plano_{1} \\
+    v2\ \epsilon\ plano_{1} \implies normal_{v1} = normal_{v2}
 \end{eqnarray}
 
 Neste sentido, só existem \textbf{2 vetores normais únicos}.
@@ -164,6 +162,23 @@ e divisões (\textit{divisions}), pelo que traduz-se
 diretamente do \textbf{plano}.
 
 \subsubsection{\textit{Sphere}}
+Identificou-se 2 casos de mapeamento, extremidades e resto da esfera.
+Assim, a construção das extremidades foi o maior desafio, levando a algum estudo
+para perceber a melhor estratégia a adotar.
+Apesar de se ter experimentado efetuar \textit{cubemapping}, cálculo através 
+dos ângulos, conversão das coordenadas em \textit{texpoints}, o melhor resultado
+obteve-se através da utilização de uma abordagem mais linear.
+
+Assim, para o resto da esfera utilizou-se um \textit{step} que correspondia a
+$1 / stacks$ ou $1 / slices$ e foi-se construíndo em simultâneo com o resto
+dos cálculos.
+Posteriormente, colocou-se condições de controlo para os pontos de extremidade, pois
+estes tinham um comportamento diferente.
+Definiu-se, assim, que o vértice superior teria a mesma coordenada $s$ e mais um
+\textit{step} na coordenada $t$.
+
+O resultado obtido não está perfeito, pois consegue-se identificar algum \textbf{blur}
+quando se aproxima a câmera.
 
 \subsubsection{\textit{Cone}}
 Para coordenadas de textura da base do cone, o centro da base
@@ -189,7 +204,8 @@ A estratégia utilizada no cilindro foi a mesma que no cone, sendo
 as texturas das duas bases do cilindro obtidas da mesma forma que
 a base do cone e o mesmo para as coordenadass de texturas da face lateral.
 
-%\subsubsection{\textit{Torus}}
+\subsubsection{\textit{Torus}}
+Não houve disponibilidade para o desenvolvimento das \textit{texcoord} do tórus.
 
 
 \subsection{\textit{Writer}} \label{subsec:writer}
