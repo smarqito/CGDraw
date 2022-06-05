@@ -33,50 +33,89 @@ framesep=2mm
 \maketitle              % typeset the header of the contribution
 %
 \begin{abstract}
-    No seguimento lógico da construção de um mundo gráfico virtual estático, vem a evolução para um modelo dinâmico, sendo todos os elementos envolventes definidos com a sua própria animação. Para tal foi necessário extender as transformações desenvolvidas na fase anterior, a rotação e a translação. 
-    Ambas devem poder ser realizadas com base num determinado tempo, sendo que a animação recomeça quando alcança o fim.
-    No caso da translação, deve ser permitido construir curvas utilizando as estratégias de \textit{Catmull-Rom}, \textit{Bezier} e \textit{Hermite}, a partir de um conjunto de pontos de controlo. 
-    Neste sentido, a transformação deve permitir mover um objeto de acordo com uma curva, ao longo de um determinado tempo.
-    Assim, alterou-se o modelo do sistema solar construído na fase anterior para incluir animações para todos os elementos, sendo feita a adição de um cometa que segue a trajetória de uma curva definida.
+    Com a construção do esqueleto da cena principal, em conjunto com as animações
+    dos elementos integrantes, o próximo passo seria a população do modelo
+    com texturas e iluminação.
+    No caso das texturas, para cada umas das figuras geométricas deve ser 
+    calculadas as respetivas coordenadas para mapear a imagem no objeto,
+    utilizando os conceitos de \textit{mipmapping}(\textit{Nearest, on the lef} 
+    \& \textit{Linear, on the right}).
+    Na tentativa de definir a iluminação, todas as normais de cada objeto devem 
+    ser calculadas.
+
+    Deste modo, o modelo do \textbf{sistema solar} será alterado 
+    para incluir estas alterações e produzir a maquete final.
     
-    Para o desenho do cometa foram utilizadas \textit{Bezier patches} para construir as suas superfícies, sendo passados os pontos de controlo para o desenho.
-    
-    \keywords{ OpenGL \and GLUT \and Figuras Geométricas \and 3D \and C++ \and Tesselation \and Bezier Curves \and Catmull-Rom Curves \and Bezier Patches}
+    \keywords{ OpenGL \and GLUT \and Figuras Geométricas \and 3D \and C++ \and Texturas \and Iluminação \and Normais \and Coordenadas de Textura}
     \end{abstract}
     %
     %
     %
     \section{Introdução}
     \subsection{Contextualização}
-    No seguimento da fase II do projeto da disciplina de Computação Gráfica da Licenciatura em Engenharia Informática da Universidade do Minho, foi proposta a aplicação de animações no esquema do sistema solar previamente definido, com a possibilidade de desenhar e movimentar objetos ao longo de curvas. 
-    Adicionalmente, deveria haver a inclusão de um novo elemento no modelo, um cometa, construído com base em \textit{bezier patches}, para ser animado segundo uma trajetória definida.
+    No seguimento da fase III do projeto da disciplina de Computação Gráfica 
+    da Licenciatura em Engenharia Informática da Universidade do Minho, 
+    foi proposta, numa última fase, a implementação de texturas e iluminação no projeto,
+    através do cálculo das \textbf{coordenadas de textura} e \textbf{normais}
+    a cada figura geométrica. 
+    Tudo irá culminar na atualização do modelo do sistema solar
+    previamente construído com estes parâmetros.
     
     \subsection{Breve Descrição do Enunciado Proposto}
     
-    O cerne da fase III do projeto implica alterações ao nível do \textit{generator} e do \textit{engine} previamente definidos.
+    O cerne da última fase (IV) do projeto implica alterações ao nível do \textit{generator} e do \textit{engine} previamente definidos.
     Deste modo, pretende-se:
     \begin{itemize}
-        \item [\textit{generator}]{Adição de um novo tipo de modelo, com base em \textit{bezier patches}.}
-        \item [\textit{engine}]{Alteração das transformações para permitir a animação do esquema, através da integração do \textbf{tempo} a serem realizadas e de \textbf{curvas}.}
+        \item [\textit{generator}]
+            {Calcular as normais e coordenadas de textura para 
+            \textbf{cada vértice} das figuras geométricas.}
+        \item [\textit{engine}]
+            {Ativar as funcionalidades de iluminação e 
+            texturização, utilizando as normais e coordenadas
+            de textura definidas.}
     \end{itemize}
     
-    No que toca ao \textit{generator}, o novo modelo deve criar um conjunto de pontos para desenhar os \textit{patches}, ou superfícies, dado um ficheiro \textit{.PATCH} e o nível de tesselação desejado.
-    O ficheiro \textit{.PATCH}, neste caso fornecido pela equipa docente, segue:
+    No que toca ao \textit{generator}, os novos ficheiros \textit{.3D} 
+    devem ser alterados para incluir os vetores \textbf{normais} e 
+    as coordenadas de \textbf{textura} da respetiva figura geométrica.
+    Deste modo, serão incluidas as \textit{tags}:
     \begin{itemize}
-        \item [\textit{Número de patches}]{Número de superfícies do objeto a desenhar.}
-        \item [\textit{Patches}]{Os 16 pontos de controlo para cada \textit{patch}. Haverá tantas linhas como o número de patches em cima definido. Os pontos de cada superfície encontram-se na forma de índices relativamente à posição dos pontos entre sí no ficheiro.}
-        \item [\textit{Pontos}]{Os pontos usados na construção dos \textit{patches}. São da forma - $ x y z $.}
+        \item[\textit{normals}]{Todos os vetores normais da figura geométrica.}
+        \item[\textit{texture}]{Todas as coordenadas de textura da figura geométrica.} 
     \end{itemize}
-    O nível de tesselação é utilizado para construir o objeto com um grau de definição concreto e a sua utilização varia o número de vértices finais a serem desenhados.
-    Novamente, as superfícies de um objeto com base neste modelo vão ser desenhadas a partir de triângulos, traduzindo-se no conceito de \textit{triângulos de bezier}.
-    
-    Relativamente à \textit{engine}, o trabalho nesta implica evoluir as transformações de \textbf{translação} e \textbf{rotação} previamente definidas:
+
+    Relativamente à \textit{engine}, devem ser criadas e implementadas
+    as \textbf{cores} e texturas de cada figura geométrica permitida.
+    Adicionalmente, será necessário definir a(s) luz(es) (tipo e parâmetros) 
+    para a cena principal.
+    Deste modo, para cada modelo (\textit{model}) do ficheiro \textit{.XML} a ler, 
+    encontram-se as \textit{tags}:
+    \begin{enumerate}
+        \item[\textit{texture}]{Inclui o \textit{path} para a textura, no atributo \textit{file}, 
+                                a ser aplicada na figura geométrica.}
+        \item[\textit{color}]{Para cada figura geométrica devem ser definidos os componentes:}
+        \begin{enumerate}
+            \item[\textit{diffuse}]{Cor \textbf{difusa} do objeto - (Em \textit{RGB}).}
+            \item[\textit{ambient}]{Cor \textbf{ambiente} do objeto - (Em \textit{RGB}).}
+            \item[\textit{specular}]{Cor \textbf{especular} do objeto - (Em \textit{RGB}).}
+            \item[\textit{emissive}]{Cor \textbf{emissiva} do objeto - (Em \textit{RGB}).}
+            \item[\textit{shininess}]{Valor da refletividade da luz no objeto.}
+        \end{enumerate}
+    \end{enumerate}
+    \dots sendo necessário utilizar as coordenadas de textura 
+    calculadas no generator para desenhar a imagem no objeto.
+
+    Para cada cena podem ser definidas a origem para uma ou mais luzes, 
+    do tipo:
     \begin{itemize}
-        \item [\textit{Rotação}]{Permitir que uma rotação receba o tempo que demora a fazer um rotação de 360º.}
-        \item [\textit{Translação}]{Permitir serem passados os pontos de controlo para constituir a curva e o tempo que demora a percorre-la. O objeto a ser movido terá de seguir esta trajetória e pode ser dada a opção de ele estar alinhado com a curva.}
+        \item[\textit{point}]{Especificada a posição da luz.}
+        \item[\textit{directional}]{Epecificada a direção da luz.}
+        \item[\textit{spotlight}]{Epecificadas a posição e direção das luzes,
+                                  bem como o ângulo \textit{cutoff}.}
     \end{itemize}
-    
-    A partir destas alterações apresentar todo o sistema solar como um modelo animado, os planetas, luas e Sol e incluir um novo elemento no modelo, um \textit{cometa}, que tem a sua própria trajetória.
+
+    A partir destas alterações apresentar todo o sistema solar como um modelo texturizado e iluminado, 
+    obedecendo à estrutura previamente definida para a cena principal.
     
     \section{Trabalho Realizado}
     
@@ -85,25 +124,28 @@ framesep=2mm
     \begin{enumerate}
         \item \textit{Generator}
         \begin{enumerate}
-            \item Gerar triângulos para a construção de superfícies 3D a partir de pontos de controlo. (\ref{subsec:bezier_p})
+            \item Gerar as normais para cada vértice das figuras geométricas.
+            \item Gerar as coordenadas de textura para cada figura geométrica.
+            \item Atualização do ficheiro \textit{.3D}, com as \textit{tags} 
+                  \textit{normals} e \textit{texture}.
         \end{enumerate}
         \item \textit{Engine}
-        \begin{enumerate}
-            \item Translação com base no tempo e em pontos de controlo, 
-            \begin{enumerate}
-                \item através de curvas de \textit{Catmull-Rom/Hermite/Bezier}. (\ref{subsub:transl})
-                \item através de uma matriz definida pelo utilizador.
-            \end{enumerate}
-            \item Rotação em torno de eixo especificado, com base no tempo. (\ref{subsub:rot})
-            \item \textit{VBOs} 
-            \begin{enumerate}
-                \item Renderização do mundo com recurso a \textit{VBOs}. (\ref{subsec:VBO})
-            \end{enumerate}
-        \end{enumerate}
-        \item Sistema Solar 
-        \begin{enumerate}
-            \item Transição de um modelo estático para dinâmico.(\ref{subsec:sistema_solar})
-        \end{enumerate}
+        % \begin{enumerate}
+        %     \item Translação com base no tempo e em pontos de controlo, 
+        %     \begin{enumerate}
+        %         \item através de curvas de \textit{Catmull-Rom/Hermite/Bezier}. (\ref{subsub:transl})
+        %         \item através de uma matriz definida pelo utilizador.
+        %     \end{enumerate}
+        %     \item Rotação em torno de eixo especificado, com base no tempo. (\ref{subsub:rot})
+        %     \item \textit{VBOs} 
+        %     \begin{enumerate}
+        %         \item Renderização do mundo com recurso a \textit{VBOs}. (\ref{subsec:VBO})
+        %     \end{enumerate}
+        % \end{enumerate}
+        % \item Sistema Solar 
+        % \begin{enumerate}
+        %     \item Transição de um modelo estático para dinâmico.(\ref{subsec:sistema_solar})
+        % \end{enumerate}
     \end{enumerate}
     
     \subfile{generator.tex}
