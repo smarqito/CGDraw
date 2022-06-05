@@ -1,6 +1,6 @@
 \documentclass[relatorio.tex]{subfiles}
 \begin{document}
-    
+
 \subsection{Cálculo das Normais} \label{subsec:normals}
 Para permitir a iluminação de cada figura geométrica 
 criou-se uma nova instância da classe 
@@ -16,25 +16,30 @@ diretamente, vértices e vetores têm o mesmo
 evitando-se criar classes desnecessárias.
 
 A variável \textit{number\_vectors} corresponde ao 
-número total de \textbf{vértices} do objeto, uma vez 
-que será necessário construir vetores para cada um 
-individualmente.
+número total de \textbf{vetores} do objeto.
+\dots uma vez que será necessário construir vetores 
+para cada um vértice, corresponde ao número de 
+vértices do objeto.
 
 Deste modo, para cada figura geométrica:
 
 \subsubsection{\textit{Plane}}
-Como consequência de todas as superfícies serem planas, 
-todos os vértices que se encontram no mesmo plano
-têm o mesmo vetor normal.
+
+Um plano, ou \textit{plane}, é constituído por dois quadriláteros,
+idênticos, um orientado para o lado positivo do eixo \textit{Y}
+e outro orientado para o lado negativo deste mesmo eixo.
+
+Pode-se afirmar que: \\
+\textbf{Todos os vértices que se encontram na mesma superfície, 
+têm a mesma normal.}
 
 Pelo que:
 \begin{eqnarray}
-    v1 \subset plano_{1} \\
-    Se v2\subset plano_{1} \implies normal_{v1} = normal_{v2}
+    v1 \epsilon plano_{1} \\
+    v2\epsilon plano_{1} \implies normal_{v1} = normal_{v2}
 \end{eqnarray}
 
-A figura geométrica é um único plano, 
-logo só existem \textbf{2 vetores normais únicos}.
+Neste sentido, só existem \textbf{2 vetores normais únicos}.
 Um para representar o plano, numa visão de cima,
 e outro para o representar numa visão de baixo.
 
@@ -47,12 +52,27 @@ estes dois vetores são estáticos:
 
 \subsubsection{\textit{Box}}
 
-De modo análogo ao plano, a \textit{Box} ou caixa, 
+Semelhante ao plano, a \textit{Box} ou caixa, 
 tem \textbf{6 superfícies planas}.
 
 Deste modo, só existem \textbf{6 vetores normais} 
 diferentes para cada vértice da figura geométrica.
 
+A caixa encontra-se desenhada na origem, centrada,
+sendo que todas as suas faces são perpendiculares
+aos eixos \textit{XYZ}(positivos e negativos).
+Consequentemente, a normal a cada plano vai ser 
+paralela aos eixos.
+
+Deste modo, apresenta:
+\begin{eqnarray}
+    vetorNormal_{plano x positivo} = (1,0,0) \\
+    vetorNormal_{plano x negativo} = (-1,0,0) \\
+    vetorNormal_{plano y positivo} = (0,1,0) \\
+    vetorNormal_{plano y negativo} = (0,-1,0) \\
+    vetorNormal_{plano z positivo} = (0,0,1) \\
+    vetorNormal_{plano z negativo} = (0,0,-1) \\
+\end{eqnarray}
 
 \subsubsection{\textit{Sphere}}
 
@@ -63,9 +83,118 @@ diferentes para cada vértice da figura geométrica.
 % \subsubsection{\textit{Torus}}
 
 \subsection{Cálculo das Coordenadas de textura} \label{subsec:texCoord}
+Foi necessário, para a implementação das texturas no modelo,
+calcular as coordenadas de textura para cada figura geométrica.
 
-\subsubsection{Adicional}
+Neste caso, estas coordenadas são \textit{2D}, pelo que
+não era viável utilizar novamente a classe \textit{t\_points}.
+Optou-se por utilizar um \textbf{vetor} de \textit{floats},
+\mintinline{cpp}{vector<float> p_textures}.
 
+Segue-se para cada figura geométrica:
+\subsubsection{\textit{Plane}}
 
+Cada plano é construído com um comprimento, \textit{l}, 
+e número de divisões, \textit{div}.
+Deste modo, para enquadrar nas coordenadas de textura,
+que oscilam entre 0 e 1, foi necessário criar 
+um \textit{step}.
+\dots como tem o mesmo comprimento horizontal e 
+verticalmente, apenas é criado um.
+
+Este step é calculado como:
+\begin{eqnarray}
+    step = 1.0 / num_{divisoes}
+\end{eqnarray}
+\dots pelo que temos a translação da distância de uma
+divisão no plano, para o eixo da textura a inserir.
+
+Do mesmo modo que foram inseridos os vértices,
+seguindo a \textbf{regra da mão direita}, 
+as coordenadas de textura foram inseridas no seu \textit{vetor}.
+\dots construíndo os triângulos do mesmo 
+modo que estavam a ser inicialmente.
+
+Efetua-se o mesmo processo para ambas as 
+superfícies do plano, dado a serem 
+idênticas.
+
+\subsubsection{\textit{Box}}
+
+No caso da caixa, dada à sua semelhança com o plano 
+(é repetição deste em 6 orientações diferentes),
+optou-se pela mesma estratégia.
+
+A caixa apresenta, do mesmo modo, dois parâmetros: comprimento (\textit{length})
+e divisões (\textit{divisions}), pelo que traduz-se 
+diretamente do \textbf{plano}.
+
+\subsubsection{\textit{Sphere}}
+
+\subsubsection{\textit{Cone}}
+
+\subsubsection{\textit{Cylinder}}
+
+% \subsubsection{\textit{Torus}}
+
+\subsection{\textit{Writer}} \label{subsec:writer}
+
+Para poder inserir as duas novas \textit{tags}
+dentro dos ficheiros \textit{.3D}, pequenas 
+alterações ao \textit{writer} tiveram de ser feitas.
+
+Para começar, todas as funções anteriormente 
+criadas para construir cada uma das figuras 
+geométricas foram alteradas.
+Agora, retornam um tuplo com \textbf{3 valores}:
+\begin{enumerate}
+    \item Todos os vértices do objeto.
+    \item Todos os vetores normais do objeto.
+    \item Todas as coordenadas de textura para o objeto.
+\end{enumerate}
+\dots respetivamente.
+
+Para clarificação, o tuplo apresenta-se como:
+\begin{minted}{cpp}
+    tuple<t_points, t_points, std::vector<float>> 
+\end{minted}
+
+Após essa alteração, só restou atualizar a função:
+\begin{minted}{cpp}
+    void write_xml(const char* filepath, GLenum type, t_points all_points, t_points all_normals, std::vector<float> texCoords)
+\end{minted}
+\dots recebe atualmente cada uma das listas de vértices/vetores 
+do tuplo e escreve-as pela ordem estipulada.
+
+Assim, preservou-se a estrutura previamente definida 
+para a função \textit{int main(int argc, const char** argv)},
+sendo feitos mínimos \textit{refactors}.
+
+\subsubsection{Adicional} \label{subsec:aster}
+
+Para popular o modelo com mais elementos decidiu-se 
+adicionar uma nuvem de esferas de organização aleatória,
+um cinturão de asteróides. 
+
+A função que criava este modelo, conjunto de figuras:
+\begin{minted}{cpp}
+    std::tuple<t_points, t_points, std::vector<float>> create_asteroids(double distMin, double distMax, int maxSize, int slices, int stacks, double alphaMax, double betaMax, int numAsteroids)
+\end{minted}
+\dots sendo cada asteróide uma esfera.
+
+Seria necessário indicar a \textbf{distância mínima e máxima} 
+para os desenhar, e os valores para construir as esferas 
+e o \textbf{número de asteróides}.
+
+Para efetuar deste modo, foi necessário criar uma variação 
+da figura geométrica \textbf{esfera}, a função:
+
+\begin{minted}{cpp}
+    std::tuple<t_points, t_points, std::vector<float>> create_sphere(int radius, int slices, int stacks, Point offset)
+\end{minted}
+\dots sendo adicionado um \textit{offset}, para 
+posicionar as esferas relativamente às adjacentes,
+com base na variação de um ângulo $\alpha$, horizontal,
+e um ângulo $\beta$, vertical.
 
 \end{document}
