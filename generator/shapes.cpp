@@ -500,6 +500,11 @@ std::tuple<t_points, t_points, std::vector<float>> create_torus(float radius, fl
 			p_normals.add_point(b2);
 			p_normals.add_point(a2);
 
+			a1 = Point(-a1.x, -a1.y, -a1.z);
+			a2 = Point(-a2.x, -a2.y, -a2.z);
+			b1 = Point(-b1.x, -b1.y, -b1.z);
+			b2 = Point(-b2.x, -b2.y, -b2.z);
+
 			p_normals.add_point(a1);
 			p_normals.add_point(b1);
 			p_normals.add_point(b2);
