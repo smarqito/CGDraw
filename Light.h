@@ -7,12 +7,14 @@
 
 using namespace tinyxml2;
 
+
 class Light
 {
-public:
+private:
 	int _light_no;
+public:
 	Light(int light_no);
-	void _draw(){ };
+	virtual void _draw() = 0;
 	void setLightNo(int number);
 	int getLightNo();
 

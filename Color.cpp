@@ -37,7 +37,7 @@ Color::Color(XMLElement* xml)
 		float r = pEmissive->FindAttribute("R")->FloatValue();
 		float g = pEmissive->FindAttribute("G")->FloatValue();
 		float b = pEmissive->FindAttribute("B")->FloatValue();
-		setDiffuse(r, g, b);
+		setEmissive(r, g, b);
 	}
 
 	if ((valueShine = xml->FirstChildElement("shininess")) != nullptr) {
@@ -52,7 +52,7 @@ void Color::_draw()
 	glMaterialfv(GL_FRONT, GL_AMBIENT, getAmbient());
 	glMaterialfv(GL_FRONT, GL_SPECULAR, getSpecular());
 	glMaterialfv(GL_FRONT, GL_EMISSION, getEmissive());
-	glMaterialf(GL_FRONT, GL_SHININESS, getShininess());
+	glMateriali(GL_FRONT, GL_SHININESS, getShininess());
 }
 
 float* Color::getDiffuse()
@@ -82,30 +82,30 @@ float Color::getShininess()
 
 void Color::setDiffuse(float r, float g, float b)
 {	
-	_diffuse[0] = r;
-	_diffuse[1] = g;
-	_diffuse[2] = b;
+	_diffuse[0] = r/255;
+	_diffuse[1] = g/255;
+	_diffuse[2] = b/255;
 }
 
 void Color::setAmbient(float r, float g, float b)
 {
-	_ambient[0] = r;
-	_ambient[1] = g;
-	_ambient[2] = b;
+	_ambient[0] = r / 255;
+	_ambient[1] = g / 255;
+	_ambient[2] = b / 255;
 }
 
 void Color::setSpecular(float r, float g, float b)
 {
-	_specular[0] = r;
-	_specular[1] = g;
-	_specular[2] = b;
+	_specular[0] = r / 255;
+	_specular[1] = g / 255;
+	_specular[2] = b / 255;
 }
 
 void Color::setEmissive(float r, float g, float b)
 {
-	_emissive[0] = r;
-	_emissive[1] = g;
-	_emissive[2] = b;
+	_emissive[0] = r / 255;
+	_emissive[1] = g / 255;
+	_emissive[2] = b / 255;
 }
 
 void Color::setShininess(float s)

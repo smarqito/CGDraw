@@ -27,12 +27,12 @@ private:
 	//t_points _points;
 	GLenum _type;
 	XMLElement* _xml_model;
-	string _model_path;
+	std::string _model_path;
 	GLuint* _buffer; // VBO buffers pointers
 	GLint* _total_points;
 	int _n_buffers;
 	Color _color;
-	Texture _texture;
+	Texture* _texture = NULL;
 	Normals _normals;
 	//GLint _total_points; // hold total points to be drawn
 		/*

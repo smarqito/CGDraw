@@ -1,0 +1,406 @@
+<world>
+	<!-- a world can have a camera, a set of lights, and a single group -->
+	<camera>
+		<position x="2500" y="400" z="1800" />
+		<lookAt x="0" y="0" z="-1174" />
+		<up x="0" y="1" z="0" />
+		<!-- optional, use these values as default-->
+		<projection fov="60" near="1" far="100000" />
+		<!-- optional, use these values as default-->
+	</camera>
+	<lights>
+		<light type="point" posx="0.0" posy="0.0" posz="0.0"/>
+	</lights>
+	<group>
+		<!-- SOL -->
+		<group>
+			<transform>
+				<rotate time="648" x="0" y="1" z="0" />
+				<scale x="1090.1" y="1090.1" z="1090.1" />
+			</transform>
+			<models>
+				<model file="sol.3d">
+					<!-- generator sphere 1 8 8 sphere.3d -->
+					<texture file="sun.jpg" />
+					<color>
+						<diffuse R="200" G="000" B="000" />
+						<ambient R="100" G="30" B="00" />
+						<specular R="0" G="0" B="0" />
+						<emissive R="255" G="119" B="0" />
+						<shininess value="0" />
+					</color>
+				</model>
+			</models>
+		</group>
+		<!-- Mercurio -->
+		<group>
+			<transform>
+				<rotate time="8.7" x="0" y="1" z="0" />
+			</transform>
+			<group>
+				<transform>
+					<translate x="0" y="0" z="-1180" />
+					<rotate time="1416" x="0" y="1" z="0" />
+					<scale x="3.8" y="3.8" z="3.8" />
+				</transform>
+				<models>
+					<model file="sphere.3d" >
+					<!-- generator sphere 1 8 8 sphere.3d -->
+						<texture file = "mercury.jpg" />
+						<color>
+							<diffuse R="50" G="100" B="100" />
+							<ambient R="50" G="10" B="50" />
+							<specular R="0" G="0" B="0" />
+							<emissive R="0" G="0" B="0" />
+							<shininess value="0" />
+						</color>
+					</model>
+				</models>
+			</group>
+		</group>
+		<!-- Venus -->
+		<group>
+			<transform>
+				<rotate time="22.5" x="0" y="1" z="0" />
+			</transform>
+			<group>
+				<transform>
+					<translate x="0" y="0" z="-1259.8" />
+					<rotate time="5832" x="0" y="1" z="0" />
+					<scale x="9.5" y="9.5" z="9.5" />
+				</transform>
+				<models>
+					<model file="sphere.3d" >
+						<!-- generator sphere 1 8 8 sphere.3d -->
+						<texture file="venus.jpg" />
+						<color>
+							<diffuse R="217" G="225" B="115" />
+							<ambient R="50" G="10" B="50" />
+							<specular R="0" G="0" B="0" />
+							<emissive R="0" G="0" B="0" />
+							<shininess value="0" />
+						</color>
+					</model>
+				</models>
+			</group>
+		</group>
+		<!-- Terra -->
+		<group>
+			<transform>
+				<rotate time="36.5" x="0" y="1" z="0" />
+			</transform>
+			<group>
+				<transform>
+					<translate x="0" y="0" z="-1324.3" />
+				</transform>
+				<group>
+					<transform>
+						<rotate time="24" x="0" y="1" z="0" />
+						<scale x="10" y="10" z="10" />
+					</transform>
+					<models>
+						<model file="sphere.3d" >
+							<!-- generator sphere 1 8 8 sphere.3d -->
+							<texture file ="earth.jpg" />
+							<color>
+								<diffuse R="200" G="200" B="000" />
+								<ambient R="50" G="50" B="00" />
+								<specular R="0" G="0" B="0" />
+								<emissive R="0" G="0" B="0" />
+								<shininess value="0" />
+							</color>
+						</model>
+					</models>
+				</group>
+				<!-- Lua -->
+				<group>
+					<transform>
+						<rotate time="2.8" x="0" y="1" z="0" />
+					</transform>
+					<group>
+						<transform>
+							<rotate time="27" x="0" y="1" z="0" />
+							<translate x="15" y="0" z="-15" />
+							<scale x="2.5" y="2.5" z="2.5" />
+						</transform>
+						<models>
+							<model file="sphere.3d" >
+								<texture file="moon.jpg" />
+								<color>
+									<diffuse R="128" G="128" B="128" />
+									<ambient R="50" G="50" B="00" />
+									<specular R="0" G="0" B="0" />
+									<emissive R="128" G="128" B="128" />
+									<shininess value="0" />
+								</color>
+							</model>
+						</models>
+					</group>
+				</group>
+			</group>
+		</group>
+		<!-- Marte -->
+		<group>
+			<transform>
+				<rotate time="68.7" x="0" y="1" z="0" />
+			</transform>
+			<group>
+				<transform>
+					<translate x="0" y="0" z="-1447.7" />
+				</transform>
+				<group>
+					<transform>
+						<rotate time="24" x="0" y="1" z="-1447.7" />
+						<scale x="5.3" y="5.3" z="5.3" />
+					</transform>
+					<models>
+						<model file="sphere.3d" >
+							<!-- generator sphere 1 8 8 sphere.3d -->
+							<texture file="mars.jpg" />
+							<color>
+								<diffuse R="204" G="229" B="255" />
+								<ambient R="50" G="50" B="00" />
+								<specular R="0" G="0" B="0" />
+								<emissive R="0" G="0" B="0" />
+								<shininess value="0" />
+							</color>
+						</model>
+					</models>
+				</group>
+				<!-- luas -->
+				<group>
+					<transform>
+						<rotate time="0.75" x="0" y="1" z="0" />
+					</transform>
+					<group>
+						<transform>
+							<translate x="5" y="0" z="8" />
+							<rotate time="7.4" x="0" y="1" z="0" />
+						</transform>
+						<models>
+							<model file="sphere.3d" >
+								<!-- generator sphere 1 8 8 sphere.3d -->
+								<texture file="moon.jpg" />
+								<color>
+									<diffuse R="128" G="128" B="128" />
+									<ambient R="50" G="50" B="00" />
+									<specular R="0" G="0" B="0" />
+									<emissive R="128" G="128" B="128" />
+									<shininess value="0" />
+								</color>
+							</model>
+						</models>
+					</group>
+				</group>
+				<group>
+					<transform>
+						<rotate time="3" x="0" y="1" z="0" />
+					</transform>
+					<group>
+						<transform>
+							<rotate angle="90" x="1" y="0" z="1" />
+							<translate x="5" y="0" z="8" />
+							<rotate time="30" x="0" y="1" z="0" />
+							<scale x="0.5" y="1" z="1.3" />
+						</transform>
+						<models>
+							<model file="sphere.3d" >
+								<texture file="moon.jpg" />
+								<color>
+									<diffuse R="128" G="128" B="128" />
+									<ambient R="50" G="50" B="00" />
+									<specular R="0" G="0" B="0" />
+									<emissive R="128" G="128" B="128" />
+									<shininess value="0" />
+								</color>
+							</model>
+						</models>
+					</group>
+				</group>
+			</group>
+		</group>
+		<!-- Jupiter -->
+		<group>
+			<transform>
+				<rotate time="438" x="0" y="1" z="0" />
+			</transform>
+			<group>
+				<transform>
+					<translate x="0" y="0" z="-2310.4" />
+					<rotate time="10" x="0" y="1" z="0" />
+					<scale x="112.1" y="112.1" z="112.1" />
+				</transform>
+				<models>
+					<model file="sphere.3d" >
+						<!-- generator sphere 1 8 8 sphere.3d -->
+						<texture file="jupiter.jpg" />
+						<color>
+							<diffuse R="224" G="224" B="224" />
+							<ambient R="50" G="50" B="00" />
+							<specular R="0" G="0" B="0" />
+							<emissive R="0" G="0" B="0" />
+							<shininess value="0" />
+						</color>
+					</model>
+				</models>
+			</group>
+		</group>
+		<!-- Saturno -->
+		<group>
+			<transform>
+				<rotate time="1095" x="0" y="1" z="0" />
+			</transform>
+			<group>
+				<transform>
+					<translate x="0" y="0" z="-3337.8" />
+				</transform>
+				<group>
+					<transform>
+						<rotate time="10" x="0" y="1" z="0" />
+						<scale x="94.5" y="94.5" z="94.5" />
+					</transform>
+					<models>
+						<model file="sphere.3d" >
+							<!-- generator sphere 1 8 8 sphere.3d -->
+							<texture file="saturn.jpg" />
+							<color>
+								<diffuse R="224" G="224" B="224" />
+								<ambient R="50" G="50" B="00" />
+								<specular R="0" G="0" B="0" />
+								<emissive R="0" G="0" B="0" />
+								<shininess value="0" />
+							</color>
+						</model>
+					</models>
+				</group>
+				<group>
+					<transform>
+						<rotate angle="-45" x="1" y="0.45" z="1" />
+                        <rotate time="3" x="0" y="1" z="0" />
+                        <rotate time="4" x="0.5" y="0" z="0" />
+                        <rotate time="10" x="0" y="0" z="0.5" />
+					</transform>
+					<models>
+						<!-- Ring A -->
+						<model file="ring_a.3d" >
+						<!--generator torus 179 10 15 5 ring_a.3d -->
+							<color>
+								<diffuse R="224" G="224" B="224" />
+								<ambient R="50" G="50" B="00" />
+								<specular R="0" G="0" B="0" />
+								<emissive R="0" G="0" B="0" />
+								<shininess value="0" />
+							</color>
+						</model>
+						<!-- Ring B -->
+						<model file="ring_b.3d" >
+						<!-- generator torus 199 10 15 5 ring_b.3d -->
+							<color>
+								<diffuse R="224" G="224" B="224" />
+								<ambient R="50" G="50" B="00" />
+								<specular R="0" G="0" B="0" />
+								<emissive R="0" G="0" B="0" />
+								<shininess value="0" />
+							</color>
+						</model>
+					</models>
+				</group>-->
+			</group>
+		</group>
+		<!-- Urano -->
+		<group>
+			<transform>
+				<rotate time="3066" x="0" y="1" z="0" />
+			</transform>
+			<group>
+				<transform>
+					<translate x="0" y="0" z="-5593.9" />
+					<rotate time="17" x="0" y="1" z="0" />
+					<scale x="40" y="40" z="40" />
+				</transform>
+				<models>
+					<model file="sphere.3d" >
+						<!-- generator sphere 1 8 8 sphere.3d -->
+						<texture file="uranus.jpg" />
+						<color>
+							<diffuse R="204" G="255" B="255" />
+							<ambient R="50" G="50" B="00" />
+							<specular R="0" G="0" B="0" />
+							<emissive R="0" G="0" B="20" />
+							<shininess value="10" />
+						</color>
+					</model>
+				</models>
+			</group>
+		</group>
+		<!-- Neptuno -->
+		<group>
+			<transform>
+				<rotate time="5986" x="0" y="1" z="0" />
+			</transform>
+			<group>
+				<transform>
+					<translate x="0" y="0" z="-8137.9" />
+					<rotate time="16" x="0" y="1" z="0" />
+					<scale x="39" y="39" z="39" />
+				</transform>
+				<models>
+					<model file="sphere.3d" >
+						<!-- generator sphere 1 8 8 sphere.3d -->
+						<texture file="neptune.jpg" />
+						<color>
+							<diffuse R="200" G="200" B="000" />
+							<ambient R="50" G="50" B="00" />
+							<specular R="0" G="0" B="0" />
+							<emissive R="0" G="0" B="0" />
+							<shininess value="0" />
+						</color>
+					</model>
+				</models>
+			</group>
+		</group>
+		<!-- Cometa -->
+		<group>
+			<transform>
+				<rotate angle="17.7" x="1" y="0" z="0" />
+				<translate time = "60" align="True" >
+					<point x = "0" y = "0" z = "1400" />
+					<point x = "-3000" y = "0" z = "-4400" />
+					<point x = "0" y = "0" z = "-10200" />
+					<point x = "3000" y = "0" z = "-4400" />
+				</translate>
+				<scale x="30" y="30" z="30" />
+			</transform>
+			<models>
+				<model file="bezier.3d" >
+					<!-- generator bezier teapot.patch 10 bezier.3d -->
+					<texture file="teapot.jpg" />
+					<color>
+						<diffuse R="200" G="200" B="000" />
+						<ambient R="50" G="50" B="00" />
+						<specular R="0" G="0" B="0" />
+						<emissive R="0" G="0" B="0" />
+						<shininess value="0" />
+					</color>
+				</model>
+			</models>
+		</group>
+		<group>
+			<transform>
+				<rotate time="100" x="0" y="1" z="0" />
+			</transform>
+			<models>
+				<model file="asteroids.3d" >
+					<texture file="moon.jpg" />
+					<color>
+						<diffuse R="192" G="192" B="192" />
+						<ambient R="0" G="0" B="0" />
+						<specular R="0" G="0" B="0" />
+						<emissive R="224" G="224" B="224" />
+						<shininess value="0" />
+					</color>
+				</model>
+			</models>
+		</group>
+	</group>
+</world>

@@ -11,9 +11,9 @@ https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glLight.xml
 
 DirectionalLight::DirectionalLight(int no, XMLElement* xmlElem) : Light(no)
 {
-	_point[0] = xmlElem->FloatAttribute("dirX");
-	_point[1] = xmlElem->FloatAttribute("dirY");
-	_point[2] = xmlElem->FloatAttribute("dirZ");
+	_point[0] = xmlElem->FloatAttribute("dirx");
+	_point[1] = xmlElem->FloatAttribute("diry");
+	_point[2] = xmlElem->FloatAttribute("dirz");
 	_point[3] = 0.f;
 }
 

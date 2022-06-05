@@ -75,7 +75,7 @@ void renderInfo(void) {
 	glPushMatrix();
 	gluOrtho2D(0, 800, 0, 800);
 	glRasterPos2i(10, 0);
-	string menu = "Ola";
+	std::string menu = "Ola";
 	for (int i = 0; i < menu.length(); i++)
 	{
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, menu[i]);
@@ -86,13 +86,14 @@ void renderInfo(void) {
 void renderScene(void) {
 
 	// clear buffers
+	glClearColor(0.f, 0.f, 0.f, 0.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//glPolygonMode(GL_FRONT, GL_LINE);
 	// set the camera
 	glLoadIdentity();
-
 	// set lookat world
 	world._draw_lookAt();
+	world._draw_lights();
 
 	// draw world loaded
 	world._draw();
@@ -218,17 +219,21 @@ void handleMouseMotion(int x, int y) {
 
 void init() {
 	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	//  OpenGL settings
 	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_LIGHTING);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_RESCALE_NORMAL);
 
 }
 
 int main(int argc, char** argv) {
 
 	if (argc != 2) {
-		cout << "./CGDraw world.xml";
+		std::cout << "./CGDraw world.xml";
 	}
 
 	// init GLUT and the window
@@ -250,8 +255,8 @@ int main(int argc, char** argv) {
 	glutMotionFunc(handleMouseMotion);
 
 	// init
-	init();
 	glewInit();
+	init();
 	// init world from xml
 	world = World(argv[1]);
 

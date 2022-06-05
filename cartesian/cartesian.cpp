@@ -260,9 +260,11 @@ void cross(Point* a, Point* b, Point* res)
 void normalize(Point* a)
 {
 	float l = sqrt(a->x * a->x + a->y * a->y + a->z * a->z);
-	a->x /= l;
-	a->y /= l;
-	a->z /= l;
+	if (l != 0) {
+		a->x /= l;
+		a->y /= l;
+		a->z /= l;
+	}
 }
 
 void transpose(matrix* a, matrix* res)

@@ -23,7 +23,7 @@ void Model::_init() {
 
 void Model::read_points_basic(XMLElement* x_root)
 {
-	vector<float> points;
+	std::vector<float> points;
 	_buffer = (GLuint*)malloc(sizeof(GLuint));
 	_total_points = (GLint*)malloc(sizeof(GLint));
 	_type = x_root->FindAttribute("type")->IntValue();
@@ -110,15 +110,16 @@ void Model::read_points()
 		read_points_basic(x_root);
 	}
 
-	XMLElement* textures;
-	if ((textures = x_root->FirstChildElement("textures")) != NULL) {
-		_texture = ModelTexture(_xml_model->FirstChildElement("texture"), textures);
-	}
-
 	XMLElement* normals = x_root->FirstChildElement("normals");
 	if (normals != NULL) {
 		_normals = Normals(normals);
 	}
+
+	XMLElement* textures;
+	if ((textures = _xml_model->FirstChildElement("texture")) != NULL) {
+		_texture = new ModelTexture(x_root->FirstChildElement("texture"), textures);
+	}
+
 }
 
 GLenum Model::getType() {
@@ -139,17 +140,21 @@ char* Model::getFilename() {
 
 void Model::_draw() {
 	// Drawing color first
-	_color._draw();
 	// to add texture
 	//Point p;
 	for (int i = 0; i < _n_buffers; i++)
 	{
+		_color._draw();
+
 		glBindBuffer(GL_ARRAY_BUFFER, _buffer[i]);
 		glVertexPointer(3, GL_FLOAT, 0, 0);
-		glDrawArrays(_type, 0, _total_points[i] * 3);
 
 		_normals._draw();
-		_texture.draw();
+		if(_texture != NULL)
+			_texture->_draw();
+
+		glDrawArrays(_type, 0, _total_points[i] * 3);
+		glBindTexture(GL_TEXTURE_2D, 0);
 
 	}
 
