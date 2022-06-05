@@ -1,98 +1,41 @@
 \documentclass[relatorio.tex]{subfiles}
 \begin{document}
+Nesta última fase proposta pelo enunciado do trabalho prático foi necessário a 
+criação de novas classes, sendo estas acrescentadas com base na estrutura realizada
+na primeira fase. As novas classes foram criadas com base nos novos elementos do ficheiro
+XML, nomeadamente, \textit{texture}, \textit{color} e \textit{lights}, mantendo assim a 
+responsabilidade de leitura do XML para a classe responsável por manipular estes elementos.
 
-\subsection{Animação com Transformações Geométricas}
-A implementação das transformações geométricas podem ser divididas em dois tipos:
-\begin{itemize}
-    \item Translação
-    \item Rotação
-\end{itemize}
-Para auxiliar a sua implementação, foi criado uma classe que permite calcular 
-a taxa de atualização da renderização.
-Este valor é essencial para ambos os tipos de transformação.
+Apesar de não existir \textit{normals} no ficheiro XML, foi criada a classe \textit{normals},
+responsável pela leitura das normais presentes no ficheiro .3d criado pelo \textit{generator}.
 
-Especificamente, consiste em ter uma variável que armazene o tempo total que 
-a transformação deve acontecer.
-\begin{code}
-\captionof{listing}{Class TimeControl}
-\label{code:time_control}
-\inputminted[firstline=6, lastline=15]{cpp}{../../TimeControl.h}
-\end{code}
+\begin{landscape}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth]{assets/classe.jpg}
+        \caption{Diagrama de classes} \label{fig:dig_classes}
+    \end{figure}
+\end{landscape}
 
-Assim, pode-se inicializar com o tempo total de transformação ou
-definir-se um tempo posteriormente.
-A cada iteração será executado o \mintinline{cpp}{updateRate}
-para manter o $\_refresh\_rate$ atualizado.
+\subsection{Luzes}
 
-\begin{code}
-\captionof{listing}{Atualização da taxa de atualização}
-\label{code:update_rate}
-\inputminted[firstline=22, lastline=25]{cpp}{../../TimeControl.cpp}
-\end{code}
+\subsection{Cores}
+A classe \textit{Color} tem como argumentos as 5 componentes da luz,
+que são inicializadas por defeito com os valores passados pela equipa docente
+no enunciado do trabalho. 
 
+\subsection{Texturas}
+Para tratar das Texturas foram criadas 2 classes, uma superclasse
+\textit{Texture} e a sua subclasse \textit{ModelTexture}.
 
-\subsubsection{Translação} \label{subsub:transl}
-Implementação realizada através da utilização de duas classes auxiliares:
-$Curve$ e $TranslateCurve$.
-A primeira permite o cálculo da posição e da sua derivada.
-Este, é efetuado com recurso a um vetor de pontos de controlo
-e utiliza-se a estratégia de escolher um conjunto de 4 pontos
-que correspondem aos adjacentes do local em que o objeto se encontra.
-Depois de escolhidos os 4 pontos, é populada uma matriz $4x3$ com os valores 
-$x,y,z$ dos mesmos.
-O cálculo efetivo consiste em multiplicar a matriz de transformação
-(predefinida é a Catmull-Roll) pela matriz de pontos criada.
-Após calcular o vetor $\overrightarrow{t}$ e $\overrightarrow{d}$,
-este é multiplicado pela resultado do cálculo anterior,
-originando os valores da posição e da derivada.
+Na classe \textit{Texture} é onde é feito o processamento da imagem com a textura
+a partir da função \textit{loadTexture}. Esta utiliza como parâmetros de
+\textit{wrap} o \textit{repeat} tanto em S como em T. De maneira a obter
+uma textura com melhor qualidade e ainda melhorar o desempenho foi utilizado
+o \textit{MipMapping}, fazendo proveito da primitiva \textit{linear} tanto para a 
+escolha do \textit{pixel} como também da textura e assim evitar obter um resultado pixelizado.
 
-A classe $Curve$ é utilizada pela $TranslateCurve$ para calcular 
-a posição e a derivada num determinado instante de tempo.
-Para tal, utilizou-se as fórmulas de produto externo entre vetores e 
-a sua normalização.
-Posteriormente, é construído uma matriz de rotação para ser aplicado pelo 
-$glMultMatrixf$.
+A classe \textit{ModelTexture} por sua vez é responsável por processar as coordenadas de texturas
+recebidas no ficheiro ".3d", colocando-as no \textit{buffer}.
 
-O instante de tempo é calculado com recurso à classe $TimeControl$.
-
-Para facilitar a visualização das curvas de translação, acrescentou-se 
-a interação com o utilizador através das teclas 'u' e 'U'.
-A primeira, 'u', ativa a renderização da curva de posição, i.e.
-o local por onde o objeto vai passar.
-A segunda, 'U', vai ativar a renderização das linhas de derivada em cada posição.
-
-Por último, apesar das únicas matrizes de transformação utilizadas neste projeto corresponderem
-às pré-definidas, é possível utilizar matrizes definidas pelo utilizador 
-para serem aplicadas às curvas de translação.
-Assim, é permitido definir qualquer uma das curvas default através 
-do acréscimo do atributo \textit{curve="0|1|2"} ou personalizadas
-através do código \ref{code:matrix_custom}.
-\begin{code}
-\captionof{listing}{XML Exemplo com matriz personalizada}
-\label{code:matrix_custom}
-\begin{minted}{xml}
-<translate time = "10" align="True" curve="-1"> 
-<matrix m="4" n="4">
-    <elem>-0.5</elem>
-    <elem>1.5</elem>
-    <elem>-1.5</elem>
-    <elem>0.5</elem>
-    <elem>1.0</elem>
-    <elem>-2.4</elem>
-    <elem>10</elem>
-...
-</matrix>
-\end{minted}
-\end{code}
-
-\subsubsection{Rotação} \label{subsub:rot}
-A aplicação da rotação sobre um determinado eixo, foi conseguida através do cálculo 
-do instante de tempo (cf. $TimeControl$) e a sua multiplicação por 
-$360\deg$.
-
-\subsection{VBOs} \label{subsec:VBO}
-No seguimento de terem sido aplicados \textit{VBOs} sem índices na fase II, a implementação dos 
-modelos com o uso de índices era a próxima evolução lógica. 
-Tinha sido previsto progredir para a implementação de índices.
-No entanto, tal funcionalidade será implementada na fase $IV$.
 \end{document}

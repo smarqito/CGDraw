@@ -1,116 +1,263 @@
 \documentclass[relatorio.tex]{subfiles}
 \begin{document}
-    
-\subsection{\textit{Bezier Patches}} \label{subsec:bezier_p}
 
-Numa fase inicial, houve alguma dificuldade, por parte do grupo,
-na compreensão sobre a forma de construção das superfícies 3D, através da utilização
-da estratégia de \textit{Catmull-Rom}.
-Isto deveu-se, essencialmente, a não se estar a efetuar uma interpolação \textit{bilinear},
-nem a construção de triângulos. Apenas de linhas.
-Depois de se compreender, de facto, como  deveria ser a implementação,
-procedeu-se ao desenvolvimento do código apresentado de seguida.
+\subsection{Cálculo das Normais} \label{subsec:normals}
+Para permitir a iluminação de cada figura geométrica 
+criou-se uma nova instância da classe 
+\mintinline{cpp}{t_points normals(number_vectors)}, 
+para armazenar todos os vetores normais.
 
-Neste sentido, após uma análise do material fornecido pela equipa docente foram construídas 3 classes para facilitar a definição dos triângulos das superfícies 3D:
+Reutilizou-se a classe \textit{t\_points},
+representando cada \textbf{vetor} com
+a classe \mintinline{cpp}{Point(x, y, z )}.
+\dots apesar da nomenclatura não traduzir
+diretamente, vértices e vetores têm o mesmo 
+\textit{layout} para as suas coordenadas, 
+evitando-se criar classes desnecessárias.
+
+A variável \textit{number\_vectors} corresponde ao 
+número total de \textbf{vetores} do objeto.
+\dots uma vez que será necessário construir vetores 
+para cada um vértice, corresponde ao número de 
+vértices do objeto.
+
+Deste modo, para cada figura geométrica:
+
+\subsubsection{\textit{Plane}}
+
+Um plano, ou \textit{plane}, é constituído por dois quadriláteros,
+idênticos, um orientado para o lado positivo do eixo \textit{Y}
+e outro orientado para o lado negativo deste mesmo eixo.
+
+Pode-se afirmar que: \\
+\textbf{Todos os vértices que se encontram na mesma superfície, 
+têm a mesma normal.}
+
+Pelo que:
+\begin{eqnarray}
+    v1 \epsilon plano_{1} \\
+    v2\epsilon plano_{1} \implies normal_{v1} = normal_{v2}
+\end{eqnarray}
+
+Neste sentido, só existem \textbf{2 vetores normais únicos}.
+Um para representar o plano, numa visão de cima,
+e outro para o representar numa visão de baixo.
+
+Dado a ser construído sobre o plano \textit{XZ}, 
+estes dois vetores são estáticos:
+\begin{eqnarray}
+    vetorNormal_{plano superior} = (0,1,0) \\
+    vetorNormal_{plano inferior} = (0,-1,0) 
+\end{eqnarray}
+
+\subsubsection{\textit{Box}}
+
+Semelhante ao plano, a \textit{Box} ou caixa, 
+tem \textbf{6 superfícies planas}.
+
+Deste modo, só existem \textbf{6 vetores normais} 
+diferentes para cada vértice da figura geométrica.
+
+A caixa encontra-se desenhada na origem, centrada,
+sendo que todas as suas faces são perpendiculares
+aos eixos \textit{XYZ}(positivos e negativos).
+Consequentemente, a normal a cada plano vai ser 
+paralela aos eixos.
+
+Deste modo, apresenta:
+\begin{eqnarray}
+    vetorNormal_{plano x positivo} = (1,0,0) \\
+    vetorNormal_{plano x negativo} = (-1,0,0) \\
+    vetorNormal_{plano y positivo} = (0,1,0) \\
+    vetorNormal_{plano y negativo} = (0,-1,0) \\
+    vetorNormal_{plano z positivo} = (0,0,1) \\
+    vetorNormal_{plano z negativo} = (0,0,-1) \\
+\end{eqnarray}
+
+\subsubsection{\textit{Sphere}}
+O cálculo das normais na esfera é feito com base na seguinte proprieada
+geométrica:
+Se p é um vértice da esfera:
+$ p = (raio * sin(\alpha) * cos(\beta), raio * sin(\beta), raio * cos(\alpha) * cos(\beta))$
+e como a esfera está centrada no ponto (0, 0, 0), o vetor normal é obtido através
+da normalização do vetor n, que é igual a p - (0, 0, 0).
+
+\subsubsection{\textit{Cone}}
+O cálculo das normais do cone foram feitas com 2 abordagens diferentes,
+para a base, uma vez que esta é desenhado sobre o plano XZ, consequentemente
+a normal será a apontar para o Y negativo, isto é (0, -1, 0).
+
+Para a lateral do cone, a normal foi obtida a partir do produto cartesiano
+de um vetor tangente à face lateral do cone com 
+
+\subsubsection{\textit{Cylinder}}
+O cilindro é composto por 2 bases, sendo o a normal da base inferior o inverso
+da normal da base superior. Como este é construído sobre o XZ, a normal da base superior
+é (0, 1, 0) e da base inferior (0, -1, 0).
+
+Para calcular as normais do parte lateral do cone, foi utilizada a seguinte propriedade
+geométrica:
+
+Se p é um vértica da face lateral do cilindro:
+$ p = (raio * sin(\alpha), y, raio * cos(\alpha))$
+então:
+$ n = (sin(\alpha), 0, cos(\alpha))$
+
+\subsubsection{\textit{Torus}}
+As normais do \textit{torus} são calculadas de uma forma muito similar à das esferas,
+tendo os pontos:
+
+$ c = (raio * sin(\alpha) * cos(\beta), raio * sin(\beta), raio * cos(\alpha) * cos(\beta))$
+
+$ p = (tamanho * sin(\alpha) * cos(\beta), tamanho * sin(\beta), tamanho * cos(\alpha) * cos(\beta))$
+
+em que raio é o a distância do centro(0, 0, 0) ao centro do \textit{torus} e o tamanho é o raio interno
+do \textit{torus}, então sabemos que $c + p$ e $c - p$ são vértice do \textit{torus} com normais inversas. 
+Desta forma, é possível concluir que a normal destes vértices são obtidas, respetivamente, pela normalização 
+do vetor obtido a partir subtração do ponto $p$ pelo ponto $c$ e da subtração do ponto $c$ pelo ponto $p$.
+
+\subsection{Cálculo das Coordenadas de textura} \label{subsec:texCoord}
+Foi necessário, para a implementação das texturas no modelo,
+calcular as coordenadas de textura para cada figura geométrica.
+
+Neste caso, estas coordenadas são \textit{2D}, pelo que
+não era viável utilizar novamente a classe \textit{t\_points}.
+Optou-se por utilizar um \textbf{vetor} de \textit{floats},
+\mintinline{cpp}{vector<float> p_textures}.
+
+Segue-se para cada figura geométrica:
+\subsubsection{\textit{Plane}}
+
+Cada plano é construído com um comprimento, \textit{l}, 
+e número de divisões, \textit{div}.
+Deste modo, para enquadrar nas coordenadas de textura,
+que oscilam entre 0 e 1, foi necessário criar 
+um \textit{step}.
+\dots como tem o mesmo comprimento horizontal e 
+verticalmente, apenas é criado um.
+
+Este step é calculado como:
+\begin{eqnarray}
+    step = 1.0 / num_{divisoes}
+\end{eqnarray}
+\dots pelo que temos a translação da distância de uma
+divisão no plano, para o eixo da textura a inserir.
+
+Do mesmo modo que foram inseridos os vértices,
+seguindo a \textbf{regra da mão direita}, 
+as coordenadas de textura foram inseridas no seu \textit{vetor}.
+\dots construíndo os triângulos do mesmo 
+modo que estavam a ser inicialmente.
+
+Efetua-se o mesmo processo para ambas as 
+superfícies do plano, dado a serem 
+idênticas.
+
+\subsubsection{\textit{Box}}
+
+No caso da caixa, dada à sua semelhança com o plano 
+(é repetição deste em 6 orientações diferentes),
+optou-se pela mesma estratégia.
+
+A caixa apresenta, do mesmo modo, dois parâmetros: comprimento (\textit{length})
+e divisões (\textit{divisions}), pelo que traduz-se 
+diretamente do \textbf{plano}.
+
+\subsubsection{\textit{Sphere}}
+
+\subsubsection{\textit{Cone}}
+Para coordenadas de textura da base do cone, o centro da base
+corresponde ao centro da textura(0.5, 0.5) e cada slice corresponde
+a um slice também na textura com o mesmo ângulo $\alpha$ mas com um raio
+de 0.5.
+
+Para a parte lateral foram criados 2 \textit{steps}:
 \begin{itemize}
-    \item \mintinline{cpp}{class Matrix}
-    \item \mintinline{cpp}{class PointMatrix}
-    \item \mintinline{cpp}{class BezierTriangles}
+    \item $xStep = 1.0 / slices$
+    \item $yStep = 1.0 / stacks$
 \end{itemize}
 
-\subsubsection{Classe Matrix}
-Envés de representar as matrizes como apontadores para valores, como foi o caso das aulas práticas,
-procurou-se definir um módulo que facilmente representaria uma matriz. 
-\begin{code}
-    \captionof{listing}{Classe Matrix}
-    \label{code:class_matrix}
-    \inputminted[firstline=14, lastline=19]{cpp}{../../cartesian/matrix.h}
-\end{code}
+A construção do cone é feita com base num ciclo que itera o número de \textit{stacks}
+vezes em que o yStep começa a 0 e incremete yStep a cada iteração. Em que cada iteração d
+este ciclo é percorrido outro ciclo com número de \textit{slices} iterações, eu que o xStep começa
+a 0 e incrementa xStep a cada iteração. Com estas duas variavéis é facilmente obtido as coordenas de textura
+de cada ponto.
 
-Deste modo, encontram-se na classe todas as operações relativamente a uma matriz e entre matrizes.
-Não obstante a possibilidade de \textbf{transpor} e \textbf{clonar} uma matriz,
-foi definida a multiplicação entre a matriz local e outra;
-como a matriz local pode encontrar-se antes ou depois,
-recorreu-se ao \textbf{polimorfismo} da linguagem para construir os dois métodos 
-considerando as possibilidades.
-Foram definidos construtores que permitissem a criação através do número de linhas e colunas
-e aatravés de um conjunto de matrizes default, cf \ref{code:defmat}.
 
-\begin{code}
-    \captionof{listing}{Enum de tipos de matrizes default}
-    \label{code:defmat}
-    \inputminted[firstline=7, lastline=12]{cpp}{../../cartesian/matrix.h}
-\end{code}
-\dots como são sempre estáticos facilita o grupo ao usá-los nos cálculos dos pontos de uma curvas.
+\subsubsection{\textit{Cylinder}}
+A estratégia utilizada no cilindro foi a mesma que no cone, sendo
+as texturas das duas bases do cilindro obtidas da mesma forma que
+a base do cone e o mesmo para as coordenadass de texturas da face lateral.
 
-\subsubsection{Class PointMatrix}
-Apesar da \mintinline{cpp}{class Matrix} tratar corretamente de matrizes do tipo $float$,
-decidiu-se criar um outro tipo de matrizes, com cálculo particulares:
-\textbf{matrizes de pontos}. 
-Tendo por base a \mintinline{cpp}{class Point} e as necessidades determinadas no desenvolvimento
-da presente fase,
-criou-se um conjunto de métodos que permitissem a multiplicação entre
-uma matriz de valores e uma matriz de pontos, considerando a multiplicação à esquerda e à direita.
+%\subsubsection{\textit{Torus}}
 
-Surgiu a \mintinline{cpp}{Classe PointMatrix}:
-\begin{code}
-    \captionof{listing}{Matrix}
-    \label{code:point_matrix.h}
-    \inputminted[firstline=6, lastline=10]{cpp}{../../cartesian/PointMatrix.h}
-\end{code}
-\dots contêm ainda a possibilidade de transpor e clonar a matriz.
 
-A criação desta classe permitiu a implementação das funcionalidades previstas de uma forma
-simplificada e elegante, como se poderá ver ao longo do relatório.
+\subsection{\textit{Writer}} \label{subsec:writer}
 
-\subsubsection{Class BezierTriangles}
-Com classes criadas no âmbito de realizar operações entre matrizes,
-procedeu-se à criação de uma última: \mintinline{cpp}{class BezierTriangles}.
-A partir dos pontos de controlo de um \textit{patch}, permite calcular o ponto da curva,
-de acordo com os vetores \textbf{u} e \textbf{v} resultante dos nível de tesselação.
-Neste sentido, foi utilizado o médodo apresentado na figura \ref{fig:bezier_point}.
-\begin{figure}
-    \centering
-    \includegraphics[width=\linewidth]{assets/bezier_patches_point.png}
-    \caption{Cálculo de um ponto da superfício, definida com \textit{P} pontos de controlo.}
-    \label{fig:bezier_point}
-\end{figure}
+Para poder inserir as duas novas \textit{tags}
+dentro dos ficheiros \textit{.3D}, pequenas 
+alterações ao \textit{writer} tiveram de ser feitas.
 
-Assim, segue-se:
-\begin{code}
-    \captionof{listing}{BezierTriangles}
-    \label{code:BezierTriangles.h}
-    \inputminted[firstline=5, lastline=15]{cpp}{../../cartesian/BezierTriangles.h}
-\end{code}
+Para começar, todas as funções anteriormente 
+criadas para construir cada uma das figuras 
+geométricas foram alteradas.
+Agora, retornam um tuplo com \textbf{3 valores}:
+\begin{enumerate}
+    \item Todos os vértices do objeto.
+    \item Todos os vetores normais do objeto.
+    \item Todas as coordenadas de textura para o objeto.
+\end{enumerate}
+\dots respetivamente.
 
-Para reduzir o número de cálculos a realizar em cada iteração,
-considerou-se relevante efetuar um conjunto de pré-calculos que
-correspondem à multiplicação da transformação de \textit{Bezier}, $M$, com a matriz dos pontos de controlo da superfície, $P$,
-e, consequentemente, o cálculo da resultante, $MxP$, pela transposta de $M$, $M^T$.
+Para clarificação, o tuplo apresenta-se como:
+\begin{minted}{cpp}
+    tuple<t_points, t_points, std::vector<float>> 
+\end{minted}
 
-\subsubsection{\textit{create\_bezier}}
-No âmbito de calcular todas as superfícies criou-se, no módulo \textbf{shapes}, 
-um método capaz de contruir um objeto, recebendo um vetor com os índices dos pontos de controlo
-de cada \textit{patch}, \textit{pacthes},
-um vetor com todos os pontos, \textit{points} e o nível de tesselação, \textit{level},
-cf. \ref{code:create_bezier}.
+Após essa alteração, só restou atualizar a função:
+\begin{minted}{cpp}
+    void write_xml(const char* filepath, GLenum type, t_points all_points, t_points all_normals, std::vector<float> texCoords)
+\end{minted}
+\dots recebe atualmente cada uma das listas de vértices/vetores 
+do tuplo e escreve-as pela ordem estipulada.
 
-\begin{code}
-    \captionof{listing}{create\_bezier}
-    \label{code:create_bezier}
-    \inputminted[firstline=44, lastline=44]{cpp}{../../generator/shapes.h}
-\end{code}
+Assim, preservou-se a estrutura previamente definida 
+para a função \textit{int main(int argc, const char** argv)},
+sendo feitos mínimos \textit{refactors}.
 
-\subsubsection{Adicional}
+\subsubsection{Adicional} \label{subsec:aster}
 
-A extração de informação encontra-se dentro do módulo \textbf{writer}, na função \textit{main} do \textit{generator},
-tendo-se utilizado \textbf{expressões regulares}, através da biblioteca \mintinline{cpp}{<regex>}.
-Em particular, utiliza-se a expressão \ref{code:regex_pontos}.
-\begin{code}
-\captionof{listing}{Regex para captura de pontos, utilizando grupos}
-\label{code:regex_pontos}
-\mintinline{cpp}{regex regexp(R"(([+-]?\d+(?:\.\d+)?), ([+-]?\d+(?:\.\d+)?), ([+-]?\d+(?:\.\d+)?))");}
-\end{code}
+Para popular o modelo com mais elementos decidiu-se 
+adicionar uma nuvem de esferas de organização aleatória,
+um cinturão de asteróides. 
 
+A função que criava este modelo, conjunto de figuras:
+\begin{minted}{cpp}
+    std::tuple<t_points, t_points, std::vector<float>> create_asteroids(double distMin, double distMax, int maxSize, int slices, int stacks, double alphaMax, double betaMax, int numAsteroids)
+\end{minted}
+\dots sendo cada asteróide uma esfera.
+
+Seria necessário indicar a :
+\begin{itemize}
+    \item \textbf{distMin}: A distância mínima a um asteroide;
+    \item \textbf{distMax}: A distância máxima a um asteroide;
+    \item \textbf{maxSize}: O raio máximo do asteroide;
+    \item \textbf{slices}: O número de slices da esfera;
+    \item \textbf{stacks}: O número de stacks da esfera;
+    \item \textbf{alphaMax}: O valor máximo do ângulo alpha;
+    \item \textbf{betaMax}: O valor máximo do ângulo beta;
+    \item \textbf{numAsteroids}: O número de asteroides.
+\end{itemize}
+
+Para efetuar deste modo, foi necessário criar uma variação 
+da figura geométrica \textbf{esfera}, a função:
+
+\begin{minted}{cpp}
+    std::tuple<t_points, t_points, std::vector<float>> create_sphere(int radius, int slices, int stacks, Point offset)
+\end{minted}
+\dots sendo adicionado um \textit{offset} aleatório compreendido
+entre a distância mínima e máxima, para posicionar as esferas,
+com base na variação de um ângulo $\alpha$, horizontal,
+e um ângulo $\beta$, vertical.
 
 \end{document}
