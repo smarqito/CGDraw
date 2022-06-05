@@ -1,16 +1,14 @@
 <world>
-    <camera>  -0.740200, 1.182951, 1.376347
+    <camera>
 	    <position x="-0.740200" y="1.182951" z="1.376347" />
 	    <lookAt x="0" y="0" z="0" />
 	    <up x="0" y="1" z="0" />
         <projection fov="60" near="1" far="1000" /> 
-    </camera>
-	
+    </camera>	
 	<lights> 
 		<light type="point" posx="0" posy="0.2" posz="0" />
 		<light type="point" posx="-2" posy="2" posz="2" />
-	</lights>
-	
+	</lights>	
 	<group>
 		<group> 
 			<transform> 

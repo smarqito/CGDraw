@@ -19,7 +19,7 @@
 				<scale x="1090.1" y="1090.1" z="1090.1" />
 			</transform>
 			<models>
-				<model file="sol.3d">
+				<model file="sun.3d">
 					<!-- generator sphere 1 8 8 sphere.3d -->
 					<texture file="sun.jpg" />
 					<color>
