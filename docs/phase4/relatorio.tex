@@ -124,28 +124,30 @@ framesep=2mm
     \begin{enumerate}
         \item \textit{Generator}
         \begin{enumerate}
-            \item Gerar as normais para cada vértice das figuras geométricas.
+            \item Gerar as normais para cada vértice das figuras geométricas. (\ref{subsec:normals})
             \item Gerar as coordenadas de textura para cada figura geométrica.
             \item Atualização do ficheiro \textit{.3D}, com as \textit{tags} 
                   \textit{normals} e \textit{texture}.
+            \begin{enumerate}
+                \item[\textit{ADICIONAL}]{Criação de um círculo de asteróides.}
+            \end{enumerate}
         \end{enumerate}
         \item \textit{Engine}
-        % \begin{enumerate}
-        %     \item Translação com base no tempo e em pontos de controlo, 
-        %     \begin{enumerate}
-        %         \item através de curvas de \textit{Catmull-Rom/Hermite/Bezier}. (\ref{subsub:transl})
-        %         \item através de uma matriz definida pelo utilizador.
-        %     \end{enumerate}
-        %     \item Rotação em torno de eixo especificado, com base no tempo. (\ref{subsub:rot})
-        %     \item \textit{VBOs} 
-        %     \begin{enumerate}
-        %         \item Renderização do mundo com recurso a \textit{VBOs}. (\ref{subsec:VBO})
-        %     \end{enumerate}
-        % \end{enumerate}
-        % \item Sistema Solar 
-        % \begin{enumerate}
-        %     \item Transição de um modelo estático para dinâmico.(\ref{subsec:sistema_solar})
-        % \end{enumerate}
+        \begin{enumerate}
+            \item Implementação da iluminação:
+            \begin{enumerate}
+                \item num \textit{point}, através da sua posição.
+                \item \textit{directional}, através da direção do foco.
+                \item de um \textit{spotlight}, através da posição, direção 
+            \end{enumerate}
+            \item Implementação de texturas, a partir do \textit{path} da imagem a inserir.
+            \item Implementação das cores difusa, ambiente, especular, emissiva e o coeficiente
+                  de \textit{shininess} do objeto.
+        \end{enumerate}
+        \item Sistema Solar 
+        \begin{enumerate}
+            \item Transição para um modelo iluminado e texturizado.(\ref{subsec:sistema_solar})
+        \end{enumerate}
     \end{enumerate}
     
     \subfile{generator.tex}
