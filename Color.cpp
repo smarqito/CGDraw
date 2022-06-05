@@ -82,30 +82,30 @@ float Color::getShininess()
 
 void Color::setDiffuse(float r, float g, float b)
 {	
-	_diffuse[0] = r/255;
-	_diffuse[1] = g/255;
-	_diffuse[2] = b/255;
+	_diffuse[0] = r/255.f;
+	_diffuse[1] = g/255.f;
+	_diffuse[2] = b/255.f;
 }
 
 void Color::setAmbient(float r, float g, float b)
 {
-	_ambient[0] = r / 255;
-	_ambient[1] = g / 255;
-	_ambient[2] = b / 255;
+	_ambient[0] = r / 255.f;
+	_ambient[1] = g / 255.f;
+	_ambient[2] = b / 255.f;
 }
 
 void Color::setSpecular(float r, float g, float b)
 {
-	_specular[0] = r / 255;
-	_specular[1] = g / 255;
-	_specular[2] = b / 255;
+	_specular[0] = r / 255.f;
+	_specular[1] = g / 255.f;
+	_specular[2] = b / 255.f;
 }
 
 void Color::setEmissive(float r, float g, float b)
 {
-	_emissive[0] = r / 255;
-	_emissive[1] = g / 255;
-	_emissive[2] = b / 255;
+	_emissive[0] = r / 255.f;
+	_emissive[1] = g / 255.f;
+	_emissive[2] = b / 255.f;
 }
 
 void Color::setShininess(float s)
