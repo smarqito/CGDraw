@@ -1,5 +1,5 @@
 # CGDraw
-Class: Graphics Computation
+Class: Computer Graphics
 
 Language: *C++*, XML
 # Authors
